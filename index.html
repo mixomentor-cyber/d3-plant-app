@@ -493,7 +493,7 @@
                             <span class="bg-blue-100 text-blue-700 py-0.5 sm:py-1 px-2.5 sm:px-3 rounded-full text-xs font-bold" id="active-count">0</span>
                         </div>
                         <div class="bg-white/80 backdrop-blur-xl border border-white rounded-2xl sm:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
-                            <div id="active-workers-list" class="divide-y divide-slate-100 max-h-[60vh] overflow-y-auto">
+                            <div id="active-workers-list" class="divide-y divide-slate-100 max-h-[60vh] overflow-y-auto min-h-[150px]">
                                 <div id="no-active-workers" class="text-slate-500 text-xs sm:text-sm text-center py-6 sm:py-8 transition-opacity">
                                     <div class="w-12 h-12 sm:w-16 sm:h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
                                         <i class="fa-solid fa-bed text-slate-400 text-lg sm:text-xl"></i>
@@ -530,7 +530,7 @@
                                 <input type="text" id="history-name-filter" placeholder="Search name..." class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500/20 transition-all w-24 sm:w-32 md:w-48">
                             </div>
                             <button id="btn-clear-history-filter" class="text-xs sm:text-sm text-slate-500 hover:text-indigo-600 font-medium transition-colors hidden sm:block">Clear</button>
-                            <button id="btn-close-history" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors ml-auto md:ml-2" title="Close">
+                            <button id="btn-close-history" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors ml-auto md:ml-2" title="Close">
                                 <i class="fa-solid fa-xmark text-base sm:text-lg"></i>
                             </button>
                         </div>
@@ -543,7 +543,7 @@
                         </div>
                         
                         <div class="border border-slate-200 rounded-lg sm:rounded-xl shadow-sm flex-grow overflow-hidden flex flex-col">
-                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[60vh]">
+                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[60vh] min-h-[250px]">
                                 <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
                                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider sticky top-0 z-10 shadow-sm">
                                         <tr>
@@ -599,7 +599,7 @@
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-600">Name:</label>
                                 <input type="text" id="ot-name-filter" placeholder="Filter name..." class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm w-24 sm:w-32 focus:ring-2 focus:ring-indigo-500/20 transition-all">
                             </div>
-                            <button id="btn-close-ot" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors ml-auto md:ml-2" title="Close">
+                            <button id="btn-close-ot" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors ml-auto md:ml-2" title="Close">
                                 <i class="fa-solid fa-xmark text-base sm:text-lg"></i>
                             </button>
                         </div>
@@ -607,7 +607,7 @@
 
                     <div class="flex-grow overflow-hidden relative flex flex-col p-4 sm:p-6 gap-3 sm:gap-4">
                         <div class="border border-slate-200 rounded-lg sm:rounded-xl shadow-sm flex-grow overflow-hidden flex flex-col">
-                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh]">
+                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh] min-h-[250px]">
                                 <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
                                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider sticky top-0 z-10 shadow-sm">
                                         <tr>
@@ -681,7 +681,7 @@
 
                     <div class="flex-grow overflow-hidden relative flex flex-col p-4 sm:p-6 gap-3 sm:gap-4">
                         <div class="border border-slate-200 rounded-lg sm:rounded-xl shadow-sm flex-grow overflow-hidden flex flex-col">
-                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh]">
+                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh] min-h-[250px]">
                                 <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
                                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider sticky top-0 z-10 shadow-sm">
                                         <tr>
@@ -742,7 +742,7 @@
                         </div>
                         
                         <div class="border border-slate-200 rounded-lg sm:rounded-xl shadow-sm flex-grow overflow-hidden flex flex-col">
-                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh]">
+                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh] min-h-[250px]">
                                 <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
                                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider sticky top-0 z-10 shadow-sm">
                                         <tr>
@@ -827,7 +827,7 @@
                         <div class="flex flex-col h-full max-h-[40vh] md:max-h-full">
                             <h4 class="text-sm font-bold text-slate-800 mb-3 shrink-0">Current Users</h4>
                             <div class="bg-slate-50 rounded-lg sm:rounded-xl border border-slate-200 overflow-hidden flex-grow flex flex-col">
-                                <ul id="manage-users-list" class="divide-y divide-slate-100 px-3 sm:px-4 overflow-y-auto flex-grow">
+                                <ul id="manage-users-list" class="divide-y divide-slate-100 px-3 sm:px-4 overflow-y-auto flex-grow min-h-[250px]">
                                     <!-- Dynamic user list -->
                                 </ul>
                             </div>
@@ -853,6 +853,25 @@
         
         const NAMES_STORAGE_KEY = 'd3plant_worker_names';
         const STORAGE_KEY = 'd3plant_active_workers';
+
+        // Safe Cross-Browser Date Parser Helper
+        function parseCustomDate(dateStr) {
+            if (!dateStr) return new Date('');
+            let str = String(dateStr).split('T')[0].trim();
+            let d = new Date(str);
+            if (!isNaN(d.getTime())) return d;
+            
+            str = str.replace(/\//g, '-');
+            let parts = str.split('-');
+            if (parts.length === 3) {
+                if (parts[0].length === 4) { // YYYY-MM-DD
+                    return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+                } else if (parts[2].length === 4) { // DD-MM-YYYY
+                    return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+                }
+            }
+            return new Date(dateStr); 
+        }
 
         // HTML5 History Routing
         window.addEventListener('popstate', (e) => {
@@ -915,7 +934,7 @@
                 if (dutyVal >= 9) {
                     let isSunday = false;
                     try { 
-                        const d = new Date(dateStr); 
+                        const d = parseCustomDate(dateStr); 
                         if(!isNaN(d.getTime())) isSunday = d.getDay() === 0; 
                     } catch(e) {}
                     otVal = isSunday ? dutyVal : (dutyVal - 8);
@@ -1578,7 +1597,7 @@
                 
                 let isToday = false;
                 try {
-                    const d = new Date(dateStr);
+                    const d = parseCustomDate(dateStr);
                     if(!isNaN(d.getTime())) isToday = d.toLocaleDateString('en-CA') === prodDateToday;
                     else isToday = dateStr.includes(prodDateToday);
                 } catch(e) { isToday = dateStr.includes(prodDateToday); }
@@ -1726,7 +1745,7 @@
                 
                 let isToday = false;
                 try {
-                    const d = new Date(dateStr);
+                    const d = parseCustomDate(dateStr);
                     if(!isNaN(d.getTime())) isToday = d.toLocaleDateString('en-CA') === prodDateToday;
                     else isToday = dateStr.includes(prodDateToday);
                 } catch(e) { isToday = dateStr.includes(prodDateToday); }
@@ -1745,22 +1764,27 @@
                 summaryFooter.classList.remove('hidden');
                 
                 let rowsHTML = '';
-                presentWorkers.forEach((row, idx) => {
-                    const nameStr = row[2] || '-';
-                    const typeStr = row[3] || '-';
-                    const secStr = row[4] || '-';
-                    const inTimeStr = row[5] || '-';
-                    
-                    rowsHTML += `
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${nameStr}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-slate-100 text-slate-700'}">${typeStr}</span></td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600 font-semibold">${inTimeStr}</td>
-                        </tr>
-                    `;
-                });
+                try {
+                    presentWorkers.forEach((row, idx) => {
+                        const nameStr = row[2] || '-';
+                        const typeStr = row[3] || '-';
+                        const secStr = row[4] || '-';
+                        const inTimeStr = row[5] || '-';
+                        
+                        rowsHTML += `
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${nameStr}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-slate-100 text-slate-700'}">${typeStr}</span></td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600 font-semibold">${inTimeStr}</td>
+                            </tr>
+                        `;
+                    });
+                } catch(e) {
+                    console.error("Render error:", e);
+                    rowsHTML = '<tr><td colspan="100%" class="text-center text-red-500 py-4">Error displaying data</td></tr>';
+                }
                 tbody.innerHTML = rowsHTML;
             }
         }
@@ -1820,7 +1844,7 @@
                 const otReasonStr = row[8] || '-';
 
                 try {
-                    const rowDate = new Date(dateStr);
+                    const rowDate = parseCustomDate(dateStr);
                     if (!isNaN(rowDate.getTime())) {
                         if (fromDate && rowDate < fromDate) return;
                         if (toDate && rowDate > toDate) return;
@@ -1853,20 +1877,25 @@
                 document.getElementById('ot-summary-value').textContent = fmtHrs(totalOT);
 
                 let html = '';
-                otRecords.forEach((rec, idx) => {
-                    html += `
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 font-medium">${rec.displayDate}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${rec.nameStr}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(rec.typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-amber-100 text-amber-700'}">${rec.typeStr}</span></td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600">${rec.inTimeStr}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-rose-600">${rec.outTimeStr}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-indigo-600 bg-indigo-50/30">${rec.otStr}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs italic text-slate-500 max-w-[150px] truncate" title="${rec.otReasonStr}">${rec.otReasonStr}</td>
-                        </tr>
-                    `;
-                });
+                try {
+                    otRecords.forEach((rec, idx) => {
+                        html += `
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-medium">${rec.displayDate}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${rec.nameStr}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(rec.typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-amber-100 text-amber-700'}">${rec.typeStr}</span></td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600">${rec.inTimeStr}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-rose-600">${rec.outTimeStr}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-indigo-600 bg-indigo-50/30">${rec.otStr}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs italic text-slate-500 max-w-[150px] truncate" title="${rec.otReasonStr}">${rec.otReasonStr}</td>
+                            </tr>
+                        `;
+                    });
+                } catch(e) {
+                    console.error("Render error:", e);
+                    html = '<tr><td colspan="100%" class="text-center text-red-500 py-4">Error displaying data</td></tr>';
+                }
                 tbody.innerHTML = html;
             }
         }
@@ -1920,7 +1949,7 @@
                 const inTimeStr = row[5] || '-'; const outTimeStr = row[6] || '-';
 
                 try {
-                    const rowDate = new Date(dateStr);
+                    const rowDate = parseCustomDate(dateStr);
                     if (!isNaN(rowDate.getTime())) {
                         if (fromDate && rowDate < fromDate) return;
                         if (toDate && rowDate > toDate) return;
@@ -1953,16 +1982,21 @@
                 document.getElementById('mot-summary-value').textContent = fmtHrs(totalOT);
 
                 let html = '';
-                sortedArr.forEach((rec, idx) => {
-                    html += `
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center text-slate-500 font-medium">${idx + 1}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${rec.name}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(rec.type).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-amber-100 text-amber-700'}">${rec.type}</span></td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-purple-700 bg-purple-50/30">${fmtHrs(rec.sum)}</td>
-                        </tr>
-                    `;
-                });
+                try {
+                    sortedArr.forEach((rec, idx) => {
+                        html += `
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center text-slate-500 font-medium">${idx + 1}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${rec.name}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(rec.type).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-amber-100 text-amber-700'}">${rec.type}</span></td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-purple-700 bg-purple-50/30">${fmtHrs(rec.sum)}</td>
+                            </tr>
+                        `;
+                    });
+                } catch(e) {
+                    console.error("Render error:", e);
+                    html = '<tr><td colspan="100%" class="text-center text-red-500 py-4">Error displaying data</td></tr>';
+                }
                 tbody.innerHTML = html;
             }
         }
@@ -2029,10 +2063,13 @@
 
         // Edit/Delete Handlers
         window.deleteEntry = async function(date, name, inTime) {
+            console.log("Delete triggered for:", name);
             if(!confirm("Are you sure you want to delete this record? This action cannot be undone.")) return;
             try {
                 const res = await fetch(API_URL, {
-                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow",
+                    method: "POST", 
+                    headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                    redirect: "follow",
                     body: JSON.stringify({ action: "delete_entry", sheetName: "Manpower", date: date, workerName: name, inTime: inTime })
                 });
                 const data = JSON.parse(await res.text());
@@ -2106,7 +2143,7 @@
                     if (nameFilterVal && !nStr.includes(nameFilterVal)) return false;
 
                     try { 
-                        const d = new Date(dStr); 
+                        const d = parseCustomDate(dStr); 
                         if(!isNaN(d.getTime())) {
                             if (fDate && d < fDate) return false;
                             if (tDate && d > tDate) return false;
@@ -2125,42 +2162,47 @@
             let rowsHTML = '';
             const fmtHrs = v => (v % 1 === 0 ? v : parseFloat(v.toFixed(2))) + ' hrs';
 
-            filteredData.forEach((row, index) => {
-                const dateStr = row[0] || '-'; const inInStr = row[1] || '-'; const nameStr = row[2] || '-';
-                const typeStr = row[3] || '-'; const secStr = row[4] || '-'; const inTimeStr = row[5] || '-';
-                const outTimeStr = row[6] || '-'; const inOutStr = row[7] || '-'; const otReasonStr = row[8] || '-';
+            try {
+                filteredData.forEach((row, index) => {
+                    const dateStr = row[0] || '-'; const inInStr = row[1] || '-'; const nameStr = row[2] || '-';
+                    const typeStr = row[3] || '-'; const secStr = row[4] || '-'; const inTimeStr = row[5] || '-';
+                    const outTimeStr = row[6] || '-'; const inOutStr = row[7] || '-'; const otReasonStr = row[8] || '-';
 
-                let displayDate = dateStr; 
-                try { const d = new Date(dateStr); if(!isNaN(d.getTime())) displayDate = d.toLocaleDateString('en-GB'); } catch(e){}
+                    let displayDate = dateStr; 
+                    try { const d = parseCustomDate(dateStr); if(!isNaN(d.getTime())) displayDate = d.toLocaleDateString('en-GB'); } catch(e){}
 
-                const { dutyVal, otVal } = calculateDutyAndOT(inTimeStr, outTimeStr, typeStr, dateStr);
-                const dutyStr = dutyVal > 0 ? fmtHrs(dutyVal) : '-';
-                const otStr = otVal > 0 ? fmtHrs(otVal) : '-';
+                    const { dutyVal, otVal } = calculateDutyAndOT(inTimeStr, outTimeStr, typeStr, dateStr);
+                    const dutyStr = dutyVal > 0 ? fmtHrs(dutyVal) : '-';
+                    const otStr = otVal > 0 ? fmtHrs(otVal) : '-';
 
-                const isToday = dateStr === prodDateToday || (!dateStr && new Date(dateStr).toDateString() === new Date().toDateString());
-                const canEdit = currentUser && (currentUser.role === "Admin" || (isToday && (inInStr === currentUser.name || inOutStr === currentUser.name)));
+                    const isToday = dateStr === prodDateToday || (!dateStr && parseCustomDate(dateStr).toDateString() === new Date().toDateString());
+                    const canEdit = currentUser && (currentUser.role === "Admin" || (isToday && (inInStr === currentUser.name || inOutStr === currentUser.name)));
 
-                rowsHTML += `
-                    <tr class="hover:bg-slate-50/50 transition-colors">
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${index + 1}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 font-medium">${displayDate}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold">${nameStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-slate-100 text-slate-700'}">${typeStr}</span></td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600">${inTimeStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-rose-600">${outTimeStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-slate-700 bg-slate-50/50">${dutyStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold ${otVal>0?'text-indigo-600 bg-indigo-50/30':'text-slate-400 bg-slate-50/50'}">${otStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs">${inInStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs">${inOutStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs italic text-slate-500 max-w-[150px] truncate" title="${otReasonStr}">${otReasonStr}</td>
-                        <td class="px-2 sm:px-4 py-2 sm:py-3 text-center">
-                            ${canEdit ? `<button onclick="editEntry('${dateStr}', '${nameStr}', '${inTimeStr}')" class="text-blue-500 mx-1 hover:text-blue-700 transition"><i class="fa-solid fa-edit"></i></button>
-                                         <button onclick="deleteEntry('${dateStr}', '${nameStr}', '${inTimeStr}')" class="text-red-500 mx-1 hover:text-red-700 transition"><i class="fa-solid fa-trash"></i></button>` : `<span class="text-slate-300">-</span>`}
-                        </td>
-                    </tr>
-                `;
-            });
+                    rowsHTML += `
+                        <tr class="hover:bg-slate-50/50 transition-colors">
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${index + 1}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 font-medium">${displayDate}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold">${nameStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-slate-100 text-slate-700'}">${typeStr}</span></td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600">${inTimeStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-rose-600">${outTimeStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-slate-700 bg-slate-50/50">${dutyStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold ${otVal>0?'text-indigo-600 bg-indigo-50/30':'text-slate-400 bg-slate-50/50'}">${otStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs">${inInStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs">${inOutStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs italic text-slate-500 max-w-[150px] truncate" title="${otReasonStr}">${otReasonStr}</td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center">
+                                ${canEdit ? `<button onclick="editEntry('${dateStr}', '${nameStr}', '${inTimeStr}')" class="text-blue-500 mx-1 hover:text-blue-700 transition"><i class="fa-solid fa-edit"></i></button>
+                                             <button onclick="deleteEntry('${dateStr}', '${nameStr}', '${inTimeStr}')" class="text-red-500 mx-1 hover:text-red-700 transition"><i class="fa-solid fa-trash"></i></button>` : `<span class="text-slate-300">-</span>`}
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error("Render error:", error);
+                rowsHTML = '<tr><td colspan="100%" class="text-center text-red-500 py-4">Error displaying data</td></tr>';
+            }
             historyTableBody.innerHTML = rowsHTML;
         }
 
