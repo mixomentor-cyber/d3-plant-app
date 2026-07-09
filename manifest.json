@@ -1,16 +1,20 @@
 {
   "name": "D3-Plant Operations",
   "short_name": "D3-Plant",
-  "start_url": "index.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4f46e5",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/2886/2886665.png",
-      "sizes": "192x192 512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2886/2886665.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
