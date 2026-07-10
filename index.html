@@ -304,83 +304,73 @@
             
             <!-- ====== WELCOME DASHBOARD ====== -->
             <div id="welcome-view" class="transition-all duration-500 opacity-100 transform translate-x-0">
-                <div class="mb-6 sm:mb-8 bg-white/80 backdrop-blur-xl border border-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800" id="welcome-header">Welcome, User</h2>
-                    <p class="text-slate-500 mt-2 text-sm sm:text-lg">This app is designed for production department data analysis.</p>
-                </div>
+                <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                    <div class="mb-6 sm:mb-8 pb-6 border-b border-slate-100 text-center sm:text-left">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-slate-800" id="welcome-header">Welcome, User</h2>
+                        <p class="text-slate-500 mt-2 text-sm sm:text-lg">This app is designed for production department data analysis.</p>
+                    </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-                    <!-- Nav Button 1 -->
-                    <button id="btn-nav-manpower" class="bg-white rounded-xl sm:rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative group flex flex-col text-left">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
-                        <div class="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center text-2xl sm:text-3xl group-hover:scale-110 transition-transform">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+                        <!-- Nav Button 1 (Manpower) -->
+                        <button id="btn-nav-manpower" class="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative group text-left w-full">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 text-white flex items-center justify-center text-2xl sm:text-3xl transition-transform group-hover:scale-110 shrink-0">
                                 <i class="fa-solid fa-users-gear"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl sm:text-2xl font-bold text-slate-800 mb-1">Manpower</h3>
-                                <p class="text-xs sm:text-sm text-slate-500">Manage shift allocations & attendance</p>
+                                <h3 class="text-xl sm:text-2xl font-bold mb-1">Manpower</h3>
+                                <p class="text-xs sm:text-sm text-blue-100">Manage shift allocations & attendance</p>
                             </div>
-                        </div>
-                    </button>
+                        </button>
 
-                    <!-- Nav Button 2 -->
-                    <button onclick="alert('Coming Soon')" class="bg-white rounded-xl sm:rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative group flex flex-col text-left">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
-                        <div class="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-2xl sm:text-3xl group-hover:scale-110 transition-transform">
+                        <!-- Nav Button 2 (Production) -->
+                        <button onclick="alert('Coming Soon')" class="bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative group text-left w-full">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 text-white flex items-center justify-center text-2xl sm:text-3xl transition-transform group-hover:scale-110 shrink-0">
                                 <i class="fa-solid fa-clipboard-list"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl sm:text-2xl font-bold text-slate-800 mb-1">Production Data Entry</h3>
-                                <p class="text-xs sm:text-sm text-slate-500">Log daily process metrics</p>
+                                <h3 class="text-xl sm:text-2xl font-bold mb-1">Production Data Entry</h3>
+                                <p class="text-xs sm:text-sm text-emerald-100">Log daily process metrics</p>
                             </div>
-                        </div>
-                    </button>
+                        </button>
 
-                    <!-- Nav Button 3 -->
-                    <button onclick="alert('Coming Soon')" class="bg-white rounded-xl sm:rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative group flex flex-col text-left">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
-                        <div class="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center text-2xl sm:text-3xl group-hover:scale-110 transition-transform">
+                        <!-- Nav Button 3 (Dashboard) -->
+                        <button onclick="alert('Coming Soon')" class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative group text-left w-full">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 text-white flex items-center justify-center text-2xl sm:text-3xl transition-transform group-hover:scale-110 shrink-0">
                                 <i class="fa-solid fa-chart-line"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl sm:text-2xl font-bold text-slate-800 mb-1">Main Dashboard</h3>
-                                <p class="text-xs sm:text-sm text-slate-500">View live metrics & KPIs</p>
+                                <h3 class="text-xl sm:text-2xl font-bold mb-1">Main Dashboard</h3>
+                                <p class="text-xs sm:text-sm text-indigo-100">View live metrics & KPIs</p>
                             </div>
-                        </div>
-                    </button>
+                        </button>
 
-                    <!-- Nav Button 4 -->
-                    <button onclick="alert('Coming Soon')" class="bg-white rounded-xl sm:rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative group flex flex-col text-left">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-purple-500"></div>
-                        <div class="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-purple-50 text-purple-500 flex items-center justify-center text-2xl sm:text-3xl group-hover:scale-110 transition-transform">
+                        <!-- Nav Button 4 (Shift Report) -->
+                        <button onclick="alert('Coming Soon')" class="bg-purple-600 hover:bg-purple-700 text-white rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative group text-left w-full">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 text-white flex items-center justify-center text-2xl sm:text-3xl transition-transform group-hover:scale-110 shrink-0">
                                 <i class="fa-solid fa-file-contract"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl sm:text-2xl font-bold text-slate-800 mb-1">Shift Report</h3>
-                                <p class="text-xs sm:text-sm text-slate-500">Generate end-of-shift handover</p>
+                                <h3 class="text-xl sm:text-2xl font-bold mb-1">Shift Report</h3>
+                                <p class="text-xs sm:text-sm text-purple-100">Generate end-of-shift handover</p>
                             </div>
-                        </div>
-                    </button>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- ====== MANPOWER HUB VIEW ====== -->
             <div id="manpower-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
                 
-                <div class="max-w-4xl mx-auto">
+                <div class="max-w-5xl mx-auto bg-blue-50/40 rounded-3xl shadow-sm border border-blue-100 p-6 sm:p-8 backdrop-blur-sm">
                     <!-- Hub Header -->
-                    <div class="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
-                        <button id="btn-back-welcome" class="text-slate-400 hover:text-indigo-600 transition-colors mr-1" title="Back to Dashboard">
+                    <div class="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 pb-6 border-b border-blue-200/50">
+                        <button id="btn-back-welcome" class="text-blue-400 hover:text-blue-600 transition-colors mr-1" title="Back to Dashboard">
                             <i class="fa-solid fa-arrow-left text-xl"></i>
                         </button>
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shadow-sm">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white text-blue-600 flex items-center justify-center shadow-sm">
                             <i class="fa-solid fa-users-gear text-sm sm:text-base"></i>
                         </div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">Manpower Hub</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-blue-900">Manpower Hub</h2>
                     </div>
 
                     <!-- 6 Beautiful Grid Buttons -->
