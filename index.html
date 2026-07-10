@@ -8,12 +8,12 @@
     <!-- PWA Setup -->
     <link rel="manifest" href="manifest.json">
     <script>
-        try {
-            if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) { 
-                navigator.serviceWorker.register('sw.js').catch(function(err) { console.warn('SW registration failed:', err); }); 
+        if ('serviceWorker' in navigator) {
+            if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+                navigator.serviceWorker.register('sw.js').catch(function(err) {
+                    console.warn('ServiceWorker registration failed: ', err);
+                });
             }
-        } catch (e) {
-            console.warn('Service worker not supported in this environment.');
         }
     </script>
     
@@ -729,7 +729,7 @@
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-600">Name:</label>
                                 <input type="text" id="mot-name-filter" placeholder="Filter name..." class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm w-24 sm:w-32 focus:ring-2 focus:ring-purple-500/20 transition-all">
                             </div>
-                            <button id="btn-close-mot" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors ml-auto md:ml-2" title="Back">
+                            <button id="btn-close-mot" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors ml-auto md:ml-2" title="Back">
                                 <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
                             </button>
                         </div>
@@ -816,17 +816,25 @@
                             </div>
                         </div>
                         
-                        <div id="present-summary-footer" class="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-emerald-50/80 border border-emerald-100 flex items-center justify-between transition-all shrink-0 backdrop-blur-sm shadow-sm hidden">
-                            <div class="flex items-center gap-3 sm:gap-4">
-                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
-                                    <i class="fa-solid fa-user-check text-sm sm:text-lg"></i>
+                        <div id="present-summary-footer" class="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200 flex flex-col gap-3 shrink-0 shadow-sm hidden">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
+                                        <i class="fa-solid fa-user-check text-sm sm:text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Live Count</p>
+                                        <p class="text-xs sm:text-sm font-bold text-slate-700">Total Workers on Floor</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="text-[9px] sm:text-xs font-bold text-emerald-500 uppercase tracking-wider mb-0.5">Live Count</p>
-                                    <p class="text-xs sm:text-sm font-bold text-emerald-900">Total Workers on Floor Today</p>
+                                <div class="text-xl sm:text-2xl font-black text-emerald-600" id="present-summary-value">0</div>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100">
+                                <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Category Breakdown</p>
+                                <div id="present-breakdown-container" class="flex flex-wrap gap-2">
+                                    <!-- Dynamic Badges Go Here -->
                                 </div>
                             </div>
-                            <div class="text-xl sm:text-2xl font-black text-emerald-600 drop-shadow-sm" id="present-summary-value">0</div>
                         </div>
 
                         <div id="present-empty" class="text-center py-8 sm:py-12 hidden">
@@ -974,6 +982,18 @@
             }
         });
 
+        // Helper: Dynamic Color Badges for Worker Types
+        function getBadgeStyle(typeStr) {
+            const t = String(typeStr).toUpperCase().trim();
+            const base = "px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border whitespace-nowrap ";
+            if (t === 'COMPANY') return base + "bg-purple-100 text-purple-800 border-purple-200";
+            if (t === 'OPERATOR') return base + "bg-blue-100 text-blue-800 border-blue-200";
+            if (t === 'CONTRACTUAL') return base + "bg-orange-100 text-orange-800 border-orange-200";
+            if (t === 'HOUSEKEEPING') return base + "bg-teal-100 text-teal-800 border-teal-200";
+            if (t === 'JAR LINE EXECUTIVE') return base + "bg-rose-100 text-rose-800 border-rose-200";
+            return base + "bg-gray-100 text-gray-800 border-gray-200";
+        }
+
         // Shared strict OT Calculation logic (>= 9 hours, Company or Operator)
         function calculateDutyAndOT(inTimeStr, outTimeStr, typeStr, dateStr) {
             if (!inTimeStr || inTimeStr === '-' || !outTimeStr || outTimeStr === '-') return { dutyVal: 0, otVal: 0 };
@@ -986,7 +1006,7 @@
             const dutyVal = outT - inT;
             
             let otVal = 0;
-            if (['COMPANY', 'OPERATOR'].includes(String(typeStr).toUpperCase())) {
+            if (['COMPANY', 'OPERATOR'].includes(String(typeStr).toUpperCase().trim())) {
                 if (dutyVal >= 9) {
                     let isSunday = false;
                     try { 
@@ -1707,7 +1727,7 @@
                 <div class="flex-grow">
                     <div class="flex items-center gap-2 mb-1">
                         <h4 class="font-bold text-slate-800">${worker.name}</h4>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${['COMPANY','OPERATOR'].includes(String(worker.type).toUpperCase()) ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'}">${worker.type}</span>
+                        <span class="${getBadgeStyle(worker.type)}">${worker.type}</span>
                     </div>
                     <div class="flex items-center gap-4 text-xs font-medium text-slate-500">
                         <span title="Section"><i class="fa-solid fa-puzzle-piece mr-1"></i> ${worker.section}</span>
@@ -1809,6 +1829,7 @@
             const emptyState = document.getElementById('present-empty');
             const summaryFooter = document.getElementById('present-summary-footer');
             const summaryValue = document.getElementById('present-summary-value');
+            const breakdownContainer = document.getElementById('present-breakdown-container');
             tbody.innerHTML = '';
             
             const prodDateToday = getProductionDate();
@@ -1837,7 +1858,9 @@
                 emptyState.classList.add('hidden');
                 summaryFooter.classList.remove('hidden');
                 
+                let categoryCounts = {};
                 let rowsHTML = '';
+                
                 try {
                     presentWorkers.forEach((row, idx) => {
                         const nameStr = row[2] || '-';
@@ -1845,11 +1868,14 @@
                         const secStr = row[4] || '-';
                         const inTimeStr = row[5] || '-';
                         
+                        const displayType = typeStr.trim() || 'Other';
+                        categoryCounts[displayType] = (categoryCounts[displayType] || 0) + 1;
+                        
                         rowsHTML += `
                             <tr class="hover:bg-slate-50/50 transition-colors">
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${nameStr}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-slate-100 text-slate-700'}">${typeStr}</span></td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="${getBadgeStyle(typeStr)}">${typeStr}</span></td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600 font-semibold">${inTimeStr}</td>
                             </tr>
@@ -1860,6 +1886,12 @@
                     rowsHTML = '<tr><td colspan="100%" class="text-center text-red-500 py-4">Error displaying data</td></tr>';
                 }
                 tbody.innerHTML = rowsHTML;
+                
+                let breakdownHTML = '';
+                for (const [cat, count] of Object.entries(categoryCounts)) {
+                    breakdownHTML += `<span class="${getBadgeStyle(cat)}">${cat}: ${count}</span>`;
+                }
+                if (breakdownContainer) breakdownContainer.innerHTML = breakdownHTML;
             }
         }
 
@@ -1927,8 +1959,8 @@
                         const { otVal } = calculateDutyAndOT(inTimeStr, outTimeStr, typeStr, dateStr);
                         if (otVal > 0) {
                             totalOT += otVal;
-                            if (String(typeStr).toUpperCase() === 'OPERATOR') operatorOT += otVal;
-                            if (String(typeStr).toUpperCase() === 'COMPANY') companyOT += otVal;
+                            if (String(typeStr).toUpperCase().trim() === 'OPERATOR') operatorOT += otVal;
+                            if (String(typeStr).toUpperCase().trim() === 'COMPANY') companyOT += otVal;
                             
                             otRecords.push({
                                 displayDate: rowDate.toLocaleDateString('en-GB'),
@@ -1958,7 +1990,7 @@
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 font-medium">${rec.displayDate}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${rec.nameStr}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(rec.typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-amber-100 text-amber-700'}">${rec.typeStr}</span></td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="${getBadgeStyle(rec.typeStr)}">${rec.typeStr}</span></td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600">${rec.inTimeStr}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-rose-600">${rec.outTimeStr}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-indigo-600 bg-indigo-50/30">${rec.otStr}</td>
@@ -2035,8 +2067,8 @@
                             aggOT[nameStr].sum += otVal;
                             
                             totalOT += otVal;
-                            if (String(typeStr).toUpperCase() === 'OPERATOR') operatorOT += otVal;
-                            if (String(typeStr).toUpperCase() === 'COMPANY') companyOT += otVal;
+                            if (String(typeStr).toUpperCase().trim() === 'OPERATOR') operatorOT += otVal;
+                            if (String(typeStr).toUpperCase().trim() === 'COMPANY') companyOT += otVal;
                         }
                     }
                 } catch(e) {}
@@ -2062,7 +2094,7 @@
                             <tr class="hover:bg-slate-50/50 transition-colors">
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center text-slate-500 font-medium">${idx + 1}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${rec.name}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(rec.type).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-amber-100 text-amber-700'}">${rec.type}</span></td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="${getBadgeStyle(rec.type)}">${rec.type}</span></td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-purple-700 bg-purple-50/30">${fmtHrs(rec.sum)}</td>
                             </tr>
                         `;
@@ -2263,7 +2295,7 @@
                             <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${index + 1}</td>
                             <td class="px-2 sm:px-4 py-2 sm:py-3 font-medium">${displayDate}</td>
                             <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold">${nameStr}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${['COMPANY','OPERATOR'].includes(String(typeStr).toUpperCase())?'bg-indigo-100 text-indigo-700':'bg-slate-100 text-slate-700'}">${typeStr}</span></td>
+                            <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="${getBadgeStyle(typeStr)}">${typeStr}</span></td>
                             <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
                             <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600">${inTimeStr}</td>
                             <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-rose-600">${outTimeStr}</td>
