@@ -334,7 +334,7 @@
                         </button>
 
                         <!-- Nav Button 3 (Dashboard) -->
-                        <button onclick="alert('Coming Soon')" class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative group text-left w-full">
+                        <button id="btn-nav-main-dashboard" class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative group text-left w-full">
                             <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 text-white flex items-center justify-center text-2xl sm:text-3xl transition-transform group-hover:scale-110 shrink-0">
                                 <i class="fa-solid fa-chart-line"></i>
                             </div>
@@ -354,6 +354,78 @@
                                 <p class="text-xs sm:text-sm text-purple-100">Generate end-of-shift handover</p>
                             </div>
                         </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== MAIN DASHBOARD VIEW ====== -->
+            <div id="main-dashboard-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
+                <div class="max-w-5xl mx-auto">
+                    <!-- Header -->
+                    <div class="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+                        <button id="btn-back-welcome-from-md" class="text-slate-400 hover:text-indigo-600 transition-colors mr-1" title="Back to Dashboard">
+                            <i class="fa-solid fa-arrow-left text-xl"></i>
+                        </button>
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-chart-line text-sm sm:text-base"></i>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">Main Dashboard</h2>
+                    </div>
+
+                    <!-- Dashboard Cards -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                        
+                        <!-- Widget: Manpower Key Data -->
+                        <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden lg:col-span-2">
+                            <div class="bg-slate-50 border-b border-slate-100 px-6 py-4">
+                                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-users-gear text-indigo-500"></i> Manpower Key Data</h3>
+                            </div>
+                            <div class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                                
+                                <!-- Present Today -->
+                                <div class="flex flex-col">
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Present Today</p>
+                                    <div class="text-4xl font-black text-slate-800 mb-4" id="md-present-total">0</div>
+                                    <div class="flex flex-wrap gap-2" id="md-present-badges">
+                                        <span class="text-slate-400 text-sm">Loading...</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Yesterday's OT -->
+                                <div class="flex flex-col border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-8">
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Yesterday's Overtime</p>
+                                    <div class="text-3xl font-black text-indigo-600 mb-4" id="md-yest-total-ot">0 hrs</div>
+                                    <div class="grid grid-cols-2 gap-4 mt-auto">
+                                        <div class="bg-indigo-50 rounded-xl p-3 border border-indigo-100">
+                                            <p class="text-[10px] font-bold text-indigo-400 uppercase mb-1">Company</p>
+                                            <p class="text-lg font-bold text-indigo-700" id="md-yest-comp-ot">0 h</p>
+                                        </div>
+                                        <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
+                                            <p class="text-[10px] font-bold text-amber-500 uppercase mb-1">Operator</p>
+                                            <p class="text-lg font-bold text-amber-700" id="md-yest-op-ot">0 h</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Monthly OT -->
+                                <div class="flex flex-col border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-8">
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Monthly Overtime</p>
+                                    <div class="text-3xl font-black text-purple-600 mb-4" id="md-month-total-ot">0 hrs</div>
+                                    <div class="grid grid-cols-2 gap-4 mt-auto">
+                                        <div class="bg-purple-50 rounded-xl p-3 border border-purple-100">
+                                            <p class="text-[10px] font-bold text-purple-400 uppercase mb-1">Company</p>
+                                            <p class="text-lg font-bold text-purple-700" id="md-month-comp-ot">0 h</p>
+                                        </div>
+                                        <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
+                                            <p class="text-[10px] font-bold text-amber-500 uppercase mb-1">Operator</p>
+                                            <p class="text-lg font-bold text-amber-700" id="md-month-op-ot">0 h</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -815,129 +887,6 @@
                 </div>
             </div>
 
-            <!-- ====== PRESENT MANPOWER MODAL ====== -->
-            <div id="present-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
-                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="present-modal-bg"></div>
-                <div class="relative bg-white w-full max-w-4xl mx-2 sm:mx-auto max-h-[95vh] md:max-h-[90vh] h-full md:h-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="present-modal-content">
-                    
-                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex flex-row items-center justify-between bg-slate-50/50 shrink-0">
-                        <h3 class="text-lg sm:text-xl font-bold text-emerald-700 flex items-center gap-2">
-                            <i class="fa-solid fa-users-viewfinder"></i> Present Manpower Now
-                        </h3>
-                        <button id="btn-close-present" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors ml-2" title="Back">
-                            <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
-                        </button>
-                    </div>
-
-                    <div class="flex-grow overflow-hidden relative flex flex-col p-4 sm:p-6 gap-3 sm:gap-4">
-                        <div id="present-loading" class="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center hidden">
-                            <i class="fa-solid fa-circle-notch fa-spin text-3xl sm:text-4xl text-emerald-500 mb-2 sm:mb-3"></i>
-                            <span class="text-slate-600 font-semibold text-xs sm:text-sm">Loading present workers...</span>
-                        </div>
-                        
-                        <div class="border border-slate-200 rounded-lg sm:rounded-xl shadow-sm flex-grow overflow-hidden flex flex-col">
-                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh] min-h-[250px]">
-                                <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
-                                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider sticky top-0 z-10 shadow-sm">
-                                        <tr>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">Sr. No.</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Name</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Type</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Section</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">In-Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="present-table-body" class="divide-y divide-slate-100 bg-white">
-                                        <!-- Dynamic Rows -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <div id="present-summary-footer" class="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200 flex flex-col gap-3 shrink-0 shadow-sm hidden">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
-                                        <i class="fa-solid fa-user-check text-sm sm:text-lg"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Live Count</p>
-                                        <p class="text-xs sm:text-sm font-bold text-slate-700">Total Workers on Floor</p>
-                                    </div>
-                                </div>
-                                <div class="text-xl sm:text-2xl font-black text-emerald-600" id="present-summary-value">0</div>
-                            </div>
-                            <div class="pt-3 border-t border-slate-100">
-                                <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Category Breakdown</p>
-                                <div id="present-breakdown-container" class="flex flex-wrap gap-2">
-                                    <!-- Dynamic Badges Go Here -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="present-empty" class="text-center py-8 sm:py-12 hidden">
-                            <i class="fa-solid fa-mug-hot text-3xl sm:text-4xl text-slate-300 mb-2 sm:mb-3"></i>
-                            <p class="text-slate-500 text-xs sm:text-sm">No workers currently present.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== ADMIN: MANAGE USERS MODAL ====== -->
-            <div id="manage-users-modal" class="fixed inset-0 z-[70] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
-                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="manage-users-modal-bg"></div>
-                <div class="relative bg-white w-full max-w-4xl mx-2 sm:mx-4 max-h-[95vh] md:max-h-[90vh] rounded-xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="manage-users-modal-content">
-                    
-                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
-                        <h3 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-users-gear text-indigo-500"></i> Manage Users
-                        </h3>
-                        <button id="btn-close-manage-users" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" title="Back">
-                            <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
-                        </button>
-                    </div>
-
-                    <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 overflow-y-auto flex-grow">
-                        <!-- Left Column: Add New User -->
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-800 mb-3">Add New User</h4>
-                            <form id="add-user-form" class="space-y-4">
-                                <div class="space-y-1.5 sm:space-y-2">
-                                    <label for="new-username" class="block text-xs sm:text-sm font-semibold text-slate-700">Full Name</label>
-                                    <input type="text" id="new-username" class="dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base transition-all" placeholder="Enter Full Name" required>
-                                </div>
-                                <div class="space-y-1.5 sm:space-y-2">
-                                    <label for="new-role" class="block text-xs sm:text-sm font-semibold text-slate-700">Select Role</label>
-                                    <div class="relative">
-                                        <select id="new-role" class="dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base appearance-none transition-all cursor-pointer" required>
-                                            <option value="Shift Incharge">Shift Incharge</option>
-                                            <option value="Admin">Admin</option>
-                                        </select>
-                                        <div class="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center pointer-events-none"><i class="fa-solid fa-chevron-down text-slate-400 text-xs sm:text-sm"></i></div>
-                                    </div>
-                                </div>
-                                <button type="submit" id="submit-add-user-btn" class="w-full relative group overflow-hidden rounded-lg sm:rounded-xl bg-indigo-600 text-white font-bold py-2.5 sm:py-3 mt-4 transition-all hover:bg-indigo-700 hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed">
-                                    <span class="relative z-10 flex items-center justify-center gap-2">
-                                        <span id="au-btn-text" class="text-sm sm:text-base">Create User</span>
-                                        <i id="au-btn-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
-                                    </span>
-                                </button>
-                            </form>
-                        </div>
-
-                        <!-- Right Column: Current Users -->
-                        <div class="flex flex-col h-full max-h-[40vh] md:max-h-full">
-                            <h4 class="text-sm font-bold text-slate-800 mb-3 shrink-0">Current Users</h4>
-                            <div class="bg-slate-50 rounded-lg sm:rounded-xl border border-slate-200 overflow-hidden flex-grow flex flex-col">
-                                <ul id="manage-users-list" class="divide-y divide-slate-100 px-3 sm:px-4 overflow-y-auto flex-grow min-h-[250px]">
-                                    <!-- Dynamic user list -->
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
 
@@ -989,16 +938,18 @@
                     
                     if (state.modal === 'out') {
                         currentOutCategory = null;
-                        document.getElementById('out-modal-title').innerHTML = `<i class="fa-solid fa-user-minus"></i> Manpower Out`;
-                        document.getElementById('out-category-grid').classList.remove('hidden');
-                        document.getElementById('out-worker-list-view').classList.add('hidden');
-                        document.getElementById('out-name-search').value = '';
+                        if(document.getElementById('out-modal-title')) document.getElementById('out-modal-title').innerHTML = `<i class="fa-solid fa-user-minus"></i> Manpower Out`;
+                        document.getElementById('out-category-grid')?.classList.remove('hidden');
+                        document.getElementById('out-worker-list-view')?.classList.add('hidden');
+                        if(document.getElementById('out-name-search')) document.getElementById('out-name-search').value = '';
                     }
 
                 } else if (state.view === 'welcome') {
                     switchToWelcomeView();
                 } else if (state.view === 'manpower') {
                     switchToManpowerView();
+                } else if (state.view === 'main-dashboard') {
+                    switchToMainDashboardView();
                 }
             } else if (currentUser) {
                 switchToWelcomeView();
@@ -1127,7 +1078,7 @@
         }
 
         // Dynamic Login UI
-        document.getElementById('user-select').addEventListener('change', (e) => {
+        document.getElementById('user-select')?.addEventListener('change', (e) => {
             const selectedName = e.target.value;
             const userObj = allUsersData.find(u => (typeof u === 'object' ? u.name : u) === selectedName);
             const isNew = userObj && typeof userObj === 'object' && userObj.isNew === true;
@@ -1273,77 +1224,56 @@
                     currentHistoryData = [];
                     syncActiveWorkers();
                 }
+                updateMainDashboardMetrics();
             } catch(e) {
                 console.error("Data processing error:", e);
             }
         }
 
-        // View Nav Helpers
-        function switchToWelcomeView(instant = false) {
-            const welcomeView = document.getElementById('welcome-view');
-            const manpowerView = document.getElementById('manpower-view');
-            
-            if (!manpowerView.classList.contains('hidden')) {
-                if (instant) {
-                    manpowerView.classList.add('hidden');
-                    manpowerView.classList.replace('opacity-100', 'opacity-0');
-                    manpowerView.classList.replace('translate-x-0', 'translate-x-10');
-                    welcomeView.classList.remove('hidden', 'pointer-events-none');
-                    welcomeView.classList.replace('opacity-0', 'opacity-100');
-                    welcomeView.classList.replace('-translate-x-10', 'translate-x-0');
-                } else {
-                    manpowerView.classList.replace('opacity-100', 'opacity-0');
-                    manpowerView.classList.replace('translate-x-0', 'translate-x-10');
-                    manpowerView.classList.add('pointer-events-none');
-                    setTimeout(() => {
-                        manpowerView.classList.add('hidden');
-                        welcomeView.classList.remove('hidden');
+        // Generic View Switcher
+        function switchMainView(targetViewId, instant = false) {
+            const views = ['welcome-view', 'manpower-view', 'main-dashboard-view'];
+            views.forEach(vid => {
+                const el = document.getElementById(vid);
+                if (!el) return;
+                
+                if (vid === targetViewId) {
+                    if (instant) {
+                        el.classList.remove('hidden', 'pointer-events-none');
+                        el.classList.replace('opacity-0', 'opacity-100');
+                        el.classList.replace('translate-x-10', 'translate-x-0');
+                        el.classList.replace('-translate-x-10', 'translate-x-0');
+                    } else {
                         setTimeout(() => {
-                            welcomeView.classList.replace('opacity-0', 'opacity-100');
-                            welcomeView.classList.replace('-translate-x-10', 'translate-x-0');
-                            welcomeView.classList.remove('pointer-events-none');
-                        }, 50);
-                    }, 500);
+                            el.classList.remove('hidden');
+                            setTimeout(() => {
+                                el.classList.replace('opacity-0', 'opacity-100');
+                                el.classList.replace('translate-x-10', 'translate-x-0');
+                                el.classList.replace('-translate-x-10', 'translate-x-0');
+                                el.classList.remove('pointer-events-none');
+                            }, 50);
+                        }, 500); 
+                    }
+                } else {
+                    if (!el.classList.contains('hidden')) {
+                        if (instant) {
+                            el.classList.add('hidden');
+                            el.classList.replace('opacity-100', 'opacity-0');
+                            el.classList.replace('translate-x-0', '-translate-x-10');
+                        } else {
+                            el.classList.replace('opacity-100', 'opacity-0');
+                            el.classList.replace('translate-x-0', '-translate-x-10');
+                            el.classList.add('pointer-events-none');
+                            setTimeout(() => el.classList.add('hidden'), 500);
+                        }
+                    }
                 }
-            } else if (welcomeView.classList.contains('hidden')) {
-                welcomeView.classList.remove('hidden', 'pointer-events-none');
-                welcomeView.classList.replace('opacity-0', 'opacity-100');
-                welcomeView.classList.replace('-translate-x-10', 'translate-x-0');
-            }
+            });
         }
 
-        function switchToManpowerView(instant = false) {
-            const welcomeView = document.getElementById('welcome-view');
-            const manpowerView = document.getElementById('manpower-view');
-            
-            if (!welcomeView.classList.contains('hidden')) {
-                if (instant) {
-                    welcomeView.classList.add('hidden');
-                    welcomeView.classList.replace('opacity-100', 'opacity-0');
-                    welcomeView.classList.replace('translate-x-0', '-translate-x-10');
-                    manpowerView.classList.remove('hidden', 'pointer-events-none');
-                    manpowerView.classList.replace('opacity-0', 'opacity-100');
-                    manpowerView.classList.replace('translate-x-10', 'translate-x-0');
-                } else {
-                    welcomeView.classList.replace('opacity-100', 'opacity-0');
-                    welcomeView.classList.replace('translate-x-0', '-translate-x-10');
-                    welcomeView.classList.add('pointer-events-none');
-                    setTimeout(() => {
-                        welcomeView.classList.add('hidden');
-                        manpowerView.classList.remove('hidden');
-                        setTimeout(() => {
-                            manpowerView.classList.replace('opacity-0', 'opacity-100');
-                            manpowerView.classList.replace('translate-x-10', 'translate-x-0');
-                            manpowerView.classList.remove('pointer-events-none');
-                        }, 50);
-                    }, 500);
-                }
-            } else if (manpowerView.classList.contains('hidden')) {
-                manpowerView.classList.remove('hidden', 'pointer-events-none');
-                manpowerView.classList.replace('opacity-0', 'opacity-100');
-                manpowerView.classList.replace('translate-x-10', 'translate-x-0');
-            }
-        }
+        function switchToWelcomeView(instant = false) { switchMainView('welcome-view', instant); }
+        function switchToManpowerView(instant = false) { switchMainView('manpower-view', instant); }
+        function switchToMainDashboardView(instant = false) { switchMainView('main-dashboard-view', instant); }
 
         function setModalVisible(modalId, contentId, show) {
             const modal = document.getElementById(modalId);
@@ -1377,11 +1307,11 @@
 
         function handleLoginSuccess(instant = false) {
             document.getElementById('logged-in-user').textContent = currentUser.name;
-            document.getElementById('welcome-header').textContent = `Welcome, ${currentUser.name}.`;
+            if(document.getElementById('welcome-header')) document.getElementById('welcome-header').textContent = `Welcome, ${currentUser.name}.`;
             document.getElementById('user-initial').textContent = currentUser.name.charAt(0).toUpperCase();
 
-            if (currentUser.role === 'Admin') document.getElementById('btn-add-user').classList.remove('hidden');
-            else document.getElementById('btn-add-user').classList.add('hidden');
+            if (currentUser.role === 'Admin') document.getElementById('btn-add-user')?.classList.remove('hidden');
+            else document.getElementById('btn-add-user')?.classList.add('hidden');
 
             setTimeout(fetchHistoryDataInBackground, 100);
 
@@ -1426,19 +1356,34 @@
         updateClock(); setInterval(updateClock, 60000);
 
         // UI Interactions
-        document.getElementById('logout-btn').addEventListener('click', () => {
+        document.getElementById('logout-btn')?.addEventListener('click', () => {
             if(confirm("Are you sure you want to logout?")) {
                 localStorage.removeItem('d3plant_user');
                 location.reload();
             }
         });
 
-        document.getElementById('btn-nav-manpower').addEventListener('click', () => {
+        document.getElementById('btn-nav-manpower')?.addEventListener('click', () => {
             history.pushState({ view: 'manpower' }, '', '#manpower');
             switchToManpowerView();
         });
+        
+        document.getElementById('btn-nav-main-dashboard')?.addEventListener('click', () => {
+            history.pushState({ view: 'main-dashboard' }, '', '#main-dashboard');
+            switchToMainDashboardView();
+            updateMainDashboardMetrics();
+        });
+        
+        document.getElementById('btn-back-welcome-from-md')?.addEventListener('click', () => {
+            if (history.state && history.state.view === 'main-dashboard') {
+                history.back();
+            } else {
+                history.pushState({ view: 'welcome' }, '', '#welcome');
+                switchToWelcomeView();
+            }
+        });
 
-        document.getElementById('btn-back-welcome').addEventListener('click', () => {
+        document.getElementById('btn-back-welcome')?.addEventListener('click', () => {
             if (history.state && history.state.view === 'manpower') {
                 history.back();
             } else {
@@ -1447,7 +1392,7 @@
             }
         });
 
-        document.getElementById('nav-brand').addEventListener('click', () => {
+        document.getElementById('nav-brand')?.addEventListener('click', () => {
             if (!currentUser) return; 
             if (!history.state || history.state.view !== 'welcome') {
                 closeAllModals();
@@ -1457,55 +1402,55 @@
         });
 
         // New Hub Buttons Logic
-        document.getElementById('btn-hub-entry').addEventListener('click', () => {
+        document.getElementById('btn-hub-entry')?.addEventListener('click', () => {
             isEditing = false;
             editOrigData = null;
-            document.getElementById('manpower-form').reset();
-            document.getElementById('mp-intime').value = getCurrentTimeHHMM();
-            document.getElementById('edit-out-time-container').classList.add('hidden');
-            document.getElementById('edit-ot-reason-container').classList.add('hidden');
-            document.getElementById('mp-save-text').textContent = "Save Entry";
+            document.getElementById('manpower-form')?.reset();
+            if(document.getElementById('mp-intime')) document.getElementById('mp-intime').value = getCurrentTimeHHMM();
+            document.getElementById('edit-out-time-container')?.classList.add('hidden');
+            document.getElementById('edit-ot-reason-container')?.classList.add('hidden');
+            if(document.getElementById('mp-save-text')) document.getElementById('mp-save-text').textContent = "Save Entry";
 
             history.pushState({ modal: 'entry' }, '', '#entry');
             setModalVisible('entry-modal', 'entry-modal-content', true);
         });
-        document.getElementById('btn-close-entry').addEventListener('click', () => history.back());
-        document.getElementById('entry-modal-bg').addEventListener('click', () => history.back());
+        document.getElementById('btn-close-entry')?.addEventListener('click', () => history.back());
+        document.getElementById('entry-modal-bg')?.addEventListener('click', () => history.back());
 
-        document.getElementById('btn-hub-out').addEventListener('click', () => {
+        document.getElementById('btn-hub-out')?.addEventListener('click', () => {
             history.pushState({ modal: 'out' }, '', '#out');
             setModalVisible('out-modal', 'out-modal-content', true);
             
             // Default to Categories Grid
             currentOutCategory = null;
-            document.getElementById('out-modal-title').innerHTML = `<i class="fa-solid fa-user-minus"></i> Manpower Out`;
-            document.getElementById('out-category-grid').classList.remove('hidden');
-            document.getElementById('out-worker-list-view').classList.add('hidden');
-            document.getElementById('out-name-search').value = '';
+            if(document.getElementById('out-modal-title')) document.getElementById('out-modal-title').innerHTML = `<i class="fa-solid fa-user-minus"></i> Manpower Out`;
+            document.getElementById('out-category-grid')?.classList.remove('hidden');
+            document.getElementById('out-worker-list-view')?.classList.add('hidden');
+            if(document.getElementById('out-name-search')) document.getElementById('out-name-search').value = '';
         });
         
-        document.getElementById('btn-close-out').addEventListener('click', () => history.back());
-        document.getElementById('out-modal-bg').addEventListener('click', () => history.back());
+        document.getElementById('btn-close-out')?.addEventListener('click', () => history.back());
+        document.getElementById('out-modal-bg')?.addEventListener('click', () => history.back());
 
         document.querySelectorAll('.out-cat-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 currentOutCategory = btn.getAttribute('data-cat');
-                document.getElementById('out-modal-title').innerHTML = `<i class="fa-solid fa-user-minus"></i> Manpower Out - ${currentOutCategory}`;
-                document.getElementById('out-category-grid').classList.add('hidden');
-                document.getElementById('out-worker-list-view').classList.remove('hidden');
-                document.getElementById('out-name-search').value = '';
+                if(document.getElementById('out-modal-title')) document.getElementById('out-modal-title').innerHTML = `<i class="fa-solid fa-user-minus"></i> Manpower Out - ${currentOutCategory}`;
+                document.getElementById('out-category-grid')?.classList.add('hidden');
+                document.getElementById('out-worker-list-view')?.classList.remove('hidden');
+                if(document.getElementById('out-name-search')) document.getElementById('out-name-search').value = '';
                 renderOutWorkerList();
             });
         });
 
-        document.getElementById('btn-back-out-categories').addEventListener('click', () => {
+        document.getElementById('btn-back-out-categories')?.addEventListener('click', () => {
             currentOutCategory = null;
-            document.getElementById('out-modal-title').innerHTML = `<i class="fa-solid fa-user-minus"></i> Manpower Out`;
-            document.getElementById('out-category-grid').classList.remove('hidden');
-            document.getElementById('out-worker-list-view').classList.add('hidden');
+            if(document.getElementById('out-modal-title')) document.getElementById('out-modal-title').innerHTML = `<i class="fa-solid fa-user-minus"></i> Manpower Out`;
+            document.getElementById('out-category-grid')?.classList.remove('hidden');
+            document.getElementById('out-worker-list-view')?.classList.add('hidden');
         });
 
-        document.getElementById('out-name-search').addEventListener('input', renderOutWorkerList);
+        document.getElementById('out-name-search')?.addEventListener('input', renderOutWorkerList);
 
 
         // Manage Users Modal Handling (Admin Only)
@@ -1566,15 +1511,15 @@
             } catch(e) { showToast('error', 'Connection error.'); }
         };
 
-        document.getElementById('btn-add-user').addEventListener('click', () => {
+        document.getElementById('btn-add-user')?.addEventListener('click', () => {
             history.pushState({ modal: 'manage-users' }, '', '#manage-users');
             setModalVisible('manage-users-modal', 'manage-users-modal-content', true);
             renderManageUsersList();
         });
-        document.getElementById('btn-close-manage-users').addEventListener('click', () => history.back());
-        document.getElementById('manage-users-modal-bg').addEventListener('click', () => history.back());
+        document.getElementById('btn-close-manage-users')?.addEventListener('click', () => history.back());
+        document.getElementById('manage-users-modal-bg')?.addEventListener('click', () => history.back());
 
-        document.getElementById('add-user-form').addEventListener('submit', async (e) => {
+        document.getElementById('add-user-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const newName = document.getElementById('new-username').value.trim();
             const newRole = document.getElementById('new-role').value;
@@ -1604,17 +1549,17 @@
         const loginForm = document.getElementById('login-form');
         const changePassForm = document.getElementById('change-password-form');
         
-        document.getElementById('show-cp-btn').addEventListener('click', () => {
+        document.getElementById('show-cp-btn')?.addEventListener('click', () => {
             loginForm.classList.add('hidden');
             changePassForm.classList.remove('hidden');
         });
-        document.getElementById('back-to-login-btn').addEventListener('click', () => {
+        document.getElementById('back-to-login-btn')?.addEventListener('click', () => {
             changePassForm.classList.add('hidden');
             loginForm.classList.remove('hidden');
             changePassForm.reset();
         });
 
-        document.getElementById('cp-submit-btn').addEventListener('click', async () => {
+        document.getElementById('cp-submit-btn')?.addEventListener('click', async () => {
             const userVal = document.getElementById('cp-user-select').value;
             const oldPass = document.getElementById('cp-old-password').value;
             const newPass = document.getElementById('cp-new-password').value;
@@ -1681,7 +1626,7 @@
         });
 
         // Manpower Save 
-        document.getElementById('manpower-form').addEventListener('submit', async (e) => {
+        document.getElementById('manpower-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const workerName = document.getElementById('mp-name').value.trim();
             const workerType = document.getElementById('mp-type').value;
@@ -1737,15 +1682,15 @@
                 if (data.status === "success") {
                     showToast('success', isEditing ? "Manpower Entry Updated!" : "Manpower Entry Saved!");
                     document.getElementById('manpower-form').reset();
-                    document.getElementById('mp-intime').value = getCurrentTimeHHMM();
+                    if(document.getElementById('mp-intime')) document.getElementById('mp-intime').value = getCurrentTimeHHMM();
                     saveNameSuggestion(workerName);
                     
                     if (isEditing) {
                         isEditing = false;
                         editOrigData = null;
-                        document.getElementById('mp-save-text').textContent = "Save Entry";
-                        document.getElementById('edit-out-time-container').classList.add('hidden');
-                        document.getElementById('edit-ot-reason-container').classList.add('hidden');
+                        if(document.getElementById('mp-save-text')) document.getElementById('mp-save-text').textContent = "Save Entry";
+                        document.getElementById('edit-out-time-container')?.classList.add('hidden');
+                        document.getElementById('edit-ot-reason-container')?.classList.add('hidden');
                     } 
                     fetchHistoryDataInBackground(); // Triggers UI Sync natively
                 } else showToast('error', data.message || "Save failed.");
@@ -1755,6 +1700,14 @@
 
         // Sync Active Workers based natively on History Data
         function syncActiveWorkers() {
+            const list = document.getElementById('active-workers-list');
+            if(!list) return;
+
+            const noWorkers = document.getElementById('no-active-workers');
+            const countEl = document.getElementById('active-count');
+            
+            Array.from(list.children).forEach(c => { if(c.id !== 'no-active-workers') c.remove(); });
+            
             const prodDateToday = getProductionDate();
             
             liveActiveWorkers = currentHistoryData.filter(row => {
@@ -1780,7 +1733,7 @@
                 inTime: row[5]
             }));
 
-            document.getElementById('active-count').textContent = liveActiveWorkers.length;
+            if(countEl) countEl.textContent = liveActiveWorkers.length;
 
             // Update category counts
             const counts = { 'COMPANY': 0, 'CONTRACTUAL': 0, 'OPERATOR': 0, 'HOUSEKEEPING': 0, 'JAR LINE EXECUTIVE': 0, 'OTHER': 0 };
@@ -1803,9 +1756,11 @@
 
         function renderOutWorkerList() {
             const list = document.getElementById('active-workers-list');
+            if(!list) return;
+
             list.innerHTML = '';
             
-            const searchVal = document.getElementById('out-name-search').value.toLowerCase().trim();
+            const searchVal = document.getElementById('out-name-search') ? document.getElementById('out-name-search').value.toLowerCase().trim() : '';
             
             let filtered = liveActiveWorkers.filter(w => {
                 const t = String(w.type).toUpperCase().trim();
@@ -1850,7 +1805,7 @@
                                 <i class="fa-solid fa-right-from-bracket"></i> Mark Out
                             </button>
                         </div>
-                        <input type="text" class="inline-ot-reason hidden dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg p-2 text-sm transition-all placeholder:text-slate-400" placeholder="Enter reason for OT">
+                        <input type="text" class="inline-ot-reason hidden dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg p-2 text-sm transition-all placeholder:text-slate-400" placeholder="Enter reason for Overtime">
                     </div>
                 `;
 
@@ -1920,19 +1875,19 @@
         }
 
         // Present Manpower Modal Logic
-        document.getElementById('btn-hub-present').addEventListener('click', async () => {
+        document.getElementById('btn-hub-present')?.addEventListener('click', async () => {
             history.pushState({ modal: 'present' }, '', '#present');
             setModalVisible('present-modal', 'present-modal-content', true);
             const loader = document.getElementById('present-loading');
             if (currentHistoryData.length === 0) {
-                loader.classList.remove('hidden');
+                if(loader) loader.classList.remove('hidden');
                 await fetchHistoryDataInBackground();
             }
-            loader.classList.add('hidden');
+            if(loader) loader.classList.add('hidden');
             renderPresentTable();
         });
-        document.getElementById('btn-close-present').addEventListener('click', () => history.back());
-        document.getElementById('present-modal-bg').addEventListener('click', () => history.back());
+        document.getElementById('btn-close-present')?.addEventListener('click', () => history.back());
+        document.getElementById('present-modal-bg')?.addEventListener('click', () => history.back());
 
         function renderPresentTable() {
             const tbody = document.getElementById('present-table-body');
@@ -1940,6 +1895,7 @@
             const summaryFooter = document.getElementById('present-summary-footer');
             const summaryValue = document.getElementById('present-summary-value');
             const breakdownContainer = document.getElementById('present-breakdown-container');
+            if(!tbody) return;
             tbody.innerHTML = '';
             
             const prodDateToday = getProductionDate();
@@ -1959,14 +1915,14 @@
                 return isToday && hasNoOutTime;
             });
             
-            summaryValue.textContent = presentWorkers.length;
+            if(summaryValue) summaryValue.textContent = presentWorkers.length;
             
             if (presentWorkers.length === 0) {
-                emptyState.classList.remove('hidden');
-                summaryFooter.classList.add('hidden');
+                if(emptyState) emptyState.classList.remove('hidden');
+                if(summaryFooter) summaryFooter.classList.add('hidden');
             } else {
-                emptyState.classList.add('hidden');
-                summaryFooter.classList.remove('hidden');
+                if(emptyState) emptyState.classList.add('hidden');
+                if(summaryFooter) summaryFooter.classList.remove('hidden');
                 
                 let categoryCounts = {};
                 let rowsHTML = '';
@@ -2006,18 +1962,18 @@
         }
 
         // OT Report Modal Logic
-        document.getElementById('btn-hub-daily-ot').addEventListener('click', async () => {
+        document.getElementById('btn-hub-daily-ot')?.addEventListener('click', async () => {
             history.pushState({ modal: 'ot' }, '', '#ot');
             setModalVisible('ot-modal', 'ot-modal-content', true);
             const today = new Date();
             const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-            document.getElementById('ot-from-date').value = firstDay.toLocaleDateString('en-CA');
-            document.getElementById('ot-to-date').value = today.toLocaleDateString('en-CA');
-            document.getElementById('ot-name-filter').value = '';
+            if(document.getElementById('ot-from-date')) document.getElementById('ot-from-date').value = firstDay.toLocaleDateString('en-CA');
+            if(document.getElementById('ot-to-date')) document.getElementById('ot-to-date').value = today.toLocaleDateString('en-CA');
+            if(document.getElementById('ot-name-filter')) document.getElementById('ot-name-filter').value = '';
             
-            document.getElementById('ot-table-body').innerHTML = '';
-            document.getElementById('ot-empty').classList.add('hidden');
-            document.getElementById('ot-summary-footer').classList.add('hidden');
+            if(document.getElementById('ot-table-body')) document.getElementById('ot-table-body').innerHTML = '';
+            document.getElementById('ot-empty')?.classList.add('hidden');
+            document.getElementById('ot-summary-footer')?.classList.add('hidden');
             
             if (currentHistoryData.length === 0) {
                 await fetchHistoryDataInBackground();
@@ -2025,21 +1981,22 @@
             renderOTReportTable();
         });
 
-        document.getElementById('btn-close-ot').addEventListener('click', () => history.back());
-        document.getElementById('ot-modal-bg').addEventListener('click', () => history.back());
-        document.getElementById('ot-from-date').addEventListener('change', renderOTReportTable);
-        document.getElementById('ot-to-date').addEventListener('change', renderOTReportTable);
-        document.getElementById('ot-name-filter').addEventListener('input', renderOTReportTable);
+        document.getElementById('btn-close-ot')?.addEventListener('click', () => history.back());
+        document.getElementById('ot-modal-bg')?.addEventListener('click', () => history.back());
+        document.getElementById('ot-from-date')?.addEventListener('change', renderOTReportTable);
+        document.getElementById('ot-to-date')?.addEventListener('change', renderOTReportTable);
+        document.getElementById('ot-name-filter')?.addEventListener('input', renderOTReportTable);
 
         function renderOTReportTable() {
             const tbody = document.getElementById('ot-table-body');
             const emptyState = document.getElementById('ot-empty');
             const summaryFooter = document.getElementById('ot-summary-footer');
+            if(!tbody) return;
             
             tbody.innerHTML = '';
-            const fromDateVal = document.getElementById('ot-from-date').value;
-            const toDateVal = document.getElementById('ot-to-date').value;
-            const nameFilterVal = document.getElementById('ot-name-filter').value.trim().toLowerCase();
+            const fromDateVal = document.getElementById('ot-from-date') ? document.getElementById('ot-from-date').value : '';
+            const toDateVal = document.getElementById('ot-to-date') ? document.getElementById('ot-to-date').value : '';
+            const nameFilterVal = document.getElementById('ot-name-filter') ? document.getElementById('ot-name-filter').value.trim().toLowerCase() : '';
 
             let fromDate = null, toDate = null;
             if (fromDateVal) { fromDate = new Date(fromDateVal); fromDate.setHours(0,0,0,0); }
@@ -2083,14 +2040,14 @@
             });
 
             if (otRecords.length === 0) {
-                emptyState.classList.remove('hidden');
-                summaryFooter.classList.add('hidden');
+                if(emptyState) emptyState.classList.remove('hidden');
+                if(summaryFooter) summaryFooter.classList.add('hidden');
             } else {
-                emptyState.classList.add('hidden');
-                summaryFooter.classList.remove('hidden');
-                document.getElementById('ot-operator-value').textContent = fmtHrs(operatorOT);
-                document.getElementById('ot-company-value').textContent = fmtHrs(companyOT);
-                document.getElementById('ot-summary-value').textContent = fmtHrs(totalOT);
+                if(emptyState) emptyState.classList.add('hidden');
+                if(summaryFooter) summaryFooter.classList.remove('hidden');
+                if(document.getElementById('ot-operator-value')) document.getElementById('ot-operator-value').textContent = fmtHrs(operatorOT);
+                if(document.getElementById('ot-company-value')) document.getElementById('ot-company-value').textContent = fmtHrs(companyOT);
+                if(document.getElementById('ot-summary-value')) document.getElementById('ot-summary-value').textContent = fmtHrs(totalOT);
 
                 let html = '';
                 try {
@@ -2117,18 +2074,18 @@
         }
 
         // Monthly OT Report Modal Logic
-        document.getElementById('btn-hub-monthly-ot').addEventListener('click', async () => {
+        document.getElementById('btn-hub-monthly-ot')?.addEventListener('click', async () => {
             history.pushState({ modal: 'mot' }, '', '#mot');
             setModalVisible('monthly-ot-modal', 'monthly-ot-modal-content', true);
             const today = new Date();
             const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-            document.getElementById('mot-from-date').value = firstDay.toLocaleDateString('en-CA');
-            document.getElementById('mot-to-date').value = today.toLocaleDateString('en-CA');
-            document.getElementById('mot-name-filter').value = '';
+            if(document.getElementById('mot-from-date')) document.getElementById('mot-from-date').value = firstDay.toLocaleDateString('en-CA');
+            if(document.getElementById('mot-to-date')) document.getElementById('mot-to-date').value = today.toLocaleDateString('en-CA');
+            if(document.getElementById('mot-name-filter')) document.getElementById('mot-name-filter').value = '';
             
-            document.getElementById('mot-table-body').innerHTML = '';
-            document.getElementById('mot-empty').classList.add('hidden');
-            document.getElementById('mot-summary-footer').classList.add('hidden');
+            if(document.getElementById('mot-table-body')) document.getElementById('mot-table-body').innerHTML = '';
+            document.getElementById('mot-empty')?.classList.add('hidden');
+            document.getElementById('mot-summary-footer')?.classList.add('hidden');
             
             if (currentHistoryData.length === 0) {
                 await fetchHistoryDataInBackground();
@@ -2136,21 +2093,22 @@
             renderMonthlyOTTable();
         });
 
-        document.getElementById('btn-close-mot').addEventListener('click', () => history.back());
-        document.getElementById('monthly-ot-modal-bg').addEventListener('click', () => history.back());
-        document.getElementById('mot-from-date').addEventListener('change', renderMonthlyOTTable);
-        document.getElementById('mot-to-date').addEventListener('change', renderMonthlyOTTable);
-        document.getElementById('mot-name-filter').addEventListener('input', renderMonthlyOTTable);
+        document.getElementById('btn-close-mot')?.addEventListener('click', () => history.back());
+        document.getElementById('monthly-ot-modal-bg')?.addEventListener('click', () => history.back());
+        document.getElementById('mot-from-date')?.addEventListener('change', renderMonthlyOTTable);
+        document.getElementById('mot-to-date')?.addEventListener('change', renderMonthlyOTTable);
+        document.getElementById('mot-name-filter')?.addEventListener('input', renderMonthlyOTTable);
 
         function renderMonthlyOTTable() {
             const tbody = document.getElementById('mot-table-body');
             const emptyState = document.getElementById('mot-empty');
             const summaryFooter = document.getElementById('mot-summary-footer');
+            if(!tbody) return;
             tbody.innerHTML = '';
             
-            const fromDateVal = document.getElementById('mot-from-date').value;
-            const toDateVal = document.getElementById('mot-to-date').value;
-            const nameFilterVal = document.getElementById('mot-name-filter').value.trim().toLowerCase();
+            const fromDateVal = document.getElementById('mot-from-date') ? document.getElementById('mot-from-date').value : '';
+            const toDateVal = document.getElementById('mot-to-date') ? document.getElementById('mot-to-date').value : '';
+            const nameFilterVal = document.getElementById('mot-name-filter') ? document.getElementById('mot-name-filter').value.trim().toLowerCase() : '';
             
             let fromDate = null, toDate = null;
             if (fromDateVal) { fromDate = new Date(fromDateVal); fromDate.setHours(0,0,0,0); }
@@ -2187,15 +2145,15 @@
             const sortedArr = Object.keys(aggOT).map(k => ({ name: k, type: aggOT[k].type, sum: aggOT[k].sum })).sort((a,b) => b.sum - a.sum);
 
             if (sortedArr.length === 0) {
-                emptyState.classList.remove('hidden');
-                summaryFooter.classList.add('hidden');
+                if(emptyState) emptyState.classList.remove('hidden');
+                if(summaryFooter) summaryFooter.classList.add('hidden');
             } else {
-                emptyState.classList.add('hidden');
-                summaryFooter.classList.remove('hidden');
+                if(emptyState) emptyState.classList.add('hidden');
+                if(summaryFooter) summaryFooter.classList.remove('hidden');
                 
-                document.getElementById('mot-operator-value').textContent = fmtHrs(operatorOT);
-                document.getElementById('mot-company-value').textContent = fmtHrs(companyOT);
-                document.getElementById('mot-summary-value').textContent = fmtHrs(totalOT);
+                if(document.getElementById('mot-operator-value')) document.getElementById('mot-operator-value').textContent = fmtHrs(operatorOT);
+                if(document.getElementById('mot-company-value')) document.getElementById('mot-company-value').textContent = fmtHrs(companyOT);
+                if(document.getElementById('mot-summary-value')) document.getElementById('mot-summary-value').textContent = fmtHrs(totalOT);
 
                 let html = '';
                 try {
@@ -2218,18 +2176,18 @@
         }
 
         // History Modal Logic
-        document.getElementById('btn-hub-history').addEventListener('click', async () => {
+        document.getElementById('btn-hub-history')?.addEventListener('click', async () => {
             history.pushState({ modal: 'history' }, '', '#history');
             setModalVisible('history-modal', 'history-modal-content', true);
             
-            document.getElementById('history-loading').classList.remove('hidden');
-            document.getElementById('history-empty').classList.add('hidden');
-            document.getElementById('history-table-body').innerHTML = '';
+            document.getElementById('history-loading')?.classList.remove('hidden');
+            document.getElementById('history-empty')?.classList.add('hidden');
+            if(document.getElementById('history-table-body')) document.getElementById('history-table-body').innerHTML = '';
             
             const prodDateToday = getProductionDate();
-            document.getElementById('history-from-date').value = prodDateToday;
-            document.getElementById('history-to-date').value = prodDateToday;
-            document.getElementById('history-name-filter').value = '';
+            if(document.getElementById('history-from-date')) document.getElementById('history-from-date').value = prodDateToday;
+            if(document.getElementById('history-to-date')) document.getElementById('history-to-date').value = prodDateToday;
+            if(document.getElementById('history-name-filter')) document.getElementById('history-name-filter').value = '';
 
             let data = null;
             try {
@@ -2239,12 +2197,12 @@
                 });
                 data = JSON.parse(await res.text());
             } catch (err) {
-                document.getElementById('history-loading').classList.add('hidden');
+                document.getElementById('history-loading')?.classList.add('hidden');
                 showToast('error', "Network error: Failed to fetch history.");
                 return;
             }
 
-            document.getElementById('history-loading').classList.add('hidden');
+            document.getElementById('history-loading')?.classList.add('hidden');
 
             try {
                 if (data && data.status === "success" && data.data && data.data.length > 0) {
@@ -2262,18 +2220,18 @@
             }
         });
 
-        document.getElementById('btn-close-history').addEventListener('click', () => history.back());
-        document.getElementById('history-modal-bg').addEventListener('click', () => history.back());
+        document.getElementById('btn-close-history')?.addEventListener('click', () => history.back());
+        document.getElementById('history-modal-bg')?.addEventListener('click', () => history.back());
         
         const applyHistoryFilters = () => renderHistoryTable();
-        document.getElementById('history-from-date').addEventListener('change', applyHistoryFilters);
-        document.getElementById('history-to-date').addEventListener('change', applyHistoryFilters);
-        document.getElementById('history-name-filter').addEventListener('input', applyHistoryFilters);
+        document.getElementById('history-from-date')?.addEventListener('change', applyHistoryFilters);
+        document.getElementById('history-to-date')?.addEventListener('change', applyHistoryFilters);
+        document.getElementById('history-name-filter')?.addEventListener('input', applyHistoryFilters);
         
-        document.getElementById('btn-clear-history-filter').addEventListener('click', () => { 
-            document.getElementById('history-from-date').value = ''; 
-            document.getElementById('history-to-date').value = ''; 
-            document.getElementById('history-name-filter').value = ''; 
+        document.getElementById('btn-clear-history-filter')?.addEventListener('click', () => { 
+            if(document.getElementById('history-from-date')) document.getElementById('history-from-date').value = ''; 
+            if(document.getElementById('history-to-date')) document.getElementById('history-to-date').value = ''; 
+            if(document.getElementById('history-name-filter')) document.getElementById('history-name-filter').value = ''; 
             renderHistoryTable(); 
         });
 
@@ -2303,10 +2261,10 @@
             history.back(); // Pop state triggers transition back to manpower view
 
             setTimeout(() => {
-                document.getElementById('mp-name').value = row[2] || '';
-                document.getElementById('mp-type').value = row[3] || '';
-                document.getElementById('mp-section').value = row[4] || '';
-                document.getElementById('mp-intime').value = row[5] || '';
+                if(document.getElementById('mp-name')) document.getElementById('mp-name').value = row[2] || '';
+                if(document.getElementById('mp-type')) document.getElementById('mp-type').value = row[3] || '';
+                if(document.getElementById('mp-section')) document.getElementById('mp-section').value = row[4] || '';
+                if(document.getElementById('mp-intime')) document.getElementById('mp-intime').value = row[5] || '';
                 
                 const outTimeContainer = document.getElementById('edit-out-time-container');
                 const outTimeInput = document.getElementById('mp-outtime');
@@ -2329,7 +2287,7 @@
                     otReason: (row[8] && row[8] !== '-') ? row[8] : ''
                 };
 
-                document.getElementById('mp-save-text').textContent = "Update Entry";
+                if(document.getElementById('mp-save-text')) document.getElementById('mp-save-text').textContent = "Update Entry";
                 
                 // Open Entry Modal
                 history.pushState({ modal: 'entry' }, '', '#entry');
@@ -2340,12 +2298,13 @@
 
         function renderHistoryTable() {
             const historyTableBody = document.getElementById('history-table-body');
+            if(!historyTableBody) return;
             historyTableBody.innerHTML = '';
-            document.getElementById('history-empty').classList.add('hidden');
+            document.getElementById('history-empty')?.classList.add('hidden');
             
-            const fromDateVal = document.getElementById('history-from-date').value;
-            const toDateVal = document.getElementById('history-to-date').value;
-            const nameFilterVal = document.getElementById('history-name-filter').value.trim().toLowerCase();
+            const fromDateVal = document.getElementById('history-from-date') ? document.getElementById('history-from-date').value : '';
+            const toDateVal = document.getElementById('history-to-date') ? document.getElementById('history-to-date').value : '';
+            const nameFilterVal = document.getElementById('history-name-filter') ? document.getElementById('history-name-filter').value.trim().toLowerCase() : '';
             
             let filteredData = currentHistoryData;
             
@@ -2377,7 +2336,7 @@
             }
             
             if (filteredData.length === 0) {
-                document.getElementById('history-empty').classList.remove('hidden');
+                document.getElementById('history-empty')?.classList.remove('hidden');
                 return;
             }
 
@@ -2432,14 +2391,110 @@
         function showToast(type, msg) {
             const t = type==='error'?document.getElementById('error-toast'):document.getElementById('success-toast');
             const m = type==='error'?document.getElementById('error-toast-msg'):document.getElementById('success-toast-msg');
-            m.textContent = msg; t.classList.remove('hidden', 'animate-shake');
-            void t.offsetWidth; t.classList.add('flex', 'animate-shake');
-            setTimeout(() => { t.classList.add('hidden'); t.classList.remove('flex'); }, 4000);
+            if(m) m.textContent = msg; 
+            if(t) {
+                t.classList.remove('hidden', 'animate-shake');
+                void t.offsetWidth; t.classList.add('flex', 'animate-shake');
+                setTimeout(() => { t.classList.add('hidden'); t.classList.remove('flex'); }, 4000);
+            }
         }
         function setBtnLoading(btn, i, s, t, l, txt) {
+            if(!btn) return;
             btn.disabled = l;
             if(l) { if(i) i.classList.add('hidden'); if(s) s.classList.remove('hidden'); if(t) t.textContent = "Please wait..."; }
             else { if(i) i.classList.remove('hidden'); if(s) s.classList.add('hidden'); if(t) t.textContent = txt; }
+        }
+
+        // --- Main Dashboard Metrics Logic ---
+        function updateMainDashboardMetrics() {
+            const prodDateToday = getProductionDate();
+            let yDate = new Date();
+            yDate.setDate(yDate.getDate() - 1);
+            const prodDateYesterday = getProductionDate(yDate);
+            const currentMonthPrefix = prodDateToday.substring(0, 7);
+
+            let presentCounts = { 'COMPANY': 0, 'CONTRACTUAL': 0, 'OPERATOR': 0, 'HOUSEKEEPING': 0, 'JAR LINE EXECUTIVE': 0, 'OTHER': 0 };
+            let presentTotal = 0;
+            
+            let yestCompanyOT = 0, yestOperatorOT = 0;
+            let monthCompanyOT = 0, monthOperatorOT = 0;
+
+            currentHistoryData.forEach(row => {
+                const dateStr = row[0] || '';
+                const typeStrRaw = row[3] || 'Other';
+                const typeStr = String(typeStrRaw).toUpperCase().trim();
+                const inTimeStr = row[5] || '-';
+                const outTimeStr = row[6] || '-';
+
+                let isToday = false, isYesterday = false, isCurrentMonth = false;
+                try {
+                    const d = parseCustomDate(dateStr);
+                    if(!isNaN(d.getTime())) {
+                        const rowDateStr = d.toLocaleDateString('en-CA');
+                        isToday = rowDateStr === prodDateToday;
+                        isYesterday = rowDateStr === prodDateYesterday;
+                        isCurrentMonth = rowDateStr.startsWith(currentMonthPrefix);
+                    } else {
+                        isToday = dateStr.includes(prodDateToday);
+                        isYesterday = dateStr.includes(prodDateYesterday);
+                        isCurrentMonth = dateStr.includes(currentMonthPrefix);
+                    }
+                } catch(e) {
+                    isToday = dateStr.includes(prodDateToday);
+                    isYesterday = dateStr.includes(prodDateYesterday);
+                    isCurrentMonth = dateStr.includes(currentMonthPrefix);
+                }
+
+                // Present Logic
+                if (isToday) {
+                    const hasNoOutTime = !outTimeStr || outTimeStr === '-' || String(outTimeStr).trim() === '';
+                    if (hasNoOutTime) {
+                        presentTotal++;
+                        let mappedCat = Object.keys(presentCounts).includes(typeStr) ? typeStr : 'OTHER';
+                        presentCounts[mappedCat]++;
+                    }
+                }
+
+                // OT Logic
+                if (isYesterday || isCurrentMonth) {
+                    const { otVal } = calculateDutyAndOT(inTimeStr, outTimeStr, typeStrRaw, dateStr);
+                    if (otVal > 0) {
+                        if (isYesterday) {
+                            if (typeStr === 'COMPANY') yestCompanyOT += otVal;
+                            else if (typeStr === 'OPERATOR') yestOperatorOT += otVal;
+                        }
+                        if (isCurrentMonth) {
+                            if (typeStr === 'COMPANY') monthCompanyOT += otVal;
+                            else if (typeStr === 'OPERATOR') monthOperatorOT += otVal;
+                        }
+                    }
+                }
+            });
+
+            // Safely update DOM (Only if the view elements exist)
+            const elPresentTotal = document.getElementById('md-present-total');
+            if (elPresentTotal) {
+                elPresentTotal.textContent = presentTotal;
+                
+                let badgesHtml = '';
+                for (const [cat, count] of Object.entries(presentCounts)) {
+                    if(count > 0 || cat === 'COMPANY' || cat === 'OPERATOR') {
+                        badgesHtml += `<span class="${getBadgeStyle(cat)} text-[10px] sm:text-xs">${cat}: ${count}</span>`;
+                    }
+                }
+                const mdPresentBadges = document.getElementById('md-present-badges');
+                if(mdPresentBadges) mdPresentBadges.innerHTML = badgesHtml || '<span class="text-slate-400 text-sm">No workers on floor</span>';
+
+                const fmtHrs = v => (v % 1 === 0 ? v : parseFloat(v.toFixed(2)));
+                
+                if(document.getElementById('md-yest-total-ot')) document.getElementById('md-yest-total-ot').textContent = fmtHrs(yestCompanyOT + yestOperatorOT) + ' hrs';
+                if(document.getElementById('md-yest-comp-ot')) document.getElementById('md-yest-comp-ot').textContent = fmtHrs(yestCompanyOT) + ' h';
+                if(document.getElementById('md-yest-op-ot')) document.getElementById('md-yest-op-ot').textContent = fmtHrs(yestOperatorOT) + ' h';
+
+                if(document.getElementById('md-month-total-ot')) document.getElementById('md-month-total-ot').textContent = fmtHrs(monthCompanyOT + monthOperatorOT) + ' hrs';
+                if(document.getElementById('md-month-comp-ot')) document.getElementById('md-month-comp-ot').textContent = fmtHrs(monthCompanyOT) + ' h';
+                if(document.getElementById('md-month-op-ot')) document.getElementById('md-month-op-ot').textContent = fmtHrs(monthOperatorOT) + ' h';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', initApp);
