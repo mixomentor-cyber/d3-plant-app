@@ -527,6 +527,7 @@
                                     </div>
                                     <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
                                         <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-intime" data-val="06:00">06:00</button>
+                                        <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-intime" data-val="10:00">10:00</button>
                                         <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-intime" data-val="14:00">14:00</button>
                                         <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-intime" data-val="18:00">18:00</button>
                                         <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-intime" data-val="22:00">22:00</button>
@@ -541,6 +542,7 @@
                                     </div>
                                     <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
                                         <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-outtime" data-val="06:00">06:00</button>
+                                        <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-outtime" data-val="10:00">10:00</button>
                                         <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-outtime" data-val="14:00">14:00</button>
                                         <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-outtime" data-val="18:00">18:00</button>
                                         <button type="button" class="time-btn px-2 py-1 bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded text-xs font-semibold border border-slate-200" data-target="mp-outtime" data-val="22:00">22:00</button>
@@ -1473,6 +1475,16 @@
             }
         });
 
+        // Add correct listener for Manpower Hub Back button
+        document.getElementById('btn-back-welcome-from-manpower')?.addEventListener('click', () => {
+            if (history.state && history.state.view === 'manpower') {
+                history.back();
+            } else {
+                history.pushState({ view: 'welcome' }, '', '#welcome');
+                switchToWelcomeView();
+            }
+        });
+
         document.getElementById('nav-brand')?.addEventListener('click', () => {
             if (!currentUser) return; 
             if (!history.state || history.state.view !== 'welcome') {
@@ -1696,6 +1708,28 @@
             suggestedNames.forEach(n => { const o = document.createElement('option'); o.value = n; dl.appendChild(o); });
         }
         loadNameSuggestions();
+
+        // Auto-advance logic for Manpower Entry Form
+        document.getElementById('mp-name')?.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Stop form from saving immediately
+                if (this.value.trim() !== '') {
+                    document.getElementById('mp-type')?.focus();
+                }
+            }
+        });
+
+        document.getElementById('mp-type')?.addEventListener('change', function() {
+            if (this.value !== '') {
+                document.getElementById('mp-section')?.focus();
+            }
+        });
+
+        document.getElementById('mp-section')?.addEventListener('change', function() {
+            if (this.value !== '') {
+                document.getElementById('mp-intime')?.focus();
+            }
+        });
 
         // Quick Chips
         document.addEventListener('click', (e) => {
@@ -2046,10 +2080,9 @@
         document.getElementById('btn-hub-daily-ot')?.addEventListener('click', async () => {
             history.pushState({ modal: 'ot' }, '', '#ot');
             setModalVisible('ot-modal', 'ot-modal-content', true);
-            const today = new Date();
-            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-            if(document.getElementById('ot-from-date')) document.getElementById('ot-from-date').value = firstDay.toLocaleDateString('en-CA');
-            if(document.getElementById('ot-to-date')) document.getElementById('ot-to-date').value = today.toLocaleDateString('en-CA');
+            const todayStr = new Date().toLocaleDateString('en-CA');
+            if(document.getElementById('ot-from-date')) document.getElementById('ot-from-date').value = todayStr;
+            if(document.getElementById('ot-to-date')) document.getElementById('ot-to-date').value = todayStr;
             if(document.getElementById('ot-name-filter')) document.getElementById('ot-name-filter').value = '';
             
             if(document.getElementById('ot-table-body')) document.getElementById('ot-table-body').innerHTML = '';
