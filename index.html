@@ -313,7 +313,7 @@
                             </div>
                         </button>
 
-                        <button onclick="alert('Coming Soon')" class="bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative group text-left w-full">
+                        <button id="btn-nav-production" class="bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative group text-left w-full">
                             <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 text-white flex items-center justify-center text-2xl sm:text-3xl transition-transform group-hover:scale-110 shrink-0">
                                 <i class="fa-solid fa-clipboard-list"></i>
                             </div>
@@ -367,7 +367,7 @@
                             <div class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
                                 
                                 <div class="flex flex-col">
-                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Present Today</p>
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Present Right Now</p>
                                     <div class="text-4xl font-black text-slate-800 mb-4" id="md-present-total">0</div>
                                     <div class="flex flex-wrap gap-2" id="md-present-badges">
                                         <span class="text-slate-400 text-sm">Loading...</span>
@@ -454,6 +454,52 @@
                         <button id="btn-hub-monthly-ot" class="bg-purple-500 hover:bg-purple-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
                             <i class="fa-solid fa-calendar-days text-3xl sm:text-4xl"></i>
                             <span class="font-bold text-sm sm:text-base text-center">Monthly OT Report</span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PRODUCTION HUB VIEW ====== -->
+            <div id="production-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
+                <div class="max-w-5xl mx-auto bg-emerald-50/40 rounded-3xl shadow-sm border border-emerald-100 p-6 sm:p-8 backdrop-blur-sm">
+                    <!-- Hub Header -->
+                    <div class="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 pb-6 border-b border-emerald-200/50">
+                        <button id="btn-back-welcome-from-production" class="text-emerald-400 hover:text-emerald-600 transition-colors mr-1" title="Back to Dashboard">
+                            <i class="fa-solid fa-arrow-left text-xl"></i>
+                        </button>
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white text-emerald-600 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-clipboard-list text-sm sm:text-base"></i>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-emerald-900">Production Data Entry</h2>
+                    </div>
+
+                    <!-- 5 Grid Buttons -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                        
+                        <button id="btn-prod-dispensing" class="bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-scale-balanced text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Dispensing Section</span>
+                        </button>
+
+                        <button id="btn-prod-wet" class="bg-teal-500 hover:bg-teal-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-flask text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Wet Process Section</span>
+                        </button>
+
+                        <button id="btn-prod-spray" class="bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-wind text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Spray Dry Section</span>
+                        </button>
+
+                        <button id="btn-prod-blending" class="bg-purple-500 hover:bg-purple-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-blender text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Blending Section</span>
+                        </button>
+
+                        <button id="btn-prod-packing" class="bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-box-open text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Packing Section</span>
                         </button>
 
                     </div>
@@ -724,6 +770,9 @@
                             <i class="fa-solid fa-file-invoice-dollar text-indigo-500"></i> Daily OT Report
                         </h3>
                         <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <button id="btn-ot-prev-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-600 hover:bg-indigo-100 hover:text-indigo-600 transition-colors" title="Previous Day">
+                                <i class="fa-solid fa-chevron-left text-sm"></i>
+                            </button>
                             <div class="flex items-center gap-1.5 sm:gap-2">
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-600">From:</label>
                                 <input type="date" id="ot-from-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all">
@@ -732,6 +781,9 @@
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-600">To:</label>
                                 <input type="date" id="ot-to-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all">
                             </div>
+                            <button id="btn-ot-next-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-600 hover:bg-indigo-100 hover:text-indigo-600 transition-colors mr-2" title="Next Day">
+                                <i class="fa-solid fa-chevron-right text-sm"></i>
+                            </button>
                             <div class="flex items-center gap-1.5 sm:gap-2">
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-600">Name:</label>
                                 <input type="text" id="ot-name-filter" placeholder="Filter name..." class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm w-24 sm:w-32 focus:ring-2 focus:ring-indigo-500/20 transition-all">
@@ -1033,6 +1085,8 @@
                     switchToManpowerView();
                 } else if (state.view === 'main-dashboard') {
                     switchToMainDashboardView();
+                } else if (state.view === 'production') {
+                    switchToProductionView();
                 }
             } else if (currentUser) {
                 switchToWelcomeView();
@@ -1315,7 +1369,7 @@
 
         // Generic View Switcher
         function switchMainView(targetViewId, instant = false) {
-            const views = ['welcome-view', 'manpower-view', 'main-dashboard-view'];
+            const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view'];
             views.forEach(vid => {
                 const el = document.getElementById(vid);
                 if (!el) return;
@@ -1357,6 +1411,7 @@
         function switchToWelcomeView(instant = false) { switchMainView('welcome-view', instant); }
         function switchToManpowerView(instant = false) { switchMainView('manpower-view', instant); }
         function switchToMainDashboardView(instant = false) { switchMainView('main-dashboard-view', instant); }
+        function switchToProductionView(instant = false) { switchMainView('production-view', instant); }
 
         function setModalVisible(modalId, contentId, show) {
             const modal = document.getElementById(modalId);
@@ -1451,6 +1506,11 @@
             switchToManpowerView();
         });
         
+        document.getElementById('btn-nav-production')?.addEventListener('click', () => {
+            history.pushState({ view: 'production' }, '', '#production');
+            switchToProductionView();
+        });
+
         document.getElementById('btn-nav-main-dashboard')?.addEventListener('click', () => {
             history.pushState({ view: 'main-dashboard' }, '', '#main-dashboard');
             switchToMainDashboardView();
@@ -1485,6 +1545,16 @@
             }
         });
 
+        // Production Hub Back button
+        document.getElementById('btn-back-welcome-from-production')?.addEventListener('click', () => {
+            if (history.state && history.state.view === 'production') {
+                history.back();
+            } else {
+                history.pushState({ view: 'welcome' }, '', '#welcome');
+                switchToWelcomeView();
+            }
+        });
+
         document.getElementById('nav-brand')?.addEventListener('click', () => {
             if (!currentUser) return; 
             if (!history.state || history.state.view !== 'welcome') {
@@ -1506,6 +1576,11 @@
 
             history.pushState({ modal: 'entry' }, '', '#entry');
             setModalVisible('entry-modal', 'entry-modal-content', true);
+            
+            // Set focus to the first field after opening modal
+            setTimeout(() => {
+                document.getElementById('mp-name')?.focus();
+            }, 350);
         });
         document.getElementById('btn-close-entry')?.addEventListener('click', () => history.back());
         document.getElementById('entry-modal-bg')?.addEventListener('click', () => history.back());
@@ -1808,6 +1883,10 @@
                         document.getElementById('edit-ot-reason-container')?.classList.add('hidden');
                     } 
                     fetchHistoryDataInBackground(); // Triggers UI Sync natively
+                    
+                    // After saving, bring focus back to name field for fast entry
+                    document.getElementById('mp-name')?.focus();
+
                 } else showToast('error', data.message || "Save failed.");
             } catch (err) { showToast('error', "Connection error."); } 
             finally { setBtnLoading(btn, document.getElementById('mp-save-icon'), document.getElementById('mp-save-spinner'), document.getElementById('mp-save-text'), false, isEditing ? "Update Entry" : "Save Entry"); }
@@ -1823,21 +1902,11 @@
             
             Array.from(list.children).forEach(c => { if(c.id !== 'no-active-workers') c.remove(); });
             
-            const prodDateToday = getProductionDate();
-            
             liveActiveWorkers = currentHistoryData.filter(row => {
-                const dateStr = row[0] || '';
                 const outTime = row[6];
                 
-                let isToday = false;
-                try {
-                    const d = parseCustomDate(dateStr);
-                    if(!isNaN(d.getTime())) isToday = d.toLocaleDateString('en-CA') === prodDateToday;
-                    else isToday = dateStr.includes(prodDateToday);
-                } catch(e) { isToday = dateStr.includes(prodDateToday); }
-                
                 const hasNoOutTime = !outTime || outTime === '-' || outTime.trim() === '';
-                return isToday && hasNoOutTime;
+                return hasNoOutTime; // Night Shift Fix: Display if NO OUT-TIME regardless of date
             }).map((row, idx) => ({
                 id: `active-${idx}-${Date.now()}`,
                 date: row[0],
@@ -1902,11 +1971,23 @@
                 const row = document.createElement('div');
                 row.className = "p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300 hover:bg-slate-50 border-b border-slate-100 last:border-0";
                 row.id = `worker-${worker.id}`;
+                
+                // Night Shift Fix: Show date if it's from a previous day
+                let displayDateBadge = '';
+                try {
+                    const wDate = parseCustomDate(worker.date);
+                    const tDate = parseCustomDate(getProductionDate());
+                    if (!isNaN(wDate.getTime()) && wDate < tDate) {
+                        displayDateBadge = `<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-red-200 ml-2" title="From Previous Shift"><i class="fa-solid fa-clock-rotate-left mr-1"></i>${wDate.toLocaleDateString('en-GB').substring(0,5)}</span>`;
+                    }
+                } catch(e) {}
+
                 row.innerHTML = `
                     <div class="flex-grow">
-                        <div class="flex items-center gap-2 mb-1">
+                        <div class="flex items-center flex-wrap gap-2 mb-1">
                             <h4 class="font-bold text-slate-800">${worker.name}</h4>
                             <span class="${getBadgeStyle(worker.type)}">${worker.type}</span>
+                            ${displayDateBadge}
                         </div>
                         <div class="flex items-center gap-4 text-xs font-medium text-slate-500">
                             <span title="Section"><i class="fa-solid fa-puzzle-piece mr-1"></i> ${worker.section}</span>
@@ -2016,18 +2097,10 @@
             const prodDateToday = getProductionDate();
             
             const presentWorkers = currentHistoryData.filter(row => {
-                const dateStr = row[0] || '';
                 const outTime = row[6];
                 
-                let isToday = false;
-                try {
-                    const d = parseCustomDate(dateStr);
-                    if(!isNaN(d.getTime())) isToday = d.toLocaleDateString('en-CA') === prodDateToday;
-                    else isToday = dateStr.includes(prodDateToday);
-                } catch(e) { isToday = dateStr.includes(prodDateToday); }
-                
                 const hasNoOutTime = !outTime || outTime === '-' || outTime.trim() === '';
-                return isToday && hasNoOutTime;
+                return hasNoOutTime; // Night Shift Fix
             });
             
             if(summaryValue) summaryValue.textContent = presentWorkers.length;
@@ -2048,14 +2121,24 @@
                         const typeStr = row[3] || '-';
                         const secStr = row[4] || '-';
                         const inTimeStr = row[5] || '-';
+                        const dateStr = row[0] || '';
                         
                         const displayType = typeStr.trim() || 'Other';
                         categoryCounts[displayType] = (categoryCounts[displayType] || 0) + 1;
                         
+                        let displayDateBadge = '';
+                        try {
+                            const wDate = parseCustomDate(dateStr);
+                            const tDate = parseCustomDate(getProductionDate());
+                            if (!isNaN(wDate.getTime()) && wDate < tDate) {
+                                displayDateBadge = `<br><span class="text-[9px] text-red-500 font-bold"><i class="fa-solid fa-clock-rotate-left"></i> ${wDate.toLocaleDateString('en-GB').substring(0,5)}</span>`;
+                            }
+                        } catch(e) {}
+
                         rowsHTML += `
                             <tr class="hover:bg-slate-50/50 transition-colors">
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${nameStr}</td>
+                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${nameStr} ${displayDateBadge}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="${getBadgeStyle(typeStr)}">${typeStr}</span></td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
                                 <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600 font-semibold">${inTimeStr}</td>
@@ -2080,6 +2163,8 @@
         document.getElementById('btn-hub-daily-ot')?.addEventListener('click', async () => {
             history.pushState({ modal: 'ot' }, '', '#ot');
             setModalVisible('ot-modal', 'ot-modal-content', true);
+            
+            // Daily OT Fix: Default to Today's date only
             const todayStr = new Date().toLocaleDateString('en-CA');
             if(document.getElementById('ot-from-date')) document.getElementById('ot-from-date').value = todayStr;
             if(document.getElementById('ot-to-date')) document.getElementById('ot-to-date').value = todayStr;
@@ -2100,6 +2185,32 @@
         document.getElementById('ot-from-date')?.addEventListener('change', renderOTReportTable);
         document.getElementById('ot-to-date')?.addEventListener('change', renderOTReportTable);
         document.getElementById('ot-name-filter')?.addEventListener('input', renderOTReportTable);
+
+        document.getElementById('btn-ot-prev-day')?.addEventListener('click', () => {
+            const fromDateEl = document.getElementById('ot-from-date');
+            const toDateEl = document.getElementById('ot-to-date');
+            if(fromDateEl && fromDateEl.value) {
+                let d = new Date(fromDateEl.value);
+                d.setDate(d.getDate() - 1); // Subtract 1 day
+                const newDateStr = d.toLocaleDateString('en-CA');
+                fromDateEl.value = newDateStr;
+                toDateEl.value = newDateStr; // Set both to same date
+                renderOTReportTable();
+            }
+        });
+
+        document.getElementById('btn-ot-next-day')?.addEventListener('click', () => {
+            const fromDateEl = document.getElementById('ot-from-date');
+            const toDateEl = document.getElementById('ot-to-date');
+            if(fromDateEl && fromDateEl.value) {
+                let d = new Date(fromDateEl.value);
+                d.setDate(d.getDate() + 1); // Add 1 day
+                const newDateStr = d.toLocaleDateString('en-CA');
+                fromDateEl.value = newDateStr;
+                toDateEl.value = newDateStr; // Set both to same date
+                renderOTReportTable();
+            }
+        });
 
         function renderOTReportTable() {
             const tbody = document.getElementById('ot-table-body');
@@ -2559,14 +2670,12 @@
                     isCurrentMonth = dateStr.includes(currentMonthPrefix);
                 }
 
-                // Present Logic
-                if (isToday) {
-                    const hasNoOutTime = !outTimeStr || outTimeStr === '-' || String(outTimeStr).trim() === '';
-                    if (hasNoOutTime) {
-                        presentTotal++;
-                        let mappedCat = Object.keys(presentCounts).includes(typeStr) ? typeStr : 'OTHER';
-                        presentCounts[mappedCat]++;
-                    }
+                // Present Logic (Night Shift Fix - Ignore Date, check Out-Time only)
+                const hasNoOutTime = !outTimeStr || outTimeStr === '-' || String(outTimeStr).trim() === '';
+                if (hasNoOutTime) {
+                    presentTotal++;
+                    let mappedCat = Object.keys(presentCounts).includes(typeStr) ? typeStr : 'OTHER';
+                    presentCounts[mappedCat]++;
                 }
 
                 // OT Logic
