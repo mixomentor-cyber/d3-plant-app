@@ -485,6 +485,232 @@
             </div>
 
             <!-- ====== MODALS ====== -->
+
+           <!-- === DISPENSING MAIN MODAL === -->
+            <div id="dispensing-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="dispensing-modal-bg"></div>
+                <div class="relative bg-white/95 backdrop-blur-3xl w-full h-full min-h-screen inset-0 rounded-none shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="dispensing-modal-content">
+                    
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between bg-white gap-3 sm:gap-4 shrink-0">
+                        <div class="flex items-center gap-4">
+                            <h3 class="text-lg sm:text-xl font-bold text-emerald-700 flex items-center gap-2">
+                                <i class="fa-solid fa-scale-balanced"></i> Dispensing Section
+                            </h3>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-3">
+                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">From:</label>
+                                <input type="date" id="disp-filter-from" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-emerald-500/20">
+                            </div>
+                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">To:</label>
+                                <input type="date" id="disp-filter-to" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-emerald-500/20">
+                            </div>
+
+                            <div id="disp-loading-indicator" class="hidden items-center gap-2 text-emerald-600 text-xs font-bold ml-2">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i> Syncing...
+                            </div>
+                            
+                            <!-- BIG Operator Badge -->
+                            <div id="disp-operator-badge" class="hidden items-center gap-2 bg-emerald-100 border-2 border-emerald-300 text-emerald-900 px-4 py-1.5 rounded-xl shadow-md ml-2 transition-all">
+                                <i class="fa-solid fa-user-gear text-lg"></i>
+                                <span class="text-sm font-black tracking-wide uppercase" id="disp-operator-name">Loading...</span>
+                            </div>
+
+                            <button id="btn-disp-upload-plan" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold shadow-md transition-all gap-2 items-center">
+                                <i class="fa-solid fa-file-arrow-up"></i> <span class="hidden sm:inline">Upload Plan</span>
+                            </button>
+                            <button id="btn-close-dispensing" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors" title="Close">
+                                <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow overflow-auto p-4 sm:p-6 flex flex-col gap-6">
+                        <!-- Tabular Sequence Display -->
+                        <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col shrink-0">
+                            <div class="bg-slate-50 border-b border-slate-200 px-4 py-3">
+                                <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wider"><i class="fa-solid fa-list-ol mr-1 text-emerald-500"></i> Dispensing Plan Sequence</h4>
+                            </div>
+                            <div class="overflow-x-auto w-full max-h-[35vh] overflow-y-auto">
+                                <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
+                                    <thead class="bg-white sticky top-0 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold z-10">
+                                        <tr>
+                                            <th class="px-4 py-3">Seq</th>
+                                            <th class="px-4 py-3">Product Name</th>
+                                            <th class="px-4 py-3">Batch No</th>
+                                            <th class="px-4 py-3 text-center">Total Qty</th>
+                                            <th class="px-4 py-3 text-center text-blue-600">Running Qty</th>
+                                            <th class="px-4 py-3 text-center text-emerald-600">Completed Qty</th>
+                                            <th class="px-4 py-3 text-center text-orange-600">Remaining</th>
+                                            <th class="px-4 py-3 text-center">Start D&T</th>
+                                            <th class="px-4 py-3 text-center">Stop D&T</th>
+                                            <th class="px-4 py-3 text-center">Status</th>
+                                            <th class="px-4 py-3 text-center">Admin Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="disp-plan-sequence-tbody" class="divide-y divide-slate-100">
+                                        <tr><td colspan="11" class="text-center py-6 text-slate-400 italic">No plan found for selected dates.</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-slate-50 border-t border-slate-200 font-black text-slate-800 sticky bottom-0 z-10 hidden" id="disp-sequence-tfoot">
+                                        <tr>
+                                            <td colspan="3" class="px-4 py-3 text-right text-xs uppercase tracking-wider text-slate-500">Grand Totals:</td>
+                                            <td class="px-4 py-3 text-center text-slate-700" id="disp-gt-total">0 kg</td>
+                                            <td class="px-4 py-3 text-center text-blue-700" id="disp-gt-running">0 kg</td>
+                                            <td class="px-4 py-3 text-center text-emerald-700" id="disp-gt-comp">0 kg</td>
+                                            <td class="px-4 py-3 text-center text-orange-700" id="disp-gt-rem">0 kg</td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Data Entry Table -->
+                        <div class="border border-slate-200 rounded-xl shadow-sm overflow-hidden flex-grow flex flex-col bg-white min-h-[300px]">
+                            <div class="bg-emerald-50 border-b border-slate-200 px-4 py-3 flex justify-between items-center shrink-0">
+                                <h4 class="text-sm font-bold text-emerald-800"><i class="fa-solid fa-keyboard mr-1"></i> Shift Entry Log (Live)</h4>
+                                <button id="btn-disp-add-row" class="text-xs bg-white border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-lg hover:bg-emerald-100 font-bold transition-colors shadow-sm">
+                                    <i class="fa-solid fa-plus mr-1"></i> Add Entry Row
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto overflow-y-auto w-full h-full">
+                                <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
+                                    <thead class="bg-white sticky top-0 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider z-10 shadow-sm">
+                                        <tr>
+                                            <th class="px-3 py-3">Logged By</th>
+                                            <th class="px-3 py-3">Product Name</th>
+                                            <th class="px-3 py-3">Batch No</th>
+                                            <th class="px-3 py-3 text-center">Total Qty</th>
+                                            <th class="px-3 py-3 text-center">Total Lot</th>
+                                            <th class="px-3 py-3 text-center text-blue-600">Current Qty</th>
+                                            <th class="px-3 py-3 text-center text-orange-600">Remaining</th>
+                                            <th class="px-3 py-3 text-center text-emerald-600">Completed Qty</th>
+                                            <th class="px-3 py-3 text-center">Start Time</th>
+                                            <th class="px-3 py-3 text-center">Stop Time</th>
+                                            <th class="px-3 py-3 text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="disp-entry-tbody" class="divide-y divide-slate-100">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === EDIT DISPENSING PLAN MODAL (Admin Only) === -->
+            <div id="disp-edit-plan-modal" class="fixed inset-0 z-[80] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="disp-edit-modal-bg"></div>
+                <div class="relative bg-white w-full max-w-2xl mx-2 sm:mx-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="disp-edit-modal-content">
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-blue-50/50">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i> Edit Plan</h3>
+                        <button id="btn-close-edit-plan" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="p-4 sm:p-6 flex flex-col gap-4">
+                        <form id="disp-edit-plan-form" class="grid grid-cols-2 gap-4">
+                            <input type="hidden" id="edit-plan-id">
+                            <div class="space-y-1 col-span-2 sm:col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Product Name</label>
+                                <input type="text" id="edit-plan-prod" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required>
+                            </div>
+                            <div class="space-y-1 col-span-2 sm:col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Batch No.</label>
+                                <input type="text" id="edit-plan-batch" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required>
+                            </div>
+                            <div class="space-y-1 col-span-2">
+                                <label class="text-xs font-semibold text-slate-700">Total Qty (kg)</label>
+                                <input type="number" id="edit-plan-qty" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required>
+                            </div>
+                            
+                            <!-- Override Dates/Times -->
+                            <div class="col-span-2 pt-2 border-t border-slate-100">
+                                <p class="text-xs font-bold text-slate-400 mb-2 uppercase">Manual Time Override (Optional)</p>
+                            </div>
+                            <div class="space-y-1 col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Start Date</label>
+                                <input type="date" id="edit-plan-start-date" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm">
+                            </div>
+                            <div class="space-y-1 col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Start Time</label>
+                                <input type="time" id="edit-plan-start-time" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm">
+                            </div>
+                            <div class="space-y-1 col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Stop Date</label>
+                                <input type="date" id="edit-plan-stop-date" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm">
+                            </div>
+                            <div class="space-y-1 col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Stop Time</label>
+                                <input type="time" id="edit-plan-stop-time" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm">
+                            </div>
+                            
+                            <div class="col-span-2 mt-2">
+                                <button type="submit" id="btn-save-edit-plan" class="w-full relative group overflow-hidden rounded-xl bg-blue-600 text-white font-bold py-3 transition-all hover:bg-blue-700 disabled:opacity-70">
+                                    <span class="relative z-10 flex items-center justify-center gap-2">
+                                        <i id="edit-plan-icon" class="fa-solid fa-floppy-disk"></i>
+                                        <i id="edit-plan-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+                                        <span id="edit-plan-text">Update Plan</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === UPLOAD DISPENSING PLAN MODAL (Admin Only) === -->
+            <!-- ... KEEP YOUR EXISTING UPLOAD MODAL HERE ... -->
+
+            <!-- === UPLOAD DISPENSING PLAN MODAL (Admin Only) === -->
+            <div id="disp-upload-modal" class="fixed inset-0 z-[70] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="disp-upload-modal-bg"></div>
+                <div class="relative bg-white w-full max-w-2xl mx-2 sm:mx-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="disp-upload-modal-content">
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-file-arrow-up text-emerald-500 mr-2"></i> Upload Dispensing Plan</h3>
+                        <button id="btn-close-disp-upload" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="p-4 sm:p-6 flex flex-col gap-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1 col-span-2 sm:col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Product Name</label>
+                                <input type="text" id="disp-up-prod" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" placeholder="Enter Product">
+                            </div>
+                            <div class="space-y-1 col-span-2 sm:col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Batch No.</label>
+                                <input type="text" id="disp-up-batch" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" placeholder="Enter Batch">
+                            </div>
+                            <div class="space-y-1 col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">Total Qty (kg)</label>
+                                <input type="number" id="disp-up-qty" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" placeholder="e.g. 1000">
+                            </div>
+                            <div class="space-y-1 col-span-1">
+                                <label class="text-xs font-semibold text-slate-700">No. of Lots</label>
+                                <input type="number" id="disp-up-lots" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" placeholder="e.g. 5">
+                            </div>
+                            <div class="col-span-2">
+                                <button type="button" id="btn-disp-up-add" class="w-full bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 font-bold py-2 rounded-lg text-sm transition-colors shadow-sm">
+                                    <i class="fa-solid fa-plus"></i> Add to Sequence
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-slate-100 pt-4 mt-2">
+                            <h4 class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Current Sequence</h4>
+                            <ul id="disp-up-list" class="space-y-2 max-h-40 overflow-y-auto mb-4 bg-slate-50 p-2 rounded-lg border border-slate-200 min-h-[50px]">
+                            </ul>
+                            <button type="button" id="btn-disp-save-plan" class="w-full relative group overflow-hidden rounded-xl bg-emerald-600 text-white font-bold py-3 transition-all hover:bg-emerald-700 hover:shadow-lg disabled:opacity-70">
+                                <span class="relative z-10 flex items-center justify-center gap-2">
+                                    <i id="disp-up-save-icon" class="fa-solid fa-cloud-arrow-up"></i>
+                                    <i id="disp-up-save-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+                                    <span id="disp-up-save-text">Save Final Plan</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="entry-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
                 <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="entry-modal-bg"></div>
                 <div class="relative bg-white w-full max-w-4xl mx-2 sm:mx-auto max-h-[95vh] md:max-h-[90vh] overflow-y-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="entry-modal-content">
@@ -1016,6 +1242,9 @@
         
         let liveActiveWorkers = [];
         let currentOutCategory = null;
+let dispActivePlan = []; 
+        let dispTempUpload = [];
+        let dispTableRowCount = 0;
 
 
         const NAMES_STORAGE_KEY = 'd3plant_worker_names';
@@ -1055,24 +1284,32 @@
             }, 3000);
         }
         // -------------------------
-        function parseCustomDate(dateStr) {
-            if (!dateStr) return new Date('');
-            let str = String(dateStr).split('T')[0].trim();
-            let d = new Date(str);
-            if (!isNaN(d.getTime())) return d;
+      function parseCustomDate(dateStr) {
+            if (!dateStr || dateStr === '-') return new Date('');
             
-            str = str.replace(/\//g, '-');
-            let parts = str.split('-');
+            // 1. Remove the time portion (e.g., "13:55:26") so we only compare the pure date
+            let dateOnly = String(dateStr).split('T')[0].split(' ')[0].trim();
+            dateOnly = dateOnly.replace(/\//g, '-');
+            
+            let parts = dateOnly.split('-');
+            
+            // 2. Safely parse based on YYYY-MM-DD or DD-MM-YYYY
             if (parts.length === 3) {
                 if (parts[0].length === 4) { 
+                    // Format: YYYY-MM-DD
                     return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
                 } else if (parts[2].length === 4) { 
+                    // Format: DD-MM-YYYY (India standard format)
                     return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
                 }
             }
+            
+            // Fallback native parse
+            let d = new Date(dateOnly);
+            if (!isNaN(d.getTime())) return d;
+            
             return new Date(dateStr); 
         }
-
         window.addEventListener('popstate', (e) => {
             const state = e.state;
             closeAllModals();
@@ -1150,13 +1387,17 @@
             
             let otVal = 0;
             if (['COMPANY', 'OPERATOR'].includes(String(typeStr).toUpperCase().trim())) {
-                if (dutyVal >= 9) {
-                    let isSunday = false;
-                    try { 
-                        const d = parseCustomDate(dateStr); 
-                        if(!isNaN(d.getTime())) isSunday = d.getDay() === 0; 
-                    } catch(e) {}
-                    otVal = isSunday ? dutyVal : (dutyVal - 8);
+                let isSunday = false;
+                try { 
+                    const d = parseCustomDate(dateStr); 
+                    if(!isNaN(d.getTime())) isSunday = d.getDay() === 0; 
+                } catch(e) {}
+                
+                // NEW SUNDAY LOGIC: If Sunday, all duty is OT. If not, only duty > 8 is OT.
+                if (isSunday) {
+                    otVal = dutyVal; 
+                } else if (dutyVal >= 9) {
+                    otVal = dutyVal - 8;
                 }
             }
             return { dutyVal, otVal };
@@ -2699,7 +2940,475 @@
                 if(document.getElementById('md-month-op-ot')) document.getElementById('md-month-op-ot').textContent = fmtHrs(monthOperatorOT) + ' h';
             }
         }
+// ================= DISPENSING SECTION LOGIC =================
+        let rawPlanData = []; 
+        let rawLogData = [];  
 
+        function updateDispensingOperatorBadge() {
+            const opDiv = document.getElementById('disp-operator-badge');
+            const opName = document.getElementById('disp-operator-name');
+            const currentOp = liveActiveWorkers.find(w => w.section === 'Dispensing');
+            if (currentOp) {
+                opName.textContent = currentOp.name;
+                opDiv.classList.remove('hidden');
+                opDiv.classList.add('flex');
+            } else {
+                opDiv.classList.add('hidden');
+                opDiv.classList.remove('flex');
+            }
+        }
+
+        async function loadDispensingDashboard() {
+            const loader = document.getElementById('disp-loading-indicator');
+            if(loader) loader.classList.remove('hidden');
+            
+            const todayStr = getProductionDate();
+            if(!document.getElementById('disp-filter-from').value) document.getElementById('disp-filter-from').value = todayStr;
+            if(!document.getElementById('disp-filter-to').value) document.getElementById('disp-filter-to').value = todayStr;
+            
+            updateDispensingOperatorBadge();
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ action: "get_dispensing_dashboard" })
+                });
+                const data = JSON.parse(await res.text());
+                
+                if (data.status === "success") {
+                    rawPlanData = data.planData.length > 1 ? data.planData.slice(1) : [];
+                    rawLogData = data.logData.length > 1 ? data.logData.slice(1) : [];
+                    filterAndRenderDispensing();
+                }
+            } catch (e) {
+                showToast('error', 'Failed to sync live data');
+            } finally {
+                if(loader) loader.classList.add('hidden');
+            }
+        }
+
+       function filterAndRenderDispensing() {
+            const fDateStr = document.getElementById('disp-filter-from').value;
+            const tDateStr = document.getElementById('disp-filter-to').value;
+            
+            let fDate = fDateStr ? new Date(fDateStr) : null; if(fDate) fDate.setHours(0,0,0,0);
+            let tDate = tDateStr ? new Date(tDateStr) : null; if(tDate) tDate.setHours(23,59,59,999);
+
+            const filteredPlans = rawPlanData.filter(p => {
+                try { const d = parseCustomDate(p[0]); return d >= fDate && d <= tDate; } catch(e){ return true; }
+            });
+
+            const filteredLogs = rawLogData.filter(l => {
+                try { const d = parseCustomDate(l[0]); return d >= fDate && d <= tDate; } catch(e){ return true; }
+            });
+
+            dispActivePlan = filteredPlans.map(p => {
+                const batch = p[3]; const prod = p[2]; const tQty = parseFloat(p[4]) || 0;
+                const batchLogs = filteredLogs.filter(l => l[3] == batch && l[2] == prod);
+                
+                let currentRunning = 0;
+                let totalCompleted = 0;
+                let logStartTime = "-";
+                let logStopTime = "-";
+                
+                batchLogs.forEach((l, i) => {
+                    const comp = parseFloat(l[6]) || 0; 
+                    const curr = parseFloat(l[4]) || 0; 
+                    totalCompleted += comp;
+                    
+                    // Agar koi stop time nahi hai, iska matlab chunk abhi chal raha hai
+                    if (!l[8]) currentRunning += curr; 
+
+                    if (i === 0) logStartTime = `${l[0] || ''} ${l[7] || ''}`.trim(); 
+                    if (l[8] && String(l[8]).trim() !== '') {
+                        logStopTime = `${l[0] || ''} ${l[8] || ''}`.trim();
+                    }
+                });
+                
+                let remQty = tQty - totalCompleted;
+                if (remQty <= 0) { remQty = 0; }
+                
+                // NEW STRICT STATUS LOGIC
+                let status = 'pending';
+                if (currentRunning > 0) {
+                    status = 'running'; // Agar koi bhi chunk chal raha hai
+                } else if (remQty <= 0 && batchLogs.length > 0) {
+                    status = 'completed'; // Agar saari quantity khatam ho gayi hai
+                } 
+                // Agar remaining quantity bachi hai aur kuch running nahi hai, toh yeh by default 'pending' rahega 
+                // jisse yeh "Add Entry Row" dropdown mein wapas aayega.
+
+                let finalStart = (p[6] && p[7]) ? `${p[6]} ${p[7]}` : logStartTime;
+                let finalStop = (p[8] && p[9]) ? `${p[8]} ${p[9]}` : (status === 'completed' ? logStopTime : '-');
+                
+                return {
+                    id: p[1], prod: prod, batch: batch, qty: tQty, lots: p[5], 
+                    status: status, runningQty: currentRunning, completedQty: totalCompleted, remQty: remQty,
+                    start: finalStart, stop: finalStop,
+                    rawStartD: p[6]||'', rawStartT: p[7]||'', rawStopD: p[8]||'', rawStopT: p[9]||''
+                };
+            });
+            
+            renderDispensingSequence();
+            renderDispensingLogs(filteredLogs);
+        }
+
+        document.getElementById('disp-filter-from')?.addEventListener('change', filterAndRenderDispensing);
+        document.getElementById('disp-filter-to')?.addEventListener('change', filterAndRenderDispensing);
+
+        function renderDispensingSequence() {
+            const tbody = document.getElementById('disp-plan-sequence-tbody');
+            const tfoot = document.getElementById('disp-sequence-tfoot');
+            if(!tbody || !tfoot) return;
+            
+            let gtTotal = 0, gtRun = 0, gtComp = 0, gtRem = 0;
+
+            if(dispActivePlan.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" class="text-center py-6 text-slate-400 italic">No plan found for selected dates.</td></tr>';
+                tfoot.classList.add('hidden');
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            tfoot.classList.remove('hidden');
+
+            dispActivePlan.forEach((item, idx) => {
+                gtTotal += item.qty; gtRun += item.runningQty; gtComp += item.completedQty; gtRem += item.remQty;
+
+                let statusBadge = `<span class="bg-amber-100 text-amber-800 px-2 py-1 rounded text-[10px] font-bold">PENDING</span>`;
+                if(item.status === 'running') statusBadge = `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-[10px] font-bold animate-pulse ring-1 ring-blue-300">RUNNING</span>`;
+                if(item.status === 'completed') statusBadge = `<span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded text-[10px] font-bold">COMPLETED</span>`;
+
+                const isAdmin = currentUser && currentUser.role === 'Admin';
+                const actionBtns = isAdmin ? `
+                    <div class="flex justify-center gap-1 text-base">
+                        <button onclick="openEditPlanModal('${item.id}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded transition"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteDispensingPlan('${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 px-2 py-1 rounded transition"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                ` : '-';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-4 py-2 font-bold text-slate-400">${idx+1}</td>
+                        <td class="px-4 py-2 font-bold text-slate-800">${item.prod}</td>
+                        <td class="px-4 py-2 font-mono text-slate-600 text-xs">${item.batch}</td>
+                        <td class="px-4 py-2 text-center font-bold text-slate-700">${item.qty} kg</td>
+                        <td class="px-4 py-2 text-center font-bold text-blue-600 bg-blue-50/30">${item.runningQty} kg</td>
+                        <td class="px-4 py-2 text-center font-bold text-emerald-600 bg-emerald-50/30">${item.completedQty} kg</td>
+                        <td class="px-4 py-2 text-center font-bold text-orange-600 bg-orange-50/30">${item.remQty} kg</td>
+                        <td class="px-4 py-2 text-center font-mono text-[10px] text-slate-500 whitespace-pre-wrap max-w-[80px] leading-tight">${item.start}</td>
+                        <td class="px-4 py-2 text-center font-mono text-[10px] text-slate-500 whitespace-pre-wrap max-w-[80px] leading-tight">${item.stop}</td>
+                        <td class="px-4 py-2 text-center">${statusBadge}</td>
+                        <td class="px-4 py-2 text-center">${actionBtns}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('disp-gt-total').textContent = gtTotal + " kg";
+            document.getElementById('disp-gt-running').textContent = gtRun + " kg";
+            document.getElementById('disp-gt-comp').textContent = gtComp + " kg";
+            document.getElementById('disp-gt-rem').textContent = gtRem + " kg";
+        }
+
+        window.openEditPlanModal = function(planId) {
+            const item = dispActivePlan.find(p => p.id == planId);
+            if(!item) return;
+            
+            document.getElementById('edit-plan-id').value = item.id;
+            document.getElementById('edit-plan-prod').value = item.prod;
+            document.getElementById('edit-plan-batch').value = item.batch;
+            document.getElementById('edit-plan-qty').value = item.qty;
+            
+            const fmtDate = (dStr) => {
+                if(!dStr) return '';
+                try {
+                    const d = parseCustomDate(dStr);
+                    if(isNaN(d.getTime())) return '';
+                    return d.toISOString().split('T')[0];
+                } catch(e) { return ''; }
+            };
+
+            document.getElementById('edit-plan-start-date').value = fmtDate(item.rawStartD);
+            document.getElementById('edit-plan-start-time').value = item.rawStartT || '';
+            document.getElementById('edit-plan-stop-date').value = fmtDate(item.rawStopD);
+            document.getElementById('edit-plan-stop-time').value = item.rawStopT || '';
+
+            setModalVisible('disp-edit-plan-modal', 'disp-edit-modal-content', true);
+        };
+
+        document.getElementById('btn-close-edit-plan')?.addEventListener('click', () => setModalVisible('disp-edit-plan-modal', 'disp-edit-modal-content', false));
+
+        document.getElementById('disp-edit-plan-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-edit-plan');
+            setBtnLoading(btn, document.getElementById('edit-plan-icon'), document.getElementById('edit-plan-spinner'), document.getElementById('edit-plan-text'), true, "Update Plan");
+            
+            const payload = {
+                action: "edit_dispensing_plan",
+                planId: document.getElementById('edit-plan-id').value,
+                product: document.getElementById('edit-plan-prod').value,
+                batch: document.getElementById('edit-plan-batch').value,
+                qty: document.getElementById('edit-plan-qty').value,
+                startDate: document.getElementById('edit-plan-start-date').value,
+                startTime: document.getElementById('edit-plan-start-time').value,
+                stopDate: document.getElementById('edit-plan-stop-date').value,
+                stopTime: document.getElementById('edit-plan-stop-time').value
+            };
+
+            try {
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                const data = JSON.parse(await res.text());
+                if (data.status === "success") {
+                    showToast('success', 'Plan Updated!');
+                    setModalVisible('disp-edit-plan-modal', 'disp-edit-modal-content', false);
+                    await loadDispensingDashboard();
+                } else showToast('error', data.message);
+            } catch(e) { showToast('error', 'Connection error'); }
+            finally { setBtnLoading(btn, document.getElementById('edit-plan-icon'), document.getElementById('edit-plan-spinner'), document.getElementById('edit-plan-text'), false, "Update Plan"); }
+        });
+
+        window.deleteDispensingPlan = async function(planId) {
+            if(!confirm("Are you sure you want to delete this plan?")) return;
+            try {
+                const res = await fetch(API_URL, {
+                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ action: "delete_dispensing_plan", planId: planId })
+                });
+                const data = JSON.parse(await res.text());
+                if (data.status === "success") {
+                    showToast('success', 'Plan Deleted!');
+                    await loadDispensingDashboard();
+                } else showToast('error', data.message || 'Delete failed');
+            } catch(e) { showToast('error', 'Connection error'); }
+        };
+
+        function renderDispensingLogs(logs) {
+            const tbody = document.getElementById('disp-entry-tbody');
+            tbody.innerHTML = '';
+            
+            logs.forEach(log => {
+                const isComplete = log[8] && String(log[8]).trim() !== ''; 
+                
+                if (!isComplete) {
+                    const tr = document.createElement('tr');
+                    tr.className = "bg-blue-50/20 hover:bg-slate-50 transition-colors";
+                    tr.innerHTML = `
+                        <td class="px-2 py-2 text-xs font-semibold text-slate-500">${log[1]}</td>
+                        <td class="px-2 py-2 font-bold text-slate-800 text-xs">${log[2]}</td>
+                        <td class="px-2 py-2 font-mono text-slate-600 text-xs">${log[3]}</td>
+                        <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[9]}</td>
+                        <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[10]}</td>
+                        <td class="px-2 py-2 text-center font-bold text-blue-700 bg-white rounded shadow-sm">${log[4]}</td>
+                        <td class="px-2 py-2 text-center font-bold text-orange-600 font-mono">${log[5]}</td>
+                        <td class="px-2 py-2"><input type="number" class="disp-comp-update dashboard-input bg-white border-2 border-emerald-400 rounded p-1.5 text-xs w-20 text-center font-bold text-emerald-700 shadow-inner" placeholder="Amt Done"></td>
+                        <td class="px-2 py-2 text-center font-mono text-xs bg-slate-100 rounded">${log[7]}</td>
+                        <td class="px-2 py-2"><input type="text" class="disp-stop-update dashboard-input bg-white border-2 border-blue-400 rounded p-1.5 text-xs w-16 text-center shadow-inner" placeholder="HH:MM" maxlength="5"></td>
+                        <td class="px-2 py-2 text-center">
+                            <button type="button" class="btn-update-log text-white bg-blue-500 hover:bg-blue-600 px-3 py-1.5 rounded text-xs font-bold transition shadow-sm">Update</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+
+                    const compInput = tr.querySelector('.disp-comp-update');
+                    const stopInput = tr.querySelector('.disp-stop-update');
+                    const updateBtn = tr.querySelector('.btn-update-log');
+
+                    const formatTime = (e) => {
+                        let val = e.target.value.replace(/[^0-9]/g, ''); 
+                        if (val.length >= 3) val = val.substring(0, 2) + ':' + val.substring(2, 4);
+                        e.target.value = val;
+                    };
+                    stopInput.addEventListener('input', formatTime);
+
+                    updateBtn.addEventListener('click', async () => {
+                        if(!compInput.value || !stopInput.value) { showToast('error', 'Enter Completed Qty and Stop Time'); return; }
+                        updateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; updateBtn.disabled = true;
+                        
+                        try {
+                            const payload = { 
+                                action: 'save_dispensing_entry', 
+                                isUpdate: true, 
+                                product: log[2], 
+                                batch: log[3], 
+                                startTime: log[7], 
+                                completedQty: compInput.value, 
+                                stopTime: stopInput.value 
+                            };
+                            const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                            const data = JSON.parse(await res.text());
+                            if (data.status === "success") {
+                                showToast('success', 'Run Completed!');
+                                await loadDispensingDashboard(); 
+                            } else {
+                                showToast('error', data.message || "Failed."); updateBtn.innerHTML = 'Update'; updateBtn.disabled = false;
+                            }
+                        } catch(e) { showToast('error', 'Error'); updateBtn.innerHTML = 'Update'; updateBtn.disabled = false; }
+                    });
+                } else {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition-colors opacity-70">
+                            <td class="px-2 py-2 text-xs font-semibold text-slate-500">${log[1]}</td>
+                            <td class="px-2 py-2 font-bold text-slate-800 text-xs">${log[2]}</td>
+                            <td class="px-2 py-2 font-mono text-slate-600 text-xs">${log[3]}</td>
+                            <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[9]}</td>
+                            <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[10]}</td>
+                            <td class="px-2 py-2 text-center font-bold text-blue-700">${log[4]}</td>
+                            <td class="px-2 py-2 text-center font-bold text-orange-600 font-mono">${log[5]}</td>
+                            <td class="px-2 py-2 text-center font-bold text-emerald-700 bg-emerald-50/50">${log[6]}</td>
+                            <td class="px-2 py-2 text-center font-mono text-xs text-slate-600">${log[7]}</td>
+                            <td class="px-2 py-2 text-center font-mono text-xs text-slate-600">${log[8]}</td>
+                            <td class="px-2 py-2 text-center text-emerald-500"><i class="fa-solid fa-circle-check"></i></td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+
+        const closeDispensing = () => {
+            setModalVisible('dispensing-modal', 'dispensing-modal-content', false);
+            history.back();
+        };
+        document.getElementById('btn-close-dispensing')?.addEventListener('click', closeDispensing);
+        document.getElementById('dispensing-modal-bg')?.addEventListener('click', closeDispensing);
+
+        document.getElementById('btn-prod-dispensing')?.addEventListener('click', () => {
+            history.pushState({ modal: 'dispensing' }, '', '#dispensing');
+            setModalVisible('dispensing-modal', 'dispensing-modal-content', true);
+            
+            if (currentUser && currentUser.role === 'Admin') document.getElementById('btn-disp-upload-plan')?.classList.remove('hidden');
+            else document.getElementById('btn-disp-upload-plan')?.classList.add('hidden');
+            
+            loadDispensingDashboard();
+        });
+
+        document.getElementById('btn-disp-upload-plan')?.addEventListener('click', () => {
+            dispTempUpload = []; renderDispUpList(); setModalVisible('disp-upload-modal', 'disp-upload-modal-content', true);
+        });
+        document.getElementById('btn-close-disp-upload')?.addEventListener('click', () => setModalVisible('disp-upload-modal', 'disp-upload-modal-content', false));
+
+        document.getElementById('btn-disp-up-add')?.addEventListener('click', () => {
+            const prod = document.getElementById('disp-up-prod').value.trim(); const batch = document.getElementById('disp-up-batch').value.trim();
+            const qty = document.getElementById('disp-up-qty').value; const lots = document.getElementById('disp-up-lots').value;
+            if(!prod || !batch || !qty || !lots) { showToast('error', 'Fill all product details'); return; }
+            dispTempUpload.push({ id: Date.now(), prod, batch, qty, lots, status: 'pending' });
+            
+            document.getElementById('disp-up-prod').value = ''; document.getElementById('disp-up-batch').value = '';
+            document.getElementById('disp-up-qty').value = ''; document.getElementById('disp-up-lots').value = '';
+            renderDispUpList();
+        });
+
+        function renderDispUpList() {
+            const list = document.getElementById('disp-up-list'); list.innerHTML = '';
+            if(dispTempUpload.length === 0) { list.innerHTML = '<li class="text-xs text-slate-400 italic p-2">List is empty.</li>'; return; }
+            dispTempUpload.forEach((item, idx) => {
+                list.innerHTML += `<li class="bg-white p-2 rounded border border-slate-200 flex justify-between items-center text-sm shadow-sm">
+                        <div><strong>${idx+1}. ${item.prod}</strong> (Batch: ${item.batch}) - ${item.qty}kg, ${item.lots} Lots</div>
+                        <button onclick="removeDispTemp(${idx})" class="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
+                    </li>`;
+            });
+        }
+        window.removeDispTemp = function(idx) { dispTempUpload.splice(idx, 1); renderDispUpList(); };
+
+        document.getElementById('btn-disp-save-plan')?.addEventListener('click', async () => {
+            if(dispTempUpload.length === 0) { showToast('error', 'Cannot save empty plan'); return; }
+            const btn = document.getElementById('btn-disp-save-plan');
+            setBtnLoading(btn, document.getElementById('disp-up-save-icon'), document.getElementById('disp-up-save-spinner'), document.getElementById('disp-up-save-text'), true, "Save Final Plan");
+            try {
+                const payload = { action: "save_dispensing_plan", planData: dispTempUpload };
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                const data = JSON.parse(await res.text());
+                if (data.status === "success") {
+                    showToast('success', 'Plan Saved to Google Sheets!');
+                    setModalVisible('disp-upload-modal', 'disp-upload-modal-content', false);
+                    await loadDispensingDashboard(); 
+                } else showToast('error', data.message || "Failed to save plan.");
+            } catch(e) { showToast('error', 'Connection Error'); } 
+            finally { setBtnLoading(btn, document.getElementById('disp-up-save-icon'), document.getElementById('disp-up-save-spinner'), document.getElementById('disp-up-save-text'), false, "Save Final Plan"); }
+        });
+
+        // Add Brand New Manual Row for chunk starts
+        document.getElementById('btn-disp-add-row')?.addEventListener('click', () => {
+            const tbody = document.getElementById('disp-entry-tbody');
+            let optionsHtml = '<option value="" disabled selected>Select Product...</option>';
+            dispActivePlan.forEach(p => { 
+                if(p.status !== 'completed') optionsHtml += `<option value="${p.id}">${p.prod} (${p.batch})</option>`; 
+            });
+
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-50 transition-colors";
+            tr.innerHTML = `
+                <td class="px-2 py-2 text-xs font-semibold text-slate-500">${currentUser.name}</td>
+                <td class="px-2 py-2"><select class="disp-prod-select dashboard-input w-full bg-slate-50 border border-slate-200 rounded p-1.5 text-xs text-slate-800 font-bold max-w-[140px] cursor-pointer">${optionsHtml}</select></td>
+                <td class="px-2 py-2"><input type="text" class="disp-batch dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-24 text-slate-600 font-mono" readonly></td>
+                <td class="px-2 py-2"><input type="text" class="disp-tqty dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-16 text-center text-slate-600 font-mono" readonly></td>
+                <td class="px-2 py-2"><input type="text" class="disp-tlots dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-16 text-center text-slate-600 font-mono" readonly></td>
+                <td class="px-2 py-2"><input type="number" class="disp-cqty dashboard-input bg-white border-2 border-blue-300 focus:border-blue-500 rounded p-1.5 text-xs w-20 text-center font-bold text-blue-700 transition-colors" placeholder="e.g. 500"></td>
+                <td class="px-2 py-2"><input type="text" class="disp-rem dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-20 text-center font-bold text-orange-600 font-mono" readonly placeholder="Auto"></td>
+                <td class="px-2 py-2 text-center text-xs text-slate-400 italic">Pending</td>
+                <td class="px-2 py-2"><input type="text" class="disp-start dashboard-input bg-white border border-slate-200 rounded p-1.5 text-xs w-16 text-center" value="${getCurrentTimeHHMM()}" placeholder="HH:MM" maxlength="5"></td>
+                <td class="px-2 py-2"><input type="text" class="disp-stop dashboard-input bg-slate-100 border border-slate-100 rounded p-1.5 text-xs w-16 text-center cursor-not-allowed" readonly placeholder="-"></td>
+                <td class="px-2 py-2 text-center">
+                    <button type="button" class="disp-save-btn text-white bg-emerald-500 hover:bg-emerald-600 px-3 py-1.5 rounded text-xs font-bold transition shadow-sm"><i class="fa-solid fa-play mr-1"></i> Start</button>
+                    <button type="button" onclick="this.closest('tr').remove()" class="text-slate-400 hover:text-red-500 hover:bg-red-50 px-2 py-1.5 rounded transition ml-1"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+
+            const selectEl = tr.querySelector('.disp-prod-select');
+            const batchEl = tr.querySelector('.disp-batch');
+            const tQtyEl = tr.querySelector('.disp-tqty');
+            const tLotsEl = tr.querySelector('.disp-tlots');
+            const cQtyEl = tr.querySelector('.disp-cqty');
+            const remEl = tr.querySelector('.disp-rem');
+            const startEl = tr.querySelector('.disp-start');
+            const saveBtn = tr.querySelector('.disp-save-btn');
+
+            let baseRemaining = 0;
+
+            selectEl.addEventListener('change', (e) => {
+                const product = dispActivePlan.find(p => p.id == e.target.value);
+                if(product) {
+                    batchEl.value = product.batch; tQtyEl.value = product.qty; tLotsEl.value = product.lots;
+                    baseRemaining = product.qty - product.completedQty; // calculate what is actually left over
+                    cQtyEl.value = ''; remEl.value = baseRemaining;
+                }
+            });
+
+            cQtyEl.addEventListener('input', () => {
+                const current = parseFloat(cQtyEl.value) || 0;
+                remEl.value = (baseRemaining > 0 && cQtyEl.value !== '') ? (baseRemaining - current) : baseRemaining;
+            });
+
+            const formatTime = (e) => {
+                let val = e.target.value.replace(/[^0-9]/g, ''); 
+                if (val.length >= 3) val = val.substring(0, 2) + ':' + val.substring(2, 4);
+                e.target.value = val;
+            };
+            startEl.addEventListener('input', formatTime);
+
+            saveBtn.addEventListener('click', async () => {
+                if(!selectEl.value || !cQtyEl.value || !startEl.value) { showToast('error', 'Select product, enter Current Qty and Start Time'); return; }
+                saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; saveBtn.disabled = true;
+                const product = dispActivePlan.find(p => p.id == selectEl.value);
+
+                const payload = { 
+                    action: 'save_dispensing_entry', isUpdate: false, loggedBy: currentUser.name, product: product.prod, 
+                    batch: batchEl.value, tQty: tQtyEl.value, tLots: tLotsEl.value,
+                    cQty: cQtyEl.value, remQty: remEl.value, startTime: startEl.value 
+                };
+
+                try {
+                    const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                    const data = JSON.parse(await res.text());
+                    if (data.status === "success") {
+                        showToast('success', 'Run Started!');
+                        await loadDispensingDashboard(); 
+                    } else { showToast('error', data.message || "Failed."); saveBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start'; saveBtn.disabled = false; }
+                } catch(e) { showToast('error', 'Connection Error'); saveBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start'; saveBtn.disabled = false; }
+            });
+        });
+        // ============================================================
+       
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
