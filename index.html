@@ -486,16 +486,21 @@
 
             <!-- ====== MODALS ====== -->
 
-           <!-- === DISPENSING MAIN MODAL === -->
+          <!-- === DISPENSING MAIN MODAL === -->
             <div id="dispensing-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
                 <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="dispensing-modal-bg"></div>
                 <div class="relative bg-white/95 backdrop-blur-3xl w-full h-full min-h-screen inset-0 rounded-none shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="dispensing-modal-content">
                     
+                    <!-- Header -->
                     <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between bg-white gap-3 sm:gap-4 shrink-0">
                         <div class="flex items-center gap-4">
                             <h3 class="text-lg sm:text-xl font-bold text-emerald-700 flex items-center gap-2">
                                 <i class="fa-solid fa-scale-balanced"></i> Dispensing Section
                             </h3>
+                            <div id="disp-operator-badge" class="hidden items-center gap-2 bg-emerald-100 border-2 border-emerald-300 text-emerald-900 px-4 py-1.5 rounded-xl shadow-md transition-all">
+                                <i class="fa-solid fa-user-gear text-lg"></i>
+                                <span class="text-sm font-black tracking-wide uppercase" id="disp-operator-name">Loading...</span>
+                            </div>
                         </div>
 
                         <div class="flex flex-wrap items-center gap-3">
@@ -507,55 +512,49 @@
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">To:</label>
                                 <input type="date" id="disp-filter-to" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-emerald-500/20">
                             </div>
-
                             <div id="disp-loading-indicator" class="hidden items-center gap-2 text-emerald-600 text-xs font-bold ml-2">
                                 <i class="fa-solid fa-circle-notch fa-spin"></i> Syncing...
                             </div>
-                            
-                            <!-- BIG Operator Badge -->
-                            <div id="disp-operator-badge" class="hidden items-center gap-2 bg-emerald-100 border-2 border-emerald-300 text-emerald-900 px-4 py-1.5 rounded-xl shadow-md ml-2 transition-all">
-                                <i class="fa-solid fa-user-gear text-lg"></i>
-                                <span class="text-sm font-black tracking-wide uppercase" id="disp-operator-name">Loading...</span>
-                            </div>
-
-                            <button id="btn-disp-upload-plan" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold shadow-md transition-all gap-2 items-center">
-                                <i class="fa-solid fa-file-arrow-up"></i> <span class="hidden sm:inline">Upload Plan</span>
+                            <button id="btn-disp-upload-plan" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all items-center gap-2">
+                                <i class="fa-solid fa-file-arrow-up"></i> <span>Upload Plan</span>
                             </button>
-                            <button id="btn-close-dispensing" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors" title="Close">
+                            <button id="btn-close-dispensing" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors" title="Back to Production">
                                 <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div class="flex-grow overflow-auto p-4 sm:p-6 flex flex-col gap-6">
-                        <!-- Tabular Sequence Display -->
+                    <!-- NEW BUTTON TABS -->
+                    <div class="flex bg-slate-100 p-3 gap-3 shrink-0 border-b border-slate-200">
+                        <button id="tab-disp-entry" class="bg-white shadow-md border border-slate-200 text-emerald-700 font-black text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-keyboard"></i> Dispensing Shift Data Entry
+                        </button>
+                        <button id="tab-disp-dash" class="text-slate-500 hover:bg-white hover:shadow border border-transparent hover:border-slate-200 hover:text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-chart-pie"></i> Dispensing Dashboard
+                        </button>
+                    </div>
+
+                  <!-- TAB 1: DATA ENTRY -->
+                    <div id="disp-data-entry-tab" class="flex-grow overflow-auto p-4 sm:p-6 flex flex-col gap-4">
+                        
+                        <!-- Tabular Sequence -->
                         <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col shrink-0">
-                            <div class="bg-slate-50 border-b border-slate-200 px-4 py-3">
-                                <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wider"><i class="fa-solid fa-list-ol mr-1 text-emerald-500"></i> Dispensing Plan Sequence</h4>
-                            </div>
-                            <div class="overflow-x-auto w-full max-h-[35vh] overflow-y-auto">
+                            <div class="bg-slate-50 border-b border-slate-200 px-4 py-3"><h4 class="text-sm font-bold text-slate-700 uppercase tracking-wider"><i class="fa-solid fa-list-ol mr-1 text-emerald-500"></i> Dispensing Plan Sequence</h4></div>
+                            <div class="overflow-x-auto overflow-y-auto w-full max-h-[25vh]">
                                 <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
-                                    <thead class="bg-white sticky top-0 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold z-10">
+                                    <thead class="bg-white sticky top-0 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold z-10 shadow-sm">
                                         <tr>
-                                            <th class="px-4 py-3">Seq</th>
-                                            <th class="px-4 py-3">Product Name</th>
-                                            <th class="px-4 py-3">Batch No</th>
-                                            <th class="px-4 py-3 text-center">Total Qty</th>
-                                            <th class="px-4 py-3 text-center text-blue-600">Running Qty</th>
-                                            <th class="px-4 py-3 text-center text-emerald-600">Completed Qty</th>
-                                            <th class="px-4 py-3 text-center text-orange-600">Remaining</th>
-                                            <th class="px-4 py-3 text-center">Start D&T</th>
-                                            <th class="px-4 py-3 text-center">Stop D&T</th>
-                                            <th class="px-4 py-3 text-center">Status</th>
-                                            <th class="px-4 py-3 text-center">Admin Actions</th>
+                                            <th class="px-4 py-3">Seq</th><th class="px-4 py-3">Product Name</th><th class="px-4 py-3">Batch No</th>
+                                            <th class="px-4 py-3 text-center">Total Qty</th><th class="px-4 py-3 text-center text-blue-600">Running Qty</th>
+                                            <th class="px-4 py-3 text-center text-emerald-600">Completed</th><th class="px-4 py-3 text-center text-orange-600">Remaining</th>
+                                            <th class="px-4 py-3 text-center">Start D&T</th><th class="px-4 py-3 text-center">Stop D&T</th>
+                                            <th class="px-4 py-3 text-center">Status</th><th class="px-4 py-3 text-center">Admin</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="disp-plan-sequence-tbody" class="divide-y divide-slate-100">
-                                        <tr><td colspan="11" class="text-center py-6 text-slate-400 italic">No plan found for selected dates.</td></tr>
-                                    </tbody>
+                                    <tbody id="disp-plan-sequence-tbody" class="divide-y divide-slate-100"></tbody>
                                     <tfoot class="bg-slate-50 border-t border-slate-200 font-black text-slate-800 sticky bottom-0 z-10 hidden" id="disp-sequence-tfoot">
                                         <tr>
-                                            <td colspan="3" class="px-4 py-3 text-right text-xs uppercase tracking-wider text-slate-500">Grand Totals:</td>
+                                            <td colspan="3" class="px-4 py-3 text-right text-xs uppercase text-slate-500">Grand Totals:</td>
                                             <td class="px-4 py-3 text-center text-slate-700" id="disp-gt-total">0 kg</td>
                                             <td class="px-4 py-3 text-center text-blue-700" id="disp-gt-running">0 kg</td>
                                             <td class="px-4 py-3 text-center text-emerald-700" id="disp-gt-comp">0 kg</td>
@@ -567,36 +566,158 @@
                             </div>
                         </div>
 
-                        <!-- Data Entry Table -->
-                        <div class="border border-slate-200 rounded-xl shadow-sm overflow-hidden flex-grow flex flex-col bg-white min-h-[300px]">
+                        <!-- Shift Entry Log -->
+                        <div class="border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col bg-white max-h-[35vh] shrink-0">
                             <div class="bg-emerald-50 border-b border-slate-200 px-4 py-3 flex justify-between items-center shrink-0">
                                 <h4 class="text-sm font-bold text-emerald-800"><i class="fa-solid fa-keyboard mr-1"></i> Shift Entry Log (Live)</h4>
-                                <button id="btn-disp-add-row" class="text-xs bg-white border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-lg hover:bg-emerald-100 font-bold transition-colors shadow-sm">
-                                    <i class="fa-solid fa-plus mr-1"></i> Add Entry Row
-                                </button>
+                                <button id="btn-disp-add-row" class="text-xs bg-white border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-lg hover:bg-emerald-100 font-bold transition-colors shadow-sm"><i class="fa-solid fa-plus mr-1"></i> Add Entry Row</button>
                             </div>
                             <div class="overflow-x-auto overflow-y-auto w-full h-full">
                                 <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
-                                    <thead class="bg-white sticky top-0 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider z-10 shadow-sm">
+                                    <thead class="bg-white sticky top-0 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold z-10 shadow-sm">
                                         <tr>
-                                            <th class="px-3 py-3">Logged By</th>
-                                            <th class="px-3 py-3">Product Name</th>
-                                            <th class="px-3 py-3">Batch No</th>
-                                            <th class="px-3 py-3 text-center">Total Qty</th>
-                                            <th class="px-3 py-3 text-center">Total Lot</th>
-                                            <th class="px-3 py-3 text-center text-blue-600">Current Qty</th>
+                                            <th class="px-3 py-3">Logged By</th><th class="px-3 py-3">Product Name</th><th class="px-3 py-3">Batch No</th>
+                                            <th class="px-3 py-3 text-center">Total Qty</th><th class="px-3 py-3 text-center">Total Lot</th>
                                             <th class="px-3 py-3 text-center text-orange-600">Remaining</th>
-                                            <th class="px-3 py-3 text-center text-emerald-600">Completed Qty</th>
-                                            <th class="px-3 py-3 text-center">Start Time</th>
-                                            <th class="px-3 py-3 text-center">Stop Time</th>
+                                            <th class="px-3 py-3 text-center text-blue-600 border-l border-slate-100">Current Qty</th>
+                                            <th class="px-3 py-3 text-center text-emerald-600 border-r border-slate-100">Completed Qty</th>
+                                            <th class="px-3 py-3 text-center">Start Time</th><th class="px-3 py-3 text-center">Stop Time</th>
                                             <th class="px-3 py-3 text-center">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="disp-entry-tbody" class="divide-y divide-slate-100">
-                                    </tbody>
+                                    <tbody id="disp-entry-tbody" class="divide-y divide-slate-100"></tbody>
                                 </table>
                             </div>
                         </div>
+
+                        <!-- Dispensing Breakdown -->
+                        <div class="border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col bg-white shrink-0">
+                            <div class="bg-red-50 border-b border-red-100 px-4 py-3 flex justify-between items-center shrink-0">
+                                <h4 class="text-sm font-bold text-red-800"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Dispensing Breakdown</h4>
+                                <button id="btn-disp-add-breakdown" class="text-xs bg-white border border-red-200 text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-100 font-bold transition-colors shadow-sm"><i class="fa-solid fa-plus mr-1"></i> Add Breakdown</button>
+                            </div>
+                            <div class="overflow-x-auto overflow-y-auto w-full min-h-[150px] max-h-[30vh]">
+                                <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
+                                    <thead class="bg-white sticky top-0 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold z-10 shadow-sm">
+                                        <tr><th class="px-4 py-3">Logged By</th><th class="px-4 py-3">Breakdown Type</th><th class="px-4 py-3">Details</th><th class="px-4 py-3 text-center">From (Date & Time)</th><th class="px-4 py-3 text-center">To (Date & Time)</th><th class="px-4 py-3 text-center text-red-600">Total Hrs</th><th class="px-4 py-3 text-center">Actions</th></tr>
+                                    </thead>
+                                    <tbody id="disp-breakdown-tbody" class="divide-y divide-slate-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: DASHBOARD -->
+                    <div id="disp-dashboard-tab" class="hidden flex-grow overflow-auto p-4 sm:p-6 bg-slate-50 flex-col gap-6">
+                        
+                        <!-- 4 DASHBOARD CARDS -->
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
+                            <div class="bg-white border-l-4 border-indigo-500 rounded-xl shadow-sm p-4 flex items-center justify-between">
+                                <div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Dispensing Plan</p><h4 class="text-2xl font-black text-indigo-700" id="dash-tot-plan-qty">0 kg</h4></div>
+                            </div>
+                            <div class="bg-white border-l-4 border-blue-500 rounded-xl shadow-sm p-4 flex items-center justify-between">
+                                <div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Running Plan</p><h4 class="text-2xl font-black text-blue-700" id="dash-tot-run-qty">0 kg</h4></div>
+                            </div>
+                            <div class="bg-white border-l-4 border-orange-500 rounded-xl shadow-sm p-4 flex items-center justify-between">
+                                <div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Remaining Plan</p><h4 class="text-2xl font-black text-orange-700" id="dash-tot-rem-qty">0 kg</h4></div>
+                            </div>
+                            <div class="bg-white border-l-4 border-emerald-500 rounded-xl shadow-sm p-4 flex items-center justify-between">
+                                <div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Completed Plan</p><h4 class="text-2xl font-black text-emerald-700" id="dash-tot-comp-qty">0 kg</h4></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Dashboard Active Plans -->
+                            <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-4">
+                                <h4 class="text-sm font-bold text-slate-700 mb-4 uppercase tracking-wider border-b pb-2"><i class="fa-solid fa-spinner text-blue-500 mr-1"></i> Active / Pending Plans</h4>
+                                <div id="dash-active-plans" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                            </div>
+                            <!-- Dashboard Speed Rate -->
+                            <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-4">
+                                <h4 class="text-sm font-bold text-slate-700 mb-4 uppercase tracking-wider border-b pb-2"><i class="fa-solid fa-gauge-high text-emerald-500 mr-1"></i> Dispensing Speed Rate (Completed)</h4>
+                                <div class="overflow-x-auto"><table class="w-full text-left text-xs text-slate-600 whitespace-nowrap"><thead class="bg-slate-50 text-[10px] uppercase font-bold text-slate-500"><tr><th class="px-2 py-2">Product</th><th class="px-2 py-2 text-center">Total Qty</th><th class="px-2 py-2 text-center">Total Time</th><th class="px-2 py-2 text-center text-emerald-600">Speed (kg/hr)</th></tr></thead><tbody id="dash-speed-tbody" class="divide-y divide-slate-100"></tbody><tfoot class="bg-slate-50 font-bold border-t border-slate-200" id="dash-speed-tfoot"></tfoot></table></div>
+                            </div>
+                            <!-- Dashboard Recent Breakdowns -->
+                            <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-4 lg:col-span-2">
+                                <h4 class="text-sm font-bold text-slate-700 mb-4 uppercase tracking-wider border-b pb-2"><i class="fa-solid fa-triangle-exclamation text-red-500 mr-1"></i> Recent Breakdowns</h4>
+                                <div id="dash-recent-breakdowns" class="flex flex-wrap gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === EDIT DISPENSING PLAN MODAL === -->
+            <div id="disp-edit-plan-modal" class="fixed inset-0 z-[80] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="disp-edit-modal-bg"></div>
+                <div class="relative bg-white w-full max-w-2xl mx-2 sm:mx-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="disp-edit-modal-content">
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-blue-50/50">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i> Edit Plan</h3>
+                        <button id="btn-close-edit-plan" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <form id="disp-edit-plan-form" class="grid grid-cols-2 gap-4">
+                            <input type="hidden" id="edit-plan-id">
+                            <div class="space-y-1 col-span-2 sm:col-span-1"><label class="text-xs font-semibold text-slate-700">Product Name</label><input type="text" id="edit-plan-prod" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="space-y-1 col-span-2 sm:col-span-1"><label class="text-xs font-semibold text-slate-700">Batch No.</label><input type="text" id="edit-plan-batch" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="space-y-1 col-span-2"><label class="text-xs font-semibold text-slate-700">Total Qty (kg)</label><input type="number" id="edit-plan-qty" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="col-span-2 pt-2 border-t border-slate-100"><p class="text-xs font-bold text-slate-400 mb-2 uppercase">Manual Time Override (Optional)</p></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Start Date</label><input type="date" id="edit-plan-start-date" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Start Time</label><input type="time" id="edit-plan-start-time" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Stop Date</label><input type="date" id="edit-plan-stop-date" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Stop Time</label><input type="time" id="edit-plan-stop-time" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="col-span-2 mt-2"><button type="submit" id="btn-save-edit-plan" class="w-full relative group rounded-xl bg-blue-600 text-white font-bold py-3 hover:bg-blue-700 disabled:opacity-70"><span class="flex justify-center gap-2"><i id="edit-plan-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i><span id="edit-plan-text">Update Plan</span></span></button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === EDIT DISPENSING PLAN MODAL === -->
+            <div id="disp-edit-plan-modal" class="fixed inset-0 z-[80] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="disp-edit-modal-bg"></div>
+                <div class="relative bg-white w-full max-w-2xl mx-2 sm:mx-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="disp-edit-modal-content">
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-blue-50/50">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i> Edit Plan</h3>
+                        <button id="btn-close-edit-plan" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <form id="disp-edit-plan-form" class="grid grid-cols-2 gap-4">
+                            <input type="hidden" id="edit-plan-id">
+                            <div class="space-y-1 col-span-2 sm:col-span-1"><label class="text-xs font-semibold text-slate-700">Product Name</label><input type="text" id="edit-plan-prod" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="space-y-1 col-span-2 sm:col-span-1"><label class="text-xs font-semibold text-slate-700">Batch No.</label><input type="text" id="edit-plan-batch" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="space-y-1 col-span-2"><label class="text-xs font-semibold text-slate-700">Total Qty (kg)</label><input type="number" id="edit-plan-qty" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="col-span-2 pt-2 border-t border-slate-100"><p class="text-xs font-bold text-slate-400 mb-2 uppercase">Manual Time Override (Optional)</p></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Start Date</label><input type="date" id="edit-plan-start-date" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Start Time</label><input type="time" id="edit-plan-start-time" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Stop Date</label><input type="date" id="edit-plan-stop-date" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Stop Time</label><input type="time" id="edit-plan-stop-time" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="col-span-2 mt-2"><button type="submit" id="btn-save-edit-plan" class="w-full relative group rounded-xl bg-blue-600 text-white font-bold py-3 hover:bg-blue-700 disabled:opacity-70"><span class="flex justify-center gap-2"><i id="edit-plan-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i><span id="edit-plan-text">Update Plan</span></span></button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === EDIT DISPENSING PLAN MODAL === -->
+            <div id="disp-edit-plan-modal" class="fixed inset-0 z-[80] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="disp-edit-modal-bg"></div>
+                <div class="relative bg-white w-full max-w-2xl mx-2 sm:mx-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="disp-edit-modal-content">
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-blue-50/50">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i> Edit Plan</h3>
+                        <button id="btn-close-edit-plan" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <form id="disp-edit-plan-form" class="grid grid-cols-2 gap-4">
+                            <input type="hidden" id="edit-plan-id">
+                            <div class="space-y-1 col-span-2 sm:col-span-1"><label class="text-xs font-semibold text-slate-700">Product Name</label><input type="text" id="edit-plan-prod" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="space-y-1 col-span-2 sm:col-span-1"><label class="text-xs font-semibold text-slate-700">Batch No.</label><input type="text" id="edit-plan-batch" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="space-y-1 col-span-2"><label class="text-xs font-semibold text-slate-700">Total Qty (kg)</label><input type="number" id="edit-plan-qty" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required></div>
+                            <div class="col-span-2 pt-2 border-t border-slate-100"><p class="text-xs font-bold text-slate-400 mb-2 uppercase">Manual Time Override (Optional)</p></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Start Date</label><input type="date" id="edit-plan-start-date" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Start Time</label><input type="time" id="edit-plan-start-time" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Stop Date</label><input type="date" id="edit-plan-stop-date" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="space-y-1 col-span-1"><label class="text-xs font-semibold text-slate-700">Stop Time</label><input type="time" id="edit-plan-stop-time" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm"></div>
+                            <div class="col-span-2 mt-2"><button type="submit" id="btn-save-edit-plan" class="w-full relative group rounded-xl bg-blue-600 text-white font-bold py-3 hover:bg-blue-700 disabled:opacity-70"><span class="flex justify-center gap-2"><i id="edit-plan-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i><span id="edit-plan-text">Update Plan</span></span></button></div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1790,13 +1911,9 @@ let dispActivePlan = [];
             }
         });
 
-        document.getElementById('btn-back-welcome-from-production')?.addEventListener('click', () => {
-            if (history.state && history.state.view === 'production') {
-                history.back();
-            } else {
-                history.pushState({ view: 'welcome' }, '', '#welcome');
-                switchToWelcomeView();
-            }
+       document.getElementById('btn-back-welcome-from-production')?.addEventListener('click', () => {
+            history.pushState({ view: 'welcome' }, '', '#welcome');
+            switchToWelcomeView();
         });
 
         document.getElementById('nav-brand')?.addEventListener('click', () => {
@@ -2941,21 +3058,23 @@ let dispActivePlan = [];
             }
         }
 // ================= DISPENSING SECTION LOGIC =================
-        let rawPlanData = []; 
-        let rawLogData = [];  
+        let rawPlanData = [], rawLogData = [], rawBdData = [];  
+
+        function formatDateTimeBold(dateStr) {
+            if (!dateStr || String(dateStr).trim() === '-') return '-';
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return `<span class="font-bold text-slate-700">${dateStr}</span>`;
+                const month = d.toLocaleString('en-US', { month: 'short' });
+                return `<span class="font-bold text-slate-800">${String(d.getDate()).padStart(2, '0')}-${month} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}</span>`;
+            } catch(e) { return `<span class="font-bold text-slate-700">${dateStr}</span>`; }
+        }
 
         function updateDispensingOperatorBadge() {
             const opDiv = document.getElementById('disp-operator-badge');
-            const opName = document.getElementById('disp-operator-name');
             const currentOp = liveActiveWorkers.find(w => w.section === 'Dispensing');
-            if (currentOp) {
-                opName.textContent = currentOp.name;
-                opDiv.classList.remove('hidden');
-                opDiv.classList.add('flex');
-            } else {
-                opDiv.classList.add('hidden');
-                opDiv.classList.remove('flex');
-            }
+            if (currentOp) { document.getElementById('disp-operator-name').textContent = currentOp.name; opDiv.classList.replace('hidden','flex');
+            } else opDiv.classList.replace('flex','hidden');
         }
 
         async function loadDispensingDashboard() {
@@ -2965,92 +3084,78 @@ let dispActivePlan = [];
             const todayStr = getProductionDate();
             if(!document.getElementById('disp-filter-from').value) document.getElementById('disp-filter-from').value = todayStr;
             if(!document.getElementById('disp-filter-to').value) document.getElementById('disp-filter-to').value = todayStr;
-            
             updateDispensingOperatorBadge();
 
             try {
-                const res = await fetch(API_URL, {
-                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({ action: "get_dispensing_dashboard" })
-                });
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "get_dispensing_dashboard" }) });
                 const data = JSON.parse(await res.text());
-                
                 if (data.status === "success") {
                     rawPlanData = data.planData.length > 1 ? data.planData.slice(1) : [];
                     rawLogData = data.logData.length > 1 ? data.logData.slice(1) : [];
+                    rawBdData = data.bdData ? (data.bdData.length > 1 ? data.bdData.slice(1) : []) : [];
                     filterAndRenderDispensing();
                 }
-            } catch (e) {
-                showToast('error', 'Failed to sync live data');
-            } finally {
-                if(loader) loader.classList.add('hidden');
-            }
+            } catch (e) { showToast('error', 'Failed to sync data'); } finally { if(loader) loader.classList.add('hidden'); }
         }
 
-       function filterAndRenderDispensing() {
+        function filterAndRenderDispensing() {
             const fDateStr = document.getElementById('disp-filter-from').value;
             const tDateStr = document.getElementById('disp-filter-to').value;
-            
             let fDate = fDateStr ? new Date(fDateStr) : null; if(fDate) fDate.setHours(0,0,0,0);
             let tDate = tDateStr ? new Date(tDateStr) : null; if(tDate) tDate.setHours(23,59,59,999);
 
-            const filteredPlans = rawPlanData.filter(p => {
-                try { const d = parseCustomDate(p[0]); return d >= fDate && d <= tDate; } catch(e){ return true; }
-            });
-
-            const filteredLogs = rawLogData.filter(l => {
-                try { const d = parseCustomDate(l[0]); return d >= fDate && d <= tDate; } catch(e){ return true; }
-            });
-
-            dispActivePlan = filteredPlans.map(p => {
+            dispActivePlan = rawPlanData.map((p, index) => {
                 const batch = p[3]; const prod = p[2]; const tQty = parseFloat(p[4]) || 0;
-                const batchLogs = filteredLogs.filter(l => l[3] == batch && l[2] == prod);
+                const batchLogs = rawLogData.filter(l => l[3] == batch && l[2] == prod);
                 
-                let currentRunning = 0;
-                let totalCompleted = 0;
-                let logStartTime = "-";
-                let logStopTime = "-";
+                let currentRunning = 0, totalCompleted = 0, logStartTime = "-", logStopTime = "-", isCompleted = false;
                 
                 batchLogs.forEach((l, i) => {
-                    const comp = parseFloat(l[6]) || 0; 
-                    const curr = parseFloat(l[4]) || 0; 
+                    const comp = parseFloat(l[6]) || 0; const curr = parseFloat(l[4]) || 0; 
                     totalCompleted += comp;
-                    
-                    // Agar koi stop time nahi hai, iska matlab chunk abhi chal raha hai
                     if (!l[8]) currentRunning += curr; 
-
-                    if (i === 0) logStartTime = `${l[0] || ''} ${l[7] || ''}`.trim(); 
-                    if (l[8] && String(l[8]).trim() !== '') {
-                        logStopTime = `${l[0] || ''} ${l[8] || ''}`.trim();
-                    }
+                    if (i === 0) logStartTime = l[7] ? String(l[7]).trim() : "-"; 
+                    if (l[8] && String(l[8]).trim() !== '') { logStopTime = String(l[8]).trim(); }
                 });
                 
-                let remQty = tQty - totalCompleted;
-                if (remQty <= 0) { remQty = 0; }
+                // NEW LOGIC: Remaining = Total - (Running + Completed)
+                let remQty = tQty - (totalCompleted + currentRunning);
+                if (remQty <= 0) remQty = 0;
                 
-                // NEW STRICT STATUS LOGIC
                 let status = 'pending';
-                if (currentRunning > 0) {
-                    status = 'running'; // Agar koi bhi chunk chal raha hai
-                } else if (remQty <= 0 && batchLogs.length > 0) {
-                    status = 'completed'; // Agar saari quantity khatam ho gayi hai
-                } 
-                // Agar remaining quantity bachi hai aur kuch running nahi hai, toh yeh by default 'pending' rahega 
-                // jisse yeh "Add Entry Row" dropdown mein wapas aayega.
+                if (currentRunning > 0) status = 'running';
+                else if (remQty === 0 && currentRunning === 0 && batchLogs.length > 0) status = 'completed';
 
                 let finalStart = (p[6] && p[7]) ? `${p[6]} ${p[7]}` : logStartTime;
                 let finalStop = (p[8] && p[9]) ? `${p[8]} ${p[9]}` : (status === 'completed' ? logStopTime : '-');
                 
                 return {
-                    id: p[1], prod: prod, batch: batch, qty: tQty, lots: p[5], 
+                    dbIndex: index + 2, id: p[1], prod: prod, batch: batch, qty: tQty, lots: p[5], planDateStr: p[0],
                     status: status, runningQty: currentRunning, completedQty: totalCompleted, remQty: remQty,
                     start: finalStart, stop: finalStop,
                     rawStartD: p[6]||'', rawStartT: p[7]||'', rawStopD: p[8]||'', rawStopT: p[9]||''
                 };
+            }).filter(item => {
+                if (item.status !== 'completed') return true; 
+                try { const d = parseCustomDate(item.planDateStr); return d >= fDate && d <= tDate; } catch(e){ return true; }
             });
             
+            const visibleBatches = dispActivePlan.map(p => p.batch);
+            const filteredLogs = rawLogData.filter((l, index) => {
+                l.dbIndex = index + 2; 
+                if(visibleBatches.includes(l[3])) return true;
+                try { const d = parseCustomDate(l[0]); return d >= fDate && d <= tDate; } catch(e){ return true; }
+            });
+
+            const filteredBds = rawBdData.filter((b, index) => {
+                b.dbIndex = index + 2;
+                try { const d = parseCustomDate(b[0]); return d >= fDate && d <= tDate; } catch(e){ return true; }
+            });
+
             renderDispensingSequence();
             renderDispensingLogs(filteredLogs);
+            renderDispensingBreakdowns(filteredBds);
+            renderDispensingDashboardUI(filteredLogs, filteredBds);
         }
 
         document.getElementById('disp-filter-from')?.addEventListener('change', filterAndRenderDispensing);
@@ -3062,33 +3167,19 @@ let dispActivePlan = [];
             if(!tbody || !tfoot) return;
             
             let gtTotal = 0, gtRun = 0, gtComp = 0, gtRem = 0;
-
-            if(dispActivePlan.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="11" class="text-center py-6 text-slate-400 italic">No plan found for selected dates.</td></tr>';
-                tfoot.classList.add('hidden');
-                return;
-            }
+            if(dispActivePlan.length === 0) { tbody.innerHTML = '<tr><td colspan="11" class="text-center py-6 text-slate-400 italic">No plan found.</td></tr>'; tfoot.classList.add('hidden'); return; }
             
-            tbody.innerHTML = '';
-            tfoot.classList.remove('hidden');
+            tbody.innerHTML = ''; tfoot.classList.remove('hidden');
 
             dispActivePlan.forEach((item, idx) => {
                 gtTotal += item.qty; gtRun += item.runningQty; gtComp += item.completedQty; gtRem += item.remQty;
-
                 let statusBadge = `<span class="bg-amber-100 text-amber-800 px-2 py-1 rounded text-[10px] font-bold">PENDING</span>`;
                 if(item.status === 'running') statusBadge = `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-[10px] font-bold animate-pulse ring-1 ring-blue-300">RUNNING</span>`;
                 if(item.status === 'completed') statusBadge = `<span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded text-[10px] font-bold">COMPLETED</span>`;
 
-                const isAdmin = currentUser && currentUser.role === 'Admin';
-                const actionBtns = isAdmin ? `
-                    <div class="flex justify-center gap-1 text-base">
-                        <button onclick="openEditPlanModal('${item.id}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded transition"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteDispensingPlan('${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 px-2 py-1 rounded transition"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                ` : '-';
+                const actionBtns = (currentUser && currentUser.role === 'Admin') ? `<div class="flex justify-center gap-1 text-base"><button onclick="openEditPlanModal('${item.id}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded"><i class="fa-solid fa-pen-to-square"></i></button><button onclick="deleteDispensingPlan('${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 px-2 py-1 rounded"><i class="fa-solid fa-trash"></i></button></div>` : '-';
 
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition-colors">
+                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-4 py-2 font-bold text-slate-400">${idx+1}</td>
                         <td class="px-4 py-2 font-bold text-slate-800">${item.prod}</td>
                         <td class="px-4 py-2 font-mono text-slate-600 text-xs">${item.batch}</td>
@@ -3096,43 +3187,22 @@ let dispActivePlan = [];
                         <td class="px-4 py-2 text-center font-bold text-blue-600 bg-blue-50/30">${item.runningQty} kg</td>
                         <td class="px-4 py-2 text-center font-bold text-emerald-600 bg-emerald-50/30">${item.completedQty} kg</td>
                         <td class="px-4 py-2 text-center font-bold text-orange-600 bg-orange-50/30">${item.remQty} kg</td>
-                        <td class="px-4 py-2 text-center font-mono text-[10px] text-slate-500 whitespace-pre-wrap max-w-[80px] leading-tight">${item.start}</td>
-                        <td class="px-4 py-2 text-center font-mono text-[10px] text-slate-500 whitespace-pre-wrap max-w-[80px] leading-tight">${item.stop}</td>
-                        <td class="px-4 py-2 text-center">${statusBadge}</td>
-                        <td class="px-4 py-2 text-center">${actionBtns}</td>
-                    </tr>
-                `;
+                        <td class="px-4 py-2 text-center font-mono text-[10px] text-slate-600 whitespace-pre-wrap leading-tight">${formatDateTimeBold(item.start)}</td>
+                        <td class="px-4 py-2 text-center font-mono text-[10px] text-slate-600 whitespace-pre-wrap leading-tight">${formatDateTimeBold(item.stop)}</td>
+                        <td class="px-4 py-2 text-center">${statusBadge}</td><td class="px-4 py-2 text-center">${actionBtns}</td>
+                    </tr>`;
             });
-
-            document.getElementById('disp-gt-total').textContent = gtTotal + " kg";
-            document.getElementById('disp-gt-running').textContent = gtRun + " kg";
-            document.getElementById('disp-gt-comp').textContent = gtComp + " kg";
-            document.getElementById('disp-gt-rem').textContent = gtRem + " kg";
+            document.getElementById('disp-gt-total').textContent = gtTotal + " kg"; document.getElementById('disp-gt-running').textContent = gtRun + " kg";
+            document.getElementById('disp-gt-comp').textContent = gtComp + " kg"; document.getElementById('disp-gt-rem').textContent = gtRem + " kg";
         }
 
         window.openEditPlanModal = function(planId) {
-            const item = dispActivePlan.find(p => p.id == planId);
-            if(!item) return;
-            
-            document.getElementById('edit-plan-id').value = item.id;
-            document.getElementById('edit-plan-prod').value = item.prod;
-            document.getElementById('edit-plan-batch').value = item.batch;
-            document.getElementById('edit-plan-qty').value = item.qty;
-            
-            const fmtDate = (dStr) => {
-                if(!dStr) return '';
-                try {
-                    const d = parseCustomDate(dStr);
-                    if(isNaN(d.getTime())) return '';
-                    return d.toISOString().split('T')[0];
-                } catch(e) { return ''; }
-            };
-
-            document.getElementById('edit-plan-start-date').value = fmtDate(item.rawStartD);
-            document.getElementById('edit-plan-start-time').value = item.rawStartT || '';
-            document.getElementById('edit-plan-stop-date').value = fmtDate(item.rawStopD);
-            document.getElementById('edit-plan-stop-time').value = item.rawStopT || '';
-
+            const item = dispActivePlan.find(p => p.id == planId); if(!item) return;
+            document.getElementById('edit-plan-id').value = item.id; document.getElementById('edit-plan-prod').value = item.prod;
+            document.getElementById('edit-plan-batch').value = item.batch; document.getElementById('edit-plan-qty').value = item.qty;
+            const fmtDate = (dStr) => { if(!dStr) return ''; try{ const d = parseCustomDate(dStr); if(isNaN(d.getTime())) return ''; return d.toISOString().split('T')[0]; }catch(e){return '';} };
+            document.getElementById('edit-plan-start-date').value = fmtDate(item.rawStartD); document.getElementById('edit-plan-start-time').value = item.rawStartT || '';
+            document.getElementById('edit-plan-stop-date').value = fmtDate(item.rawStopD); document.getElementById('edit-plan-stop-time').value = item.rawStopT || '';
             setModalVisible('disp-edit-plan-modal', 'disp-edit-modal-content', true);
         };
 
@@ -3140,238 +3210,163 @@ let dispActivePlan = [];
 
         document.getElementById('disp-edit-plan-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-save-edit-plan');
-            setBtnLoading(btn, document.getElementById('edit-plan-icon'), document.getElementById('edit-plan-spinner'), document.getElementById('edit-plan-text'), true, "Update Plan");
-            
-            const payload = {
-                action: "edit_dispensing_plan",
-                planId: document.getElementById('edit-plan-id').value,
-                product: document.getElementById('edit-plan-prod').value,
-                batch: document.getElementById('edit-plan-batch').value,
-                qty: document.getElementById('edit-plan-qty').value,
-                startDate: document.getElementById('edit-plan-start-date').value,
-                startTime: document.getElementById('edit-plan-start-time').value,
-                stopDate: document.getElementById('edit-plan-stop-date').value,
-                stopTime: document.getElementById('edit-plan-stop-time').value
-            };
-
+            const btn = document.getElementById('btn-save-edit-plan'); setBtnLoading(btn, null, document.getElementById('edit-plan-spinner'), document.getElementById('edit-plan-text'), true, "Update Plan");
+            const payload = { action: "edit_dispensing_plan", planId: document.getElementById('edit-plan-id').value, product: document.getElementById('edit-plan-prod').value, batch: document.getElementById('edit-plan-batch').value, qty: document.getElementById('edit-plan-qty').value, startDate: document.getElementById('edit-plan-start-date').value, startTime: document.getElementById('edit-plan-start-time').value, stopDate: document.getElementById('edit-plan-stop-date').value, stopTime: document.getElementById('edit-plan-stop-time').value };
             try {
                 const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-                const data = JSON.parse(await res.text());
-                if (data.status === "success") {
-                    showToast('success', 'Plan Updated!');
-                    setModalVisible('disp-edit-plan-modal', 'disp-edit-modal-content', false);
-                    await loadDispensingDashboard();
-                } else showToast('error', data.message);
-            } catch(e) { showToast('error', 'Connection error'); }
-            finally { setBtnLoading(btn, document.getElementById('edit-plan-icon'), document.getElementById('edit-plan-spinner'), document.getElementById('edit-plan-text'), false, "Update Plan"); }
+                if (JSON.parse(await res.text()).status === "success") { showToast('success', 'Plan Updated!'); setModalVisible('disp-edit-plan-modal', 'disp-edit-modal-content', false); await loadDispensingDashboard(); }
+            } catch(e) {} finally { setBtnLoading(btn, null, document.getElementById('edit-plan-spinner'), document.getElementById('edit-plan-text'), false, "Update Plan"); }
         });
 
         window.deleteDispensingPlan = async function(planId) {
-            if(!confirm("Are you sure you want to delete this plan?")) return;
+            if(!confirm("Delete this plan?")) return;
             try {
-                const res = await fetch(API_URL, {
-                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({ action: "delete_dispensing_plan", planId: planId })
-                });
-                const data = JSON.parse(await res.text());
-                if (data.status === "success") {
-                    showToast('success', 'Plan Deleted!');
-                    await loadDispensingDashboard();
-                } else showToast('error', data.message || 'Delete failed');
-            } catch(e) { showToast('error', 'Connection error'); }
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "delete_dispensing_plan", planId: planId }) });
+                if (JSON.parse(await res.text()).status === "success") { showToast('success', 'Deleted!'); await loadDispensingDashboard(); }
+            } catch(e) {}
         };
 
         function renderDispensingLogs(logs) {
-            const tbody = document.getElementById('disp-entry-tbody');
-            tbody.innerHTML = '';
+            const tbody = document.getElementById('disp-entry-tbody'); tbody.innerHTML = '';
             
+            logs.sort((a, b) => {
+                const aComp = a[8] && String(a[8]).trim() !== ''; const bComp = b[8] && String(b[8]).trim() !== '';
+                if (!aComp && bComp) return -1; if (aComp && !bComp) return 1;
+                const timeA = new Date(a[7] || a[0]).getTime(); const timeB = new Date(b[7] || b[0]).getTime();
+                return timeB - timeA;
+            });
+
             logs.forEach(log => {
                 const isComplete = log[8] && String(log[8]).trim() !== ''; 
+                const dbIndex = log.dbIndex;
+                const tr = document.createElement('tr');
+                tr.className = isComplete ? "hover:bg-slate-50 transition-colors opacity-80" : "bg-blue-50/20 hover:bg-slate-50 transition-colors";
                 
+                const formatDatetimeForInput = (str) => { if(!str) return ''; try { const d = new Date(str); if(isNaN(d.getTime())) return ''; return d.toISOString().slice(0,16); } catch(e){return '';} };
+
                 if (!isComplete) {
-                    const tr = document.createElement('tr');
-                    tr.className = "bg-blue-50/20 hover:bg-slate-50 transition-colors";
+                    // Start Time and Current Qty are now LOCKED. Operator can only add Stop Time & Comp Qty.
                     tr.innerHTML = `
                         <td class="px-2 py-2 text-xs font-semibold text-slate-500">${log[1]}</td>
-                        <td class="px-2 py-2 font-bold text-slate-800 text-xs">${log[2]}</td>
-                        <td class="px-2 py-2 font-mono text-slate-600 text-xs">${log[3]}</td>
-                        <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[9]}</td>
-                        <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[10]}</td>
-                        <td class="px-2 py-2 text-center font-bold text-blue-700 bg-white rounded shadow-sm">${log[4]}</td>
+                        <td class="px-2 py-2 font-bold text-slate-800 text-xs">${log[2]}</td><td class="px-2 py-2 font-mono text-slate-600 text-xs">${log[3]}</td>
+                        <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[9]}</td><td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[10]}</td>
                         <td class="px-2 py-2 text-center font-bold text-orange-600 font-mono">${log[5]}</td>
-                        <td class="px-2 py-2"><input type="number" class="disp-comp-update dashboard-input bg-white border-2 border-emerald-400 rounded p-1.5 text-xs w-20 text-center font-bold text-emerald-700 shadow-inner" placeholder="Amt Done"></td>
-                        <td class="px-2 py-2 text-center font-mono text-xs bg-slate-100 rounded">${log[7]}</td>
-                        <td class="px-2 py-2"><input type="text" class="disp-stop-update dashboard-input bg-white border-2 border-blue-400 rounded p-1.5 text-xs w-16 text-center shadow-inner" placeholder="HH:MM" maxlength="5"></td>
+                        <td class="px-2 py-2 text-center font-bold text-blue-700 bg-blue-50 border-l border-slate-200">${log[4]}</td>
+                        <td class="px-2 py-2 text-center border-r border-slate-200"><input type="number" class="disp-comp-update dashboard-input bg-white border-2 border-emerald-400 rounded p-1.5 text-xs w-20 text-center font-bold text-emerald-700 shadow-inner" placeholder="Amt Done"></td>
+                        <td class="px-2 py-2 text-center font-mono text-[10px] bg-slate-50 text-slate-600 rounded">${formatDateTimeBold(log[7])}</td>
+                        <td class="px-2 py-2 text-center"><input type="datetime-local" class="disp-stop-update dashboard-input bg-white border-2 border-blue-400 rounded p-1.5 text-[10px] w-36 text-center shadow-inner"></td>
                         <td class="px-2 py-2 text-center">
-                            <button type="button" class="btn-update-log text-white bg-blue-500 hover:bg-blue-600 px-3 py-1.5 rounded text-xs font-bold transition shadow-sm">Update</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-
-                    const compInput = tr.querySelector('.disp-comp-update');
-                    const stopInput = tr.querySelector('.disp-stop-update');
-                    const updateBtn = tr.querySelector('.btn-update-log');
-
-                    const formatTime = (e) => {
-                        let val = e.target.value.replace(/[^0-9]/g, ''); 
-                        if (val.length >= 3) val = val.substring(0, 2) + ':' + val.substring(2, 4);
-                        e.target.value = val;
-                    };
-                    stopInput.addEventListener('input', formatTime);
-
-                    updateBtn.addEventListener('click', async () => {
-                        if(!compInput.value || !stopInput.value) { showToast('error', 'Enter Completed Qty and Stop Time'); return; }
-                        updateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; updateBtn.disabled = true;
-                        
-                        try {
-                            const payload = { 
-                                action: 'save_dispensing_entry', 
-                                isUpdate: true, 
-                                product: log[2], 
-                                batch: log[3], 
-                                startTime: log[7], 
-                                completedQty: compInput.value, 
-                                stopTime: stopInput.value 
-                            };
-                            const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-                            const data = JSON.parse(await res.text());
-                            if (data.status === "success") {
-                                showToast('success', 'Run Completed!');
-                                await loadDispensingDashboard(); 
-                            } else {
-                                showToast('error', data.message || "Failed."); updateBtn.innerHTML = 'Update'; updateBtn.disabled = false;
-                            }
-                        } catch(e) { showToast('error', 'Error'); updateBtn.innerHTML = 'Update'; updateBtn.disabled = false; }
-                    });
+                            <button type="button" class="btn-update-log text-white bg-blue-500 hover:bg-blue-600 px-3 py-1.5 rounded text-xs font-bold shadow-sm">Save</button>
+                        </td>`;
                 } else {
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition-colors opacity-70">
-                            <td class="px-2 py-2 text-xs font-semibold text-slate-500">${log[1]}</td>
-                            <td class="px-2 py-2 font-bold text-slate-800 text-xs">${log[2]}</td>
-                            <td class="px-2 py-2 font-mono text-slate-600 text-xs">${log[3]}</td>
-                            <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[9]}</td>
-                            <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[10]}</td>
-                            <td class="px-2 py-2 text-center font-bold text-blue-700">${log[4]}</td>
-                            <td class="px-2 py-2 text-center font-bold text-orange-600 font-mono">${log[5]}</td>
-                            <td class="px-2 py-2 text-center font-bold text-emerald-700 bg-emerald-50/50">${log[6]}</td>
-                            <td class="px-2 py-2 text-center font-mono text-xs text-slate-600">${log[7]}</td>
-                            <td class="px-2 py-2 text-center font-mono text-xs text-slate-600">${log[8]}</td>
-                            <td class="px-2 py-2 text-center text-emerald-500"><i class="fa-solid fa-circle-check"></i></td>
-                        </tr>
-                    `;
+                    tr.innerHTML = `
+                        <td class="px-2 py-2 text-xs font-semibold text-slate-500">${log[1]}</td>
+                        <td class="px-2 py-2 font-bold text-slate-800 text-xs">${log[2]}</td><td class="px-2 py-2 font-mono text-slate-600 text-xs">${log[3]}</td>
+                        <td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[9]}</td><td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[10]}</td>
+                        <td class="px-2 py-2 text-center font-bold text-orange-600 font-mono">${log[5]}</td>
+                        <td class="px-2 py-2 text-center font-bold text-blue-700 border-l border-slate-200">${log[4]}</td><td class="px-2 py-2 text-center font-bold text-emerald-700 border-r border-slate-200">${log[6]}</td>
+                        <td class="px-2 py-2 text-center font-mono text-[10px] text-slate-600">${formatDateTimeBold(log[7])}</td><td class="px-2 py-2 text-center font-mono text-[10px] text-slate-600">${formatDateTimeBold(log[8])}</td>
+                        <td class="px-2 py-2 text-center">
+                            <button type="button" class="btn-edit-log text-slate-400 hover:text-blue-500 px-2 py-1"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" class="btn-del-log text-slate-400 hover:text-red-500 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
+                        </td>`;
+                }
+                tbody.appendChild(tr);
+
+                const saveBtn = tr.querySelector('.btn-update-log');
+                const delBtn = tr.querySelector('.btn-del-log');
+                const editBtn = tr.querySelector('.btn-edit-log');
+
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', async () => {
+                        const compQ = tr.querySelector('.disp-comp-update').value;
+                        const stop = tr.querySelector('.disp-stop-update').value;
+                        if(!compQ || !stop) { showToast('error', 'Enter Completed Qty and Stop Time'); return; }
+                        saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; saveBtn.disabled = true;
+                        try {
+                            const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: 'edit_dispensing_log', rowIndex: dbIndex, cQty: log[4], compQty: compQ, start: log[7], stop: stop }) });
+                            if (JSON.parse(await res.text()).status === "success") { showToast('success', 'Updated!'); await loadDispensingDashboard(); }
+                        } catch(e) {}
+                    });
+                }
+                if (editBtn) {
+                    editBtn.addEventListener('click', () => {
+                        const cQtyHTML = `<input type="number" class="w-16 bg-white border border-slate-300 rounded p-1 text-center log-edit-cqty" value="${log[4]||0}">`;
+                        const compQtyHTML = `<input type="number" class="w-16 bg-white border border-emerald-300 rounded p-1 text-center log-edit-comp" value="${log[6]||0}">`;
+                        const startHTML = `<input type="datetime-local" class="w-36 bg-white border border-slate-300 rounded p-1 text-xs log-edit-start" value="${formatDatetimeForInput(log[7])}">`;
+                        const stopHTML = `<input type="datetime-local" class="w-36 bg-white border border-slate-300 rounded p-1 text-xs log-edit-stop" value="${formatDatetimeForInput(log[8])}">`;
+
+                        tr.innerHTML = `<td class="px-2 py-2 text-xs font-semibold text-slate-500">${log[1]}</td><td class="px-2 py-2 font-bold text-slate-800 text-xs">${log[2]}</td><td class="px-2 py-2 font-mono text-slate-600 text-xs">${log[3]}</td><td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[9]}</td><td class="px-2 py-2 text-center font-mono text-xs text-slate-500">${log[10]}</td><td class="px-2 py-2 text-center font-bold text-orange-600 font-mono">${log[5]}</td><td class="px-2 py-2 text-center border-l border-slate-200">${cQtyHTML}</td><td class="px-2 py-2 text-center border-r border-slate-200">${compQtyHTML}</td><td class="px-2 py-2 text-center">${startHTML}</td><td class="px-2 py-2 text-center">${stopHTML}</td><td class="px-2 py-2 text-center"><button type="button" class="btn-save-edit text-white bg-blue-500 hover:bg-blue-600 px-3 py-1.5 rounded text-xs font-bold shadow-sm">Save</button></td>`;
+                        tr.querySelector('.btn-save-edit').addEventListener('click', async (e) => {
+                            const btn = e.target; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+                            try {
+                                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: 'edit_dispensing_log', rowIndex: dbIndex, cQty: tr.querySelector('.log-edit-cqty').value, compQty: tr.querySelector('.log-edit-comp').value, start: tr.querySelector('.log-edit-start').value, stop: tr.querySelector('.log-edit-stop').value }) });
+                                if (JSON.parse(await res.text()).status === "success") { showToast('success', 'Updated!'); await loadDispensingDashboard(); }
+                            } catch(e) {}
+                        });
+                    });
+                }
+                if (delBtn) {
+                    delBtn.addEventListener('click', async () => {
+                        if(!confirm("Delete this log?")) return;
+                        try {
+                            const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: 'delete_dispensing_log', rowIndex: dbIndex }) });
+                            if (JSON.parse(await res.text()).status === "success") { showToast('success', 'Deleted!'); await loadDispensingDashboard(); }
+                        } catch(e) {}
+                    });
                 }
             });
         }
 
-        const closeDispensing = () => {
-            setModalVisible('dispensing-modal', 'dispensing-modal-content', false);
-            history.back();
-        };
-        document.getElementById('btn-close-dispensing')?.addEventListener('click', closeDispensing);
-        document.getElementById('dispensing-modal-bg')?.addEventListener('click', closeDispensing);
+        const btnTabEntry = document.getElementById('tab-disp-entry'); const btnTabDash = document.getElementById('tab-disp-dash');
+        const viewEntry = document.getElementById('disp-data-entry-tab'); const viewDash = document.getElementById('disp-dashboard-tab');
 
-        document.getElementById('btn-prod-dispensing')?.addEventListener('click', () => {
-            history.pushState({ modal: 'dispensing' }, '', '#dispensing');
-            setModalVisible('dispensing-modal', 'dispensing-modal-content', true);
-            
-            if (currentUser && currentUser.role === 'Admin') document.getElementById('btn-disp-upload-plan')?.classList.remove('hidden');
-            else document.getElementById('btn-disp-upload-plan')?.classList.add('hidden');
-            
-            loadDispensingDashboard();
+        btnTabEntry?.addEventListener('click', () => {
+            btnTabEntry.className = "bg-white shadow-md border border-slate-200 text-emerald-700 font-black text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2";
+            btnTabDash.className = "text-slate-500 hover:bg-white hover:shadow border border-transparent hover:border-slate-200 hover:text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2";
+            viewEntry.classList.remove('hidden'); viewEntry.classList.add('flex'); viewDash.classList.remove('flex'); viewDash.classList.add('hidden');
+        });
+        btnTabDash?.addEventListener('click', () => {
+            btnTabDash.className = "bg-white shadow-md border border-slate-200 text-emerald-700 font-black text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2";
+            btnTabEntry.className = "text-slate-500 hover:bg-white hover:shadow border border-transparent hover:border-slate-200 hover:text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2";
+            viewDash.classList.remove('hidden'); viewDash.classList.add('flex'); viewEntry.classList.remove('flex'); viewEntry.classList.add('hidden');
         });
 
-        document.getElementById('btn-disp-upload-plan')?.addEventListener('click', () => {
-            dispTempUpload = []; renderDispUpList(); setModalVisible('disp-upload-modal', 'disp-upload-modal-content', true);
-        });
-        document.getElementById('btn-close-disp-upload')?.addEventListener('click', () => setModalVisible('disp-upload-modal', 'disp-upload-modal-content', false));
-
-        document.getElementById('btn-disp-up-add')?.addEventListener('click', () => {
-            const prod = document.getElementById('disp-up-prod').value.trim(); const batch = document.getElementById('disp-up-batch').value.trim();
-            const qty = document.getElementById('disp-up-qty').value; const lots = document.getElementById('disp-up-lots').value;
-            if(!prod || !batch || !qty || !lots) { showToast('error', 'Fill all product details'); return; }
-            dispTempUpload.push({ id: Date.now(), prod, batch, qty, lots, status: 'pending' });
-            
-            document.getElementById('disp-up-prod').value = ''; document.getElementById('disp-up-batch').value = '';
-            document.getElementById('disp-up-qty').value = ''; document.getElementById('disp-up-lots').value = '';
-            renderDispUpList();
-        });
-
-        function renderDispUpList() {
-            const list = document.getElementById('disp-up-list'); list.innerHTML = '';
-            if(dispTempUpload.length === 0) { list.innerHTML = '<li class="text-xs text-slate-400 italic p-2">List is empty.</li>'; return; }
-            dispTempUpload.forEach((item, idx) => {
-                list.innerHTML += `<li class="bg-white p-2 rounded border border-slate-200 flex justify-between items-center text-sm shadow-sm">
-                        <div><strong>${idx+1}. ${item.prod}</strong> (Batch: ${item.batch}) - ${item.qty}kg, ${item.lots} Lots</div>
-                        <button onclick="removeDispTemp(${idx})" class="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
-                    </li>`;
-            });
-        }
-        window.removeDispTemp = function(idx) { dispTempUpload.splice(idx, 1); renderDispUpList(); };
-
-        document.getElementById('btn-disp-save-plan')?.addEventListener('click', async () => {
-            if(dispTempUpload.length === 0) { showToast('error', 'Cannot save empty plan'); return; }
-            const btn = document.getElementById('btn-disp-save-plan');
-            setBtnLoading(btn, document.getElementById('disp-up-save-icon'), document.getElementById('disp-up-save-spinner'), document.getElementById('disp-up-save-text'), true, "Save Final Plan");
-            try {
-                const payload = { action: "save_dispensing_plan", planData: dispTempUpload };
-                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-                const data = JSON.parse(await res.text());
-                if (data.status === "success") {
-                    showToast('success', 'Plan Saved to Google Sheets!');
-                    setModalVisible('disp-upload-modal', 'disp-upload-modal-content', false);
-                    await loadDispensingDashboard(); 
-                } else showToast('error', data.message || "Failed to save plan.");
-            } catch(e) { showToast('error', 'Connection Error'); } 
-            finally { setBtnLoading(btn, document.getElementById('disp-up-save-icon'), document.getElementById('disp-up-save-spinner'), document.getElementById('disp-up-save-text'), false, "Save Final Plan"); }
-        });
-
-        // Add Brand New Manual Row for chunk starts
         document.getElementById('btn-disp-add-row')?.addEventListener('click', () => {
             const tbody = document.getElementById('disp-entry-tbody');
             let optionsHtml = '<option value="" disabled selected>Select Product...</option>';
-            dispActivePlan.forEach(p => { 
-                if(p.status !== 'completed') optionsHtml += `<option value="${p.id}">${p.prod} (${p.batch})</option>`; 
-            });
+            dispActivePlan.forEach(p => { if(p.status !== 'completed') optionsHtml += `<option value="${p.id}">${p.prod} (${p.batch})</option>`; });
 
             const tr = document.createElement('tr');
-            tr.className = "hover:bg-slate-50 transition-colors";
+            tr.className = "bg-emerald-50/20 hover:bg-slate-50 transition-colors";
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             tr.innerHTML = `
                 <td class="px-2 py-2 text-xs font-semibold text-slate-500">${currentUser.name}</td>
-                <td class="px-2 py-2"><select class="disp-prod-select dashboard-input w-full bg-slate-50 border border-slate-200 rounded p-1.5 text-xs text-slate-800 font-bold max-w-[140px] cursor-pointer">${optionsHtml}</select></td>
-                <td class="px-2 py-2"><input type="text" class="disp-batch dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-24 text-slate-600 font-mono" readonly></td>
+                <td class="px-2 py-2"><select class="disp-prod-select dashboard-input w-full bg-white border border-emerald-300 rounded p-1.5 text-xs text-slate-800 font-bold max-w-[140px] cursor-pointer">${optionsHtml}</select></td>
+                <td class="px-2 py-2"><input type="text" class="disp-batch dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-20 text-slate-600 font-mono" readonly></td>
                 <td class="px-2 py-2"><input type="text" class="disp-tqty dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-16 text-center text-slate-600 font-mono" readonly></td>
                 <td class="px-2 py-2"><input type="text" class="disp-tlots dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-16 text-center text-slate-600 font-mono" readonly></td>
-                <td class="px-2 py-2"><input type="number" class="disp-cqty dashboard-input bg-white border-2 border-blue-300 focus:border-blue-500 rounded p-1.5 text-xs w-20 text-center font-bold text-blue-700 transition-colors" placeholder="e.g. 500"></td>
-                <td class="px-2 py-2"><input type="text" class="disp-rem dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-20 text-center font-bold text-orange-600 font-mono" readonly placeholder="Auto"></td>
-                <td class="px-2 py-2 text-center text-xs text-slate-400 italic">Pending</td>
-                <td class="px-2 py-2"><input type="text" class="disp-start dashboard-input bg-white border border-slate-200 rounded p-1.5 text-xs w-16 text-center" value="${getCurrentTimeHHMM()}" placeholder="HH:MM" maxlength="5"></td>
-                <td class="px-2 py-2"><input type="text" class="disp-stop dashboard-input bg-slate-100 border border-slate-100 rounded p-1.5 text-xs w-16 text-center cursor-not-allowed" readonly placeholder="-"></td>
+                <td class="px-2 py-2"><input type="text" class="disp-rem dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-16 text-center font-bold text-orange-600 font-mono" readonly placeholder="Auto"></td>
+                <td class="px-2 py-2 border-l border-slate-200"><input type="number" class="disp-cqty dashboard-input bg-white border-2 border-blue-400 rounded p-1.5 text-xs w-16 text-center font-bold text-blue-700 shadow-inner" placeholder="Qty"></td>
+                <td class="px-2 py-2 border-r border-slate-200"><input type="text" class="dashboard-input bg-slate-100 rounded p-1.5 text-xs w-16 text-center cursor-not-allowed" readonly placeholder="-"></td>
+                <td class="px-2 py-2"><input type="datetime-local" class="disp-start dashboard-input bg-white border-2 border-emerald-300 rounded p-1.5 text-[10px] w-36 shadow-inner" value="${now.toISOString().slice(0,16)}"></td>
+                <td class="px-2 py-2"><input type="text" class="dashboard-input bg-slate-100 rounded p-1.5 text-xs w-16 text-center cursor-not-allowed" readonly placeholder="-"></td>
                 <td class="px-2 py-2 text-center">
-                    <button type="button" class="disp-save-btn text-white bg-emerald-500 hover:bg-emerald-600 px-3 py-1.5 rounded text-xs font-bold transition shadow-sm"><i class="fa-solid fa-play mr-1"></i> Start</button>
-                    <button type="button" onclick="this.closest('tr').remove()" class="text-slate-400 hover:text-red-500 hover:bg-red-50 px-2 py-1.5 rounded transition ml-1"><i class="fa-solid fa-trash"></i></button>
+                    <button type="button" class="disp-save-btn text-white bg-emerald-500 hover:bg-emerald-600 px-3 py-1.5 rounded text-xs font-bold shadow-sm"><i class="fa-solid fa-play mr-1"></i> Start</button>
+                    <button type="button" onclick="this.closest('tr').remove()" class="text-slate-400 hover:text-red-500 px-2 py-1.5"><i class="fa-solid fa-trash"></i></button>
                 </td>
             `;
             tbody.insertBefore(tr, tbody.firstChild);
 
-            const selectEl = tr.querySelector('.disp-prod-select');
-            const batchEl = tr.querySelector('.disp-batch');
-            const tQtyEl = tr.querySelector('.disp-tqty');
-            const tLotsEl = tr.querySelector('.disp-tlots');
-            const cQtyEl = tr.querySelector('.disp-cqty');
-            const remEl = tr.querySelector('.disp-rem');
-            const startEl = tr.querySelector('.disp-start');
-            const saveBtn = tr.querySelector('.disp-save-btn');
+            const selectEl = tr.querySelector('.disp-prod-select'); const batchEl = tr.querySelector('.disp-batch');
+            const tQtyEl = tr.querySelector('.disp-tqty'); const tLotsEl = tr.querySelector('.disp-tlots');
+            const cQtyEl = tr.querySelector('.disp-cqty'); const remEl = tr.querySelector('.disp-rem');
+            const startEl = tr.querySelector('.disp-start'); const saveBtn = tr.querySelector('.disp-save-btn');
 
             let baseRemaining = 0;
-
             selectEl.addEventListener('change', (e) => {
                 const product = dispActivePlan.find(p => p.id == e.target.value);
-                if(product) {
-                    batchEl.value = product.batch; tQtyEl.value = product.qty; tLotsEl.value = product.lots;
-                    baseRemaining = product.qty - product.completedQty; // calculate what is actually left over
-                    cQtyEl.value = ''; remEl.value = baseRemaining;
-                }
+                if(product) { batchEl.value = product.batch; tQtyEl.value = product.qty; tLotsEl.value = product.lots; baseRemaining = product.remQty; cQtyEl.value = ''; remEl.value = baseRemaining; }
             });
 
             cQtyEl.addEventListener('input', () => {
@@ -3379,36 +3374,209 @@ let dispActivePlan = [];
                 remEl.value = (baseRemaining > 0 && cQtyEl.value !== '') ? (baseRemaining - current) : baseRemaining;
             });
 
-            const formatTime = (e) => {
-                let val = e.target.value.replace(/[^0-9]/g, ''); 
-                if (val.length >= 3) val = val.substring(0, 2) + ':' + val.substring(2, 4);
-                e.target.value = val;
-            };
-            startEl.addEventListener('input', formatTime);
-
             saveBtn.addEventListener('click', async () => {
-                if(!selectEl.value || !cQtyEl.value || !startEl.value) { showToast('error', 'Select product, enter Current Qty and Start Time'); return; }
+                if(!selectEl.value || !cQtyEl.value || !startEl.value) { showToast('error', 'Select product, Qty and Start Date/Time'); return; }
                 saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; saveBtn.disabled = true;
                 const product = dispActivePlan.find(p => p.id == selectEl.value);
-
-                const payload = { 
-                    action: 'save_dispensing_entry', isUpdate: false, loggedBy: currentUser.name, product: product.prod, 
-                    batch: batchEl.value, tQty: tQtyEl.value, tLots: tLotsEl.value,
-                    cQty: cQtyEl.value, remQty: remEl.value, startTime: startEl.value 
-                };
-
+                const payload = { action: 'save_dispensing_entry', isUpdate: false, loggedBy: currentUser.name, product: product.prod, batch: batchEl.value, tQty: tQtyEl.value, tLots: tLotsEl.value, cQty: cQtyEl.value, remQty: remEl.value, startTime: startEl.value };
                 try {
                     const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-                    const data = JSON.parse(await res.text());
-                    if (data.status === "success") {
-                        showToast('success', 'Run Started!');
-                        await loadDispensingDashboard(); 
-                    } else { showToast('error', data.message || "Failed."); saveBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start'; saveBtn.disabled = false; }
-                } catch(e) { showToast('error', 'Connection Error'); saveBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start'; saveBtn.disabled = false; }
+                    if (JSON.parse(await res.text()).status === "success") { showToast('success', 'Run Started!'); await loadDispensingDashboard(); }
+                } catch(e) {} finally { saveBtn.innerHTML = 'Start'; saveBtn.disabled = false; }
             });
         });
-        // ============================================================
-       
+
+        // ================= BREAKDOWN SECTION =================
+        function renderDispensingBreakdowns(bds) {
+            const tbody = document.getElementById('disp-breakdown-tbody'); tbody.innerHTML = '';
+            if(bds.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-slate-400">No breakdowns found.</td></tr>'; return; }
+            
+            bds.forEach(b => {
+                const dbIndex = b.dbIndex;
+                const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="px-4 py-2 font-semibold text-slate-600 text-xs">${b[1]}</td>
+                    <td class="px-4 py-2 font-bold text-red-600 text-xs uppercase">${b[2]}</td>
+                    <td class="px-4 py-2 text-xs text-slate-700">${b[3] || '-'}</td>
+                    <td class="px-4 py-2 text-center font-mono text-[10px] text-slate-600">${formatDateTimeBold(b[4])}</td>
+                    <td class="px-4 py-2 text-center font-mono text-[10px] text-slate-600">${formatDateTimeBold(b[5])}</td>
+                    <td class="px-4 py-2 text-center font-bold text-red-700 bg-red-50/50">${b[6]} h</td>
+                    <td class="px-4 py-2 text-center">
+                        <button class="btn-edit-bd text-slate-400 hover:text-blue-500 px-2"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-del-bd text-slate-400 hover:text-red-500 px-2"><i class="fa-solid fa-trash"></i></button>
+                    </td>`;
+                tbody.appendChild(tr);
+                
+                tr.querySelector('.btn-edit-bd').addEventListener('click', () => {
+                    const formatDt = (str) => { if(!str) return ''; try { const d = new Date(str); if(isNaN(d.getTime())) return ''; return d.toISOString().slice(0,16); } catch(e){return '';} };
+                    tr.innerHTML = `
+                        <td class="px-2 py-2 text-xs font-semibold text-slate-500">${b[1]}</td>
+                        <td class="px-2 py-2"><select class="bd-type-edit dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs">
+                            <option value="Mechanical" ${b[2]=='Mechanical'?'selected':''}>Mechanical</option><option value="Electrical" ${b[2]=='Electrical'?'selected':''}>Electrical</option><option value="Process" ${b[2]=='Process'?'selected':''}>Process</option><option value="Utility" ${b[2]=='Utility'?'selected':''}>Utility</option><option value="Other" ${b[2]=='Other'?'selected':''}>Other</option></select></td>
+                        <td class="px-2 py-2"><input type="text" class="bd-details-edit dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs" value="${b[3]||''}"></td>
+                        <td class="px-2 py-2 text-center"><input type="datetime-local" class="bd-from-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-[10px] w-32 text-center" value="${formatDt(b[4])}"></td>
+                        <td class="px-2 py-2 text-center"><input type="datetime-local" class="bd-to-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-[10px] w-32 text-center" value="${formatDt(b[5])}"></td>
+                        <td class="px-2 py-2 text-center font-bold text-red-700">${b[6]} h</td>
+                        <td class="px-2 py-2 text-center"><button type="button" class="btn-save-bd-edit text-white bg-blue-500 hover:bg-blue-600 px-3 py-1.5 rounded text-xs font-bold shadow-sm">Save</button></td>`;
+                    
+                    tr.querySelector('.btn-save-bd-edit').addEventListener('click', async (e) => {
+                        const btn = e.target; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+                        try {
+                            const fIn = tr.querySelector('.bd-from-edit').value; const tIn = tr.querySelector('.bd-to-edit').value;
+                            let hrs = ''; if(fIn && tIn) { const diff = (new Date(tIn) - new Date(fIn)) / (1000 * 60 * 60); hrs = diff > 0 ? diff.toFixed(2) : ''; }
+                            const payload = { action: 'save_dispensing_breakdown', isEdit: true, rowIndex: dbIndex, type: tr.querySelector('.bd-type-edit').value, details: tr.querySelector('.bd-details-edit').value, from: fIn, to: tIn, hrs: hrs };
+                            const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                            if(JSON.parse(await res.text()).status === "success") { showToast('success', 'Updated!'); await loadDispensingDashboard(); }
+                        } catch(e) {}
+                    });
+                });
+
+                tr.querySelector('.btn-del-bd').addEventListener('click', async () => {
+                    if(!confirm("Delete?")) return;
+                    try { const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: 'delete_dispensing_breakdown', rowIndex: dbIndex }) });
+                        if(JSON.parse(await res.text()).status === "success") { showToast('success', 'Deleted'); await loadDispensingDashboard(); }
+                    } catch(e) {}
+                });
+            });
+        }
+
+        document.getElementById('btn-disp-add-breakdown')?.addEventListener('click', () => {
+            const tbody = document.getElementById('disp-breakdown-tbody');
+            const tr = document.createElement('tr'); tr.className = "bg-red-50/30";
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            tr.innerHTML = `
+                <td class="px-2 py-2 text-xs font-semibold text-slate-500">${currentUser.name}</td>
+                <td class="px-2 py-2"><select class="bd-type dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs"><option value="" disabled selected>Select...</option><option value="Mechanical">Mechanical</option><option value="Electrical">Electrical</option><option value="Process">Process</option><option value="Utility">Utility</option><option value="Other">Other</option></select></td>
+                <td class="px-2 py-2"><input type="text" class="bd-details dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs" placeholder="Describe breakdown..."></td>
+                <td class="px-2 py-2 text-center"><input type="datetime-local" class="bd-from dashboard-input bg-white border border-slate-300 rounded p-1 text-[10px] w-32 text-center" value="${now.toISOString().slice(0,16)}"></td>
+                <td class="px-2 py-2 text-center"><input type="datetime-local" class="bd-to dashboard-input bg-white border border-slate-300 rounded p-1 text-[10px] w-32 text-center"></td>
+                <td class="px-2 py-2 text-center"><input type="text" class="bd-hrs dashboard-input bg-slate-100 border border-slate-200 rounded p-1 w-16 text-center text-xs font-bold" readonly placeholder="Auto"></td>
+                <td class="px-2 py-2 text-center"><button type="button" class="btn-save-bd text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-xs font-bold shadow-sm">Save</button></td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+
+            const fIn = tr.querySelector('.bd-from'); const tIn = tr.querySelector('.bd-to'); const hIn = tr.querySelector('.bd-hrs');
+            tIn.addEventListener('input', () => {
+                if(fIn.value && tIn.value) { const diff = (new Date(tIn.value) - new Date(fIn.value)) / (1000 * 60 * 60); hIn.value = diff > 0 ? diff.toFixed(2) : ''; }
+            });
+
+            tr.querySelector('.btn-save-bd').addEventListener('click', async (e) => {
+                const type = tr.querySelector('.bd-type').value; if(!type || !fIn.value || !tIn.value) { showToast('error', 'Fill all fields'); return; }
+                const btn = e.target; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+                try {
+                    const payload = { action: 'save_dispensing_breakdown', isEdit: false, loggedBy: currentUser.name, type: type, details: tr.querySelector('.bd-details').value, from: fIn.value, to: tIn.value, hrs: hIn.value };
+                    const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                    if(JSON.parse(await res.text()).status === "success") { showToast('success', 'Breakdown Saved'); await loadDispensingDashboard(); }
+                } catch(e) {}
+            });
+        });
+
+        // ================= DASHBOARD UI =================
+        function renderDispensingDashboardUI(logs, bds) {
+            let dashTotPlan = 0, dashTotComp = 0, dashTotRun = 0, dashTotRem = 0;
+            dispActivePlan.forEach(p => { dashTotPlan += p.qty; dashTotComp += p.completedQty; dashTotRun += p.runningQty; dashTotRem += p.remQty; });
+            document.getElementById('dash-tot-plan-qty').textContent = dashTotPlan + " kg"; document.getElementById('dash-tot-comp-qty').textContent = dashTotComp + " kg";
+            document.getElementById('dash-tot-run-qty').textContent = dashTotRun + " kg"; document.getElementById('dash-tot-rem-qty').textContent = dashTotRem + " kg";
+
+            const boxContainer = document.getElementById('dash-active-plans'); boxContainer.innerHTML = '';
+            const activePlans = dispActivePlan.filter(p => p.status !== 'completed');
+            if(activePlans.length === 0) boxContainer.innerHTML = '<p class="text-xs text-slate-400 italic col-span-2">No active plans.</p>';
+            else {
+                activePlans.forEach(p => {
+                    const pct = Math.round((p.completedQty / p.qty) * 100) || 0;
+                    boxContainer.innerHTML += `
+                        <div class="border border-slate-200 rounded-lg p-3 bg-white hover:shadow-md transition relative overflow-hidden">
+                            <div class="absolute top-0 left-0 h-1 bg-blue-500" style="width: ${pct}%"></div>
+                            <h5 class="font-bold text-slate-800">${p.prod} <span class="text-[10px] text-slate-400 bg-slate-100 px-1 rounded">${p.batch}</span></h5>
+                            <div class="grid grid-cols-3 gap-2 mt-2 text-xs">
+                                <div class="flex flex-col"><span class="text-[9px] text-slate-400 uppercase">Total Qty</span><span class="font-bold">${p.qty} kg</span></div>
+                                <div class="flex flex-col"><span class="text-[9px] text-slate-400 uppercase">Running</span><span class="font-bold text-blue-600">${p.runningQty} kg</span></div>
+                                <div class="flex flex-col"><span class="text-[9px] text-slate-400 uppercase">Completed</span><span class="font-bold text-emerald-600">${p.completedQty} kg (${pct}%)</span></div>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            const speedTbody = document.getElementById('dash-speed-tbody'); const speedTfoot = document.getElementById('dash-speed-tfoot');
+            speedTbody.innerHTML = ''; const speedMap = {}; let gtQty = 0, gtTime = 0;
+            
+            logs.forEach(l => {
+                if(l[8]) { 
+                    const prod = l[2]; const qty = parseFloat(l[6]) || 0; const start = new Date(l[7]); const stop = new Date(l[8]);
+                    if(!isNaN(start) && !isNaN(stop)) {
+                        const hrs = (stop - start) / (1000 * 60 * 60);
+                        if(hrs > 0) {
+                            if(!speedMap[prod]) speedMap[prod] = { qty: 0, hrs: 0 };
+                            speedMap[prod].qty += qty; speedMap[prod].hrs += hrs; gtQty += qty; gtTime += hrs;
+                        }
+                    }
+                }
+            });
+
+            if(Object.keys(speedMap).length === 0) { speedTbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-xs text-slate-400 italic">No completed runs to calculate speed.</td></tr>'; speedTfoot.innerHTML = ''; }
+            else {
+                for (const [prod, data] of Object.entries(speedMap)) {
+                    const speed = Math.round(data.qty / data.hrs);
+                    speedTbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="px-2 py-2 font-bold text-slate-700">${prod}</td><td class="px-2 py-2 text-center text-slate-600">${data.qty} kg</td><td class="px-2 py-2 text-center text-slate-600">${data.hrs.toFixed(2)} hr</td><td class="px-2 py-2 text-center font-black text-emerald-600">${speed} kg/hr</td></tr>`;
+                }
+                const overallSpeed = gtTime > 0 ? Math.round(gtQty / gtTime) : 0;
+                speedTfoot.innerHTML = `<tr><td class="px-2 py-2 text-slate-500 uppercase text-[10px]">Grand Total</td><td class="px-2 py-2 text-center text-slate-700">${gtQty} kg</td><td class="px-2 py-2 text-center text-slate-700">${gtTime.toFixed(2)} hr</td><td class="px-2 py-2 text-center font-black text-emerald-700">${overallSpeed} kg/hr</td></tr>`;
+            }
+
+            const bdContainer = document.getElementById('dash-recent-breakdowns'); bdContainer.innerHTML = '';
+            if(bds.length === 0) bdContainer.innerHTML = '<p class="text-xs text-slate-400 italic">No recent breakdowns.</p>';
+            else {
+                bds.slice(-5).reverse().forEach(b => { 
+                    bdContainer.innerHTML += `<div class="bg-red-50 border border-red-100 rounded-lg p-3 w-full sm:w-[calc(50%-0.375rem)]"><div class="flex justify-between items-start mb-1"><h5 class="font-bold text-red-800 text-xs uppercase">${b[2]}</h5><span class="text-[10px] font-bold bg-white text-red-600 px-1.5 rounded border border-red-200">${b[6]} Hr</span></div><p class="text-[10px] text-slate-800 font-medium mb-1">${b[3] || ''}</p><p class="text-[10px] text-slate-600">${formatDateTimeBold(b[4])} to ${formatDateTimeBold(b[5])}</p><p class="text-[9px] text-slate-400 mt-1 text-right italic">- ${b[1]}</p></div>`;
+                });
+            }
+        }
+
+      const closeDispensing = () => { 
+            setModalVisible('dispensing-modal', 'dispensing-modal-content', false); 
+            history.back(); // Correctly pop the history stack to go backwards natively
+        };
+        document.getElementById('btn-close-dispensing')?.addEventListener('click', closeDispensing);
+        document.getElementById('dispensing-modal-bg')?.addEventListener('click', closeDispensing);
+
+        document.getElementById('btn-prod-dispensing')?.addEventListener('click', () => {
+            history.pushState({ modal: 'dispensing' }, '', '#dispensing');
+            setModalVisible('dispensing-modal', 'dispensing-modal-content', true);
+            if (currentUser && currentUser.role === 'Admin') document.getElementById('btn-disp-upload-plan')?.classList.remove('hidden');
+            else document.getElementById('btn-disp-upload-plan')?.classList.add('hidden');
+            loadDispensingDashboard();
+        });
+
+        document.getElementById('btn-disp-upload-plan')?.addEventListener('click', () => { dispTempUpload = []; renderDispUpList(); setModalVisible('disp-upload-modal', 'disp-upload-modal-content', true); });
+        document.getElementById('btn-close-disp-upload')?.addEventListener('click', () => setModalVisible('disp-upload-modal', 'disp-upload-modal-content', false));
+
+        document.getElementById('btn-disp-up-add')?.addEventListener('click', () => {
+            const prod = document.getElementById('disp-up-prod').value.trim(); const batch = document.getElementById('disp-up-batch').value.trim();
+            const qty = document.getElementById('disp-up-qty').value; const lots = document.getElementById('disp-up-lots').value;
+            if(!prod || !batch || !qty || !lots) { showToast('error', 'Fill all details'); return; }
+            dispTempUpload.push({ id: Date.now(), prod, batch, qty, lots, status: 'pending' });
+            document.getElementById('disp-up-prod').value = ''; document.getElementById('disp-up-batch').value = ''; document.getElementById('disp-up-qty').value = ''; document.getElementById('disp-up-lots').value = '';
+            renderDispUpList();
+        });
+
+        function renderDispUpList() {
+            const list = document.getElementById('disp-up-list'); list.innerHTML = '';
+            if(dispTempUpload.length === 0) { list.innerHTML = '<li class="text-xs text-slate-400 italic p-2">List is empty.</li>'; return; }
+            dispTempUpload.forEach((item, idx) => {
+                list.innerHTML += `<li class="bg-white p-2 rounded border border-slate-200 flex justify-between items-center text-sm shadow-sm"><div><strong>${idx+1}. ${item.prod}</strong> (Batch: ${item.batch}) - ${item.qty}kg</div><button onclick="removeDispTemp(${idx})" class="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-1.5 rounded"><i class="fa-solid fa-trash"></i></button></li>`;
+            });
+        }
+        window.removeDispTemp = function(idx) { dispTempUpload.splice(idx, 1); renderDispUpList(); };
+
+        document.getElementById('btn-disp-save-plan')?.addEventListener('click', async () => {
+            if(dispTempUpload.length === 0) { showToast('error', 'Cannot save empty plan'); return; }
+            const btn = document.getElementById('btn-disp-save-plan'); setBtnLoading(btn, document.getElementById('disp-up-save-icon'), document.getElementById('disp-up-save-spinner'), document.getElementById('disp-up-save-text'), true, "Save Final Plan");
+            try {
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save_dispensing_plan", planData: dispTempUpload }) });
+                if (JSON.parse(await res.text()).status === "success") { showToast('success', 'Plan Saved!'); setModalVisible('disp-upload-modal', 'disp-upload-modal-content', false); await loadDispensingDashboard(); }
+            } catch(e) {} finally { setBtnLoading(btn, document.getElementById('disp-up-save-icon'), document.getElementById('disp-up-save-spinner'), document.getElementById('disp-up-save-text'), false, "Save Final Plan"); }
+        });
+        // ============================================================     
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
