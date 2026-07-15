@@ -871,7 +871,7 @@
             </div>
             <div id="entry-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
                 <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="entry-modal-bg"></div>
-                <div class="relative bg-white w-full max-w-4xl mx-2 sm:mx-auto max-h-[95vh] md:max-h-[90vh] overflow-y-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="entry-modal-content">
+                <div class="relative bg-white/95 backdrop-blur-3xl w-full h-full min-h-screen inset-0 rounded-none shadow-2xl flex flex-col overflow-y-auto transform scale-95 transition-transform duration-300" id="entry-modal-content">
                     
                     <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex flex-row items-center justify-between bg-slate-50/50 shrink-0 sticky top-0 z-20">
                         <h3 class="text-lg sm:text-xl font-bold text-blue-700 flex items-center gap-2">
@@ -895,9 +895,9 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                                 <div class="space-y-1.5 sm:space-y-2">
-                                    <label class="block text-xs sm:text-sm font-semibold text-slate-700">Worker Type</label>
-                                    <input type="text" id="mp-type" class="dashboard-input w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-lg p-2.5 text-sm font-semibold cursor-default focus:outline-none" placeholder="Select an option below..." readonly required>
-                                    <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
+                                    <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-2">Worker Type</label>
+                                    <input type="hidden" id="mp-type" value="">
+                                    <div class="flex flex-wrap gap-1.5 sm:gap-2">
                                         <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-colors" data-target="mp-type" data-val="Company">Company</button>
                                         <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-colors" data-target="mp-type" data-val="Contractual">Contractual</button>
                                         <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-colors" data-target="mp-type" data-val="Housekeeping">Housekeeping</button>
@@ -907,9 +907,9 @@
                                 </div>
 
                                 <div class="space-y-1.5 sm:space-y-2">
-                                    <label class="block text-xs sm:text-sm font-semibold text-slate-700">Assigned Section</label>
-                                    <input type="text" id="mp-section" class="dashboard-input w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-lg p-2.5 text-sm font-semibold cursor-default focus:outline-none" placeholder="Select an option below..." readonly required>
-                                    <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
+                                    <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-2">Assigned Section</label>
+                                    <input type="hidden" id="mp-section" value="">
+                                    <div class="flex flex-wrap gap-1.5 sm:gap-2">
                                         <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Dispensing">Dispensing</button>
                                         <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Wet Process">Wet Process</button>
                                         <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Spray Dryer">Spray Dryer</button>
@@ -2367,6 +2367,10 @@ let dispActivePlan = [];
             const workerType = document.getElementById('mp-type').value;
             const assignedSection = document.getElementById('mp-section').value;
             const inTime = document.getElementById('mp-intime').value;
+            
+            // Validate hidden quick-select buttons
+            if (!workerType) { showToast('error', 'Please select a Worker Type.'); return; }
+            if (!assignedSection) { showToast('error', 'Please select an Assigned Section.'); return; }
             
             const outTimeEl = document.getElementById('mp-outtime');
             const outTime = outTimeEl ? outTimeEl.value : "";
