@@ -884,15 +884,6 @@
 
                     <div class="p-4 sm:p-8">
                         <form id="manpower-form" class="space-y-4 sm:space-y-6">
-                            <div class="space-y-1.5 sm:space-y-2">
-                                <label for="mp-name" class="block text-xs sm:text-sm font-semibold text-slate-700">Worker Name</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none"><i class="fa-solid fa-user-tag text-slate-400 text-sm"></i></div>
-                                    <input type="text" id="mp-name" list="worker-names" autocomplete="off" class="dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg sm:rounded-xl block p-2.5 sm:p-3 pl-9 sm:pl-11 text-sm sm:text-base transition-all" placeholder="Enter full name" required>
-                                    <datalist id="worker-names"></datalist>
-                                </div>
-                            </div>
-
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                                 <div class="space-y-1.5 sm:space-y-2">
                                     <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-2">Worker Type</label>
@@ -952,6 +943,15 @@
                                 <div id="edit-ot-reason-container" class="space-y-1.5 sm:space-y-2 hidden col-span-1 md:col-span-2">
                                     <label for="mp-otreason" class="block text-xs sm:text-sm font-semibold text-slate-700">OT Reason (Edit Mode)</label>
                                     <input type="text" id="mp-otreason" class="dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg sm:rounded-xl block p-2.5 sm:p-3 text-sm sm:text-base transition-all">
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5 sm:space-y-2 mt-4 sm:mt-6 bg-blue-50/50 p-4 rounded-xl border border-blue-100 shadow-sm">
+                                <label for="mp-name" class="block text-sm font-bold text-blue-800">Worker Name (Enter Last)</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none"><i class="fa-solid fa-user-tag text-blue-500 text-sm"></i></div>
+                                    <input type="text" id="mp-name" list="worker-names" autocomplete="off" class="dashboard-input w-full bg-white border-2 border-blue-200 text-slate-800 rounded-lg sm:rounded-xl block p-3 pl-11 text-base font-bold transition-all focus:border-blue-500 shadow-inner" placeholder="Type name and press Enter to Save" required>
+                                    <datalist id="worker-names"></datalist>
                                 </div>
                             </div>
 
@@ -2007,9 +2007,7 @@ let dispActivePlan = [];
             history.pushState({ modal: 'entry' }, '', '#entry');
             setModalVisible('entry-modal', 'entry-modal-content', true);
             
-            setTimeout(() => {
-                document.getElementById('mp-name')?.focus();
-            }, 350);
+            // Removed auto-focus so mobile keyboards don't pop up and cover the category buttons at the top
         });
         document.getElementById('btn-close-entry')?.addEventListener('click', () => history.back());
         document.getElementById('entry-modal-bg')?.addEventListener('click', () => history.back());
@@ -2320,7 +2318,7 @@ let dispActivePlan = [];
             if (e.key === 'Enter') {
                 e.preventDefault(); 
                 if (this.value.trim() !== '') {
-                    document.getElementById('mp-type')?.focus();
+                    document.getElementById('btn-save-manpower')?.click();
                 }
             }
         });
@@ -2421,23 +2419,25 @@ let dispActivePlan = [];
 
                 if (data.status === "success") {
                     showToast('success', isEditing ? "Manpower Entry Updated!" : "Manpower Entry Saved!");
-                    document.getElementById('manpower-form').reset();
-                    if(document.getElementById('mp-intime')) document.getElementById('mp-intime').value = getCurrentTimeHHMM();
                     saveNameSuggestion(workerName);
                     
                     let wasEditing = isEditing;
                     if (isEditing) {
+                        // Completely reset form and state ONLY if we were editing an old record
+                        document.getElementById('manpower-form').reset();
                         isEditing = false;
                         editOrigData = null;
                         if(document.getElementById('mp-save-text')) document.getElementById('mp-save-text').textContent = "Save Entry";
                         document.getElementById('edit-out-time-container')?.classList.add('hidden');
                         document.getElementById('edit-ot-reason-container')?.classList.add('hidden');
-                    } 
-                    
-                    // Reset quick-select buttons styling if function exists
-                    if (typeof updateValBtnStyles === 'function') {
-                        updateValBtnStyles('mp-type', null);
-                        updateValBtnStyles('mp-section', null);
+                        
+                        if (typeof updateValBtnStyles === 'function') {
+                            updateValBtnStyles('mp-type', null);
+                            updateValBtnStyles('mp-section', null);
+                        }
+                    } else {
+                        // NEW UX FOR FAST ENTRY: Keep Category, Section, and In-Time. ONLY clear the name!
+                        document.getElementById('mp-name').value = '';
                     }
                     
                     await fetchHistoryDataInBackground(); 
@@ -2445,7 +2445,7 @@ let dispActivePlan = [];
                     if (wasEditing) {
                         history.back(); // Automatically close modal and go back to history after saving edit
                     } else {
-                        document.getElementById('mp-name')?.focus();
+                        document.getElementById('mp-name')?.focus(); // Keep cursor in name box for the next fast entry
                     }
 
                 } else showToast('error', data.message || "Save failed.");
