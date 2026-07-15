@@ -1008,6 +1008,41 @@
                                 </div>
                             </div>
 
+                            <!-- BULK MARK OUT ROW -->
+                            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 sm:p-4 flex flex-col lg:flex-row items-start lg:items-start gap-3 shrink-0 shadow-sm">
+                                <div class="w-full lg:w-auto flex-grow grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div>
+                                        <label class="block text-[10px] sm:text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">Target In-Time Filter</label>
+                                        <div class="relative">
+                                            <select id="bulk-target-in" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded-lg p-2 text-sm appearance-none cursor-pointer">
+                                                <option value="">All In-Times...</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none"><i class="fa-solid fa-chevron-down text-indigo-400 text-xs"></i></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] sm:text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">Set Out-Time</label>
+                                        <input type="text" id="bulk-set-out" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded-lg p-2 text-sm mb-1.5" placeholder="HH:MM" maxlength="5">
+                                        <div class="flex flex-wrap gap-1">
+                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="06:00">06:00</button>
+                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="10:00">10:00</button>
+                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="14:00">14:00</button>
+                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="18:00">18:00</button>
+                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="22:00">22:00</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-1">
+                                        <label class="block text-[10px] sm:text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">OT Reason (If Any)</label>
+                                        <input type="text" id="bulk-ot-reason" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded-lg p-2 text-sm" placeholder="Optional">
+                                    </div>
+                                </div>
+                                <button type="button" id="btn-bulk-mark-out" class="w-full lg:w-auto whitespace-nowrap bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors shadow-sm flex items-center justify-center gap-2 h-[38px] lg:mt-[22px]">
+                                    <i id="bulk-btn-icon" class="fa-solid fa-users-slash"></i>
+                                    <i id="bulk-btn-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+                                    <span id="bulk-btn-text">Bulk Mark Out</span>
+                                </button>
+                            </div>
+
                             <div class="bg-white/80 backdrop-blur-xl border border-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex-grow flex flex-col">
                                 <div id="active-workers-list" class="divide-y divide-slate-100 max-h-[60vh] overflow-y-auto min-h-[150px]">
                                 </div>
@@ -1027,6 +1062,9 @@
                             <i class="fa-solid fa-clock-rotate-left text-indigo-500"></i> Manpower History
                         </h3>
                         <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <button id="btn-history-prev-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-600 hover:bg-indigo-100 hover:text-indigo-600 transition-colors" title="Previous Day">
+                                <i class="fa-solid fa-chevron-left text-sm"></i>
+                            </button>
                             <div class="flex items-center gap-1.5 sm:gap-2">
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-500">From:</label>
                                 <input type="date" id="history-from-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500/20 transition-all">
@@ -1035,6 +1073,9 @@
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-500">To:</label>
                                 <input type="date" id="history-to-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500/20 transition-all">
                             </div>
+                            <button id="btn-history-next-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-600 hover:bg-indigo-100 hover:text-indigo-600 transition-colors mr-2" title="Next Day">
+                                <i class="fa-solid fa-chevron-right text-sm"></i>
+                            </button>
                             <div class="flex items-center gap-1.5 sm:gap-2">
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-500">Name:</label>
                                 <input type="text" id="history-name-filter" placeholder="Search name..." class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500/20 transition-all w-24 sm:w-32 md:w-48">
@@ -1911,9 +1952,13 @@ let dispActivePlan = [];
             }
         });
 
-       document.getElementById('btn-back-welcome-from-production')?.addEventListener('click', () => {
-            history.pushState({ view: 'welcome' }, '', '#welcome');
-            switchToWelcomeView();
+        document.getElementById('btn-back-welcome-from-production')?.addEventListener('click', () => {
+            if (history.state && history.state.view === 'production') {
+                history.back();
+            } else {
+                history.pushState({ view: 'welcome' }, '', '#welcome');
+                switchToWelcomeView();
+            }
         });
 
         document.getElementById('nav-brand')?.addEventListener('click', () => {
@@ -1986,6 +2031,105 @@ let dispActivePlan = [];
         });
 
         document.getElementById('out-name-search')?.addEventListener('input', renderOutWorkerList);
+        document.getElementById('bulk-target-in')?.addEventListener('change', renderOutWorkerList);
+
+        // --- BULK MARK OUT LOGIC ---
+        document.getElementById('btn-bulk-mark-out')?.addEventListener('click', async () => {
+            const targetIn = document.getElementById('bulk-target-in').value;
+            const setOut = document.getElementById('bulk-set-out').value.trim();
+            const otReason = document.getElementById('bulk-ot-reason').value.trim();
+
+            // 1. Validate inputs
+            if (!targetIn) {
+                showToast('error', 'Please select a Target In-Time from the dropdown.');
+                return;
+            }
+            if (!setOut) {
+                showToast('error', 'Please set an Out-Time.');
+                return;
+            }
+
+            if (!currentOutCategory) {
+                showToast('error', 'Please select a specific category first.');
+                return;
+            }
+
+            // 2. Identify the currently loaded workers in the UI (Category + Search applied)
+            const searchVal = document.getElementById('out-name-search') ? document.getElementById('out-name-search').value.toLowerCase().trim() : '';
+
+            const matchedWorkers = liveActiveWorkers.filter(w => {
+                const t = String(w.type).toUpperCase().trim();
+                const targetCat = String(currentOutCategory).toUpperCase();
+                
+                // Same logic used to render the list
+                const matchesCat = (targetCat === 'OTHER') ? !['COMPANY','CONTRACTUAL','OPERATOR','HOUSEKEEPING','JAR LINE EXECUTIVE'].includes(t) : (t === targetCat);
+                const matchesSearch = !searchVal || w.name.toLowerCase().includes(searchVal);
+                
+                // Add exact match for the Target In-Time
+                const matchesInTime = w.inTime === targetIn;
+                
+                return matchesCat && matchesSearch && matchesInTime;
+            });
+
+            // 3. Prevent execution if no one matches
+            if (matchedWorkers.length === 0) {
+                showToast('error', `No workers found matching In-Time ${targetIn} in this view.`);
+                return;
+            }
+
+            // 4. Confirm before execution
+            if (!confirm(`Are you sure you want to Bulk Mark Out ${matchedWorkers.length} workers at ${setOut}?`)) {
+                return;
+            }
+
+            // 5. Trigger loading UI
+            const btn = document.getElementById('btn-bulk-mark-out');
+            setBtnLoading(btn, document.getElementById('bulk-btn-icon'), document.getElementById('bulk-btn-spinner'), document.getElementById('bulk-btn-text'), true, "Bulk Mark Out");
+
+            try {
+                // 6. Build the payload for the backend
+                const updates = matchedWorkers.map(w => ({
+                    date: w.date,
+                    workerName: w.name,
+                    inTime: w.inTime,
+                    outTime: setOut,
+                    outBy: currentUser.name,
+                    otReason: otReason
+                }));
+
+                // 7. Send the bulk request
+                const res = await fetch(API_URL, {
+                    method: "POST", 
+                    headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                    redirect: "follow",
+                    body: JSON.stringify({ 
+                        action: "bulk_update_out_time", 
+                        sheetName: "Manpower", 
+                        updates: updates 
+                    })
+                });
+
+                const data = JSON.parse(await res.text());
+
+                // 8. Handle Success
+                if (data.status === "success") {
+                    showToast('success', `Successfully marked out ${data.count} workers!`);
+                    // Clear the input fields
+                    document.getElementById('bulk-target-in').value = '';
+                    document.getElementById('bulk-set-out').value = '';
+                    document.getElementById('bulk-ot-reason').value = '';
+                    // Sync the app to remove them from the active list
+                    await fetchHistoryDataInBackground(); 
+                } else {
+                    showToast('error', data.message || "Bulk update failed.");
+                }
+            } catch (e) {
+                showToast('error', "Connection error during bulk update.");
+            } finally {
+                // Remove loading UI
+                setBtnLoading(btn, document.getElementById('bulk-btn-icon'), document.getElementById('bulk-btn-spinner'), document.getElementById('bulk-btn-text'), false, "Bulk Mark Out");
+            }
+        });
 
         async function renderManageUsersList() {
             const list = document.getElementById('manage-users-list');
@@ -2210,17 +2354,18 @@ let dispActivePlan = [];
 
                 const newRowData = [rowDate, inchargeIn, workerName, workerType, assignedSection, inTime, finalOutTime, inchargeOut, otReason];
 
-                if (isEditing) {
+          if (isEditing) {
                     payload = {
                         action: "edit_entry",
                         sheetName: "Manpower",
-                        origDate: editOrigData.date,
-                        origName: editOrigData.name,
-                        origInTime: editOrigData.inTime,
+                        date: editOrigData.date,
+                        workerName: editOrigData.name,
+                        inTime: editOrigData.inTime,
                         rowData: newRowData
                     };
                 } else {
-                    payload = { sheetName: "Manpower", rowData: newRowData };
+                    // FIXED: Added the missing 'action' key so new entries save correctly!
+                    payload = { action: "save_entry", sheetName: "Manpower", rowData: newRowData };
                 }
 
                 const res = await fetch(API_URL, {
@@ -2304,7 +2449,8 @@ let dispActivePlan = [];
             
             const searchVal = document.getElementById('out-name-search') ? document.getElementById('out-name-search').value.toLowerCase().trim() : '';
             
-            let filtered = liveActiveWorkers.filter(w => {
+            // 1. Base filter (Category + Search)
+            let baseFiltered = liveActiveWorkers.filter(w => {
                 const t = String(w.type).toUpperCase().trim();
                 const targetCat = String(currentOutCategory).toUpperCase();
                 const matchesCat = (targetCat === 'OTHER') ? !['COMPANY','CONTRACTUAL','OPERATOR','HOUSEKEEPING','JAR LINE EXECUTIVE'].includes(t) : (t === targetCat);
@@ -2312,22 +2458,59 @@ let dispActivePlan = [];
                 return matchesCat && matchesSearch;
             });
 
-            filtered.sort((a, b) => a.name.localeCompare(b.name));
+            baseFiltered.sort((a, b) => a.name.localeCompare(b.name));
 
-            if (filtered.length === 0) {
+            // 2. Populate Dropdown (Target In-Time) dynamically based on available workers
+            const targetInSelect = document.getElementById('bulk-target-in');
+            const currentSelection = targetInSelect.value;
+            
+            // Extract unique sorted In-Times
+            const uniqueInTimes = [...new Set(baseFiltered.map(w => w.inTime))].sort();
+            
+            targetInSelect.innerHTML = '<option value="">All In-Times...</option>';
+            uniqueInTimes.forEach(time => {
+                const opt = document.createElement('option');
+                opt.value = time;
+                opt.textContent = `Workers logged in at ${time}`;
+                targetInSelect.appendChild(opt);
+            });
+            
+            // Restore selection if it still exists in the filtered list
+            if (uniqueInTimes.includes(currentSelection)) {
+                targetInSelect.value = currentSelection;
+            }
+
+            // 3. Final Filter based on Dropdown Selection
+            let finalFiltered = baseFiltered;
+            if (targetInSelect.value) {
+                finalFiltered = baseFiltered.filter(w => w.inTime === targetInSelect.value);
+            }
+
+            if (finalFiltered.length === 0) {
                 list.innerHTML = `
                     <div class="text-slate-500 text-xs sm:text-sm text-center py-6 sm:py-8 transition-opacity">
                         <div class="w-12 h-12 sm:w-16 sm:h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
                             <i class="fa-solid fa-bed text-slate-400 text-lg sm:text-xl"></i>
                         </div>
-                        No active workers found in this category.
+                        No active workers found matching criteria.
                     </div>`;
                 return;
             }
 
-            filtered.forEach(worker => {
+            // Helper function for row background color
+            const getRowBgClass = (inTime) => {
+                if (inTime === '06:00') return 'bg-sky-50/70 hover:bg-sky-100/70';
+                if (inTime === '14:00') return 'bg-amber-50/70 hover:bg-amber-100/70';
+                if (inTime === '22:00') return 'bg-indigo-50/70 hover:bg-indigo-100/70';
+                if (inTime === '10:00') return 'bg-emerald-50/70 hover:bg-emerald-100/70';
+                if (inTime === '18:00') return 'bg-rose-50/70 hover:bg-rose-100/70';
+                return 'bg-white hover:bg-slate-50'; // Default Fallback
+            };
+
+            finalFiltered.forEach(worker => {
                 const row = document.createElement('div');
-                row.className = "p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300 hover:bg-slate-50 border-b border-slate-100 last:border-0";
+                const bgClass = getRowBgClass(worker.inTime);
+                row.className = `p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300 border-b border-white last:border-0 ${bgClass}`;
                 row.id = `worker-${worker.id}`;
                 
                 let displayDateBadge = '';
@@ -2807,6 +2990,51 @@ let dispActivePlan = [];
             if(document.getElementById('history-name-filter')) document.getElementById('history-name-filter').value = ''; 
             renderHistoryTable(); 
         });
+
+        // --- NEW LOGIC FOR HISTORY PREV/NEXT DAY ARROWS (GLOBAL FUNCTIONS) ---
+        window.historyPrevDay = function() {
+            console.log("Previous Day Button clicked!");
+            const fromDateEl = document.getElementById('history-from-date');
+            const toDateEl = document.getElementById('history-to-date');
+            
+            if(fromDateEl && fromDateEl.value) {
+                console.log("Current From Date:", fromDateEl.value);
+                let d = new Date(fromDateEl.value);
+                d.setDate(d.getDate() - 1); 
+                const newDateStr = d.toLocaleDateString('en-CA');
+                console.log("New Date Calculated:", newDateStr);
+                
+                fromDateEl.value = newDateStr;
+                toDateEl.value = newDateStr; 
+                renderHistoryTable(); 
+            } else {
+                console.log("Error: No date found in the input field.");
+            }
+        };
+
+        window.historyNextDay = function() {
+            console.log("Next Day Button clicked!");
+            const fromDateEl = document.getElementById('history-from-date');
+            const toDateEl = document.getElementById('history-to-date');
+            
+            if(fromDateEl && fromDateEl.value) {
+                console.log("Current From Date:", fromDateEl.value);
+                let d = new Date(fromDateEl.value);
+                d.setDate(d.getDate() + 1); 
+                const newDateStr = d.toLocaleDateString('en-CA');
+                console.log("New Date Calculated:", newDateStr);
+                
+                fromDateEl.value = newDateStr;
+                toDateEl.value = newDateStr; 
+                renderHistoryTable(); 
+            } else {
+                console.log("Error: No date found in the input field.");
+            }
+        };
+
+        // Attach the global functions to the buttons
+        document.getElementById('btn-history-prev-day')?.addEventListener('click', window.historyPrevDay);
+        document.getElementById('btn-history-next-day')?.addEventListener('click', window.historyNextDay);
 
         window.deleteEntry = async function(date, name, inTime) {
             if(!confirm("Are you sure you want to delete this record? This action cannot be undone.")) return;
@@ -3532,9 +3760,10 @@ let dispActivePlan = [];
             }
         }
 
-      const closeDispensing = () => { 
-            setModalVisible('dispensing-modal', 'dispensing-modal-content', false); 
-            history.back(); // Correctly pop the history stack to go backwards natively
+       const closeDispensing = () => { 
+            setModalVisible('dispensing-modal', 'dispensing-modal-content', false); // Explicitly hide this modal
+            history.pushState({ view: 'production' }, '', '#production'); 
+            switchToProductionView(true); // Jump to production hub
         };
         document.getElementById('btn-close-dispensing')?.addEventListener('click', closeDispensing);
         document.getElementById('dispensing-modal-bg')?.addEventListener('click', closeDispensing);
