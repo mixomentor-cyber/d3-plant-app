@@ -417,6 +417,27 @@
                         <h2 class="text-xl sm:text-2xl font-bold text-blue-900">Manpower Hub</h2>
                     </div>
 
+                    <!-- NEW HUB SUMMARY BOX -->
+                    <div id="hub-present-summary" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-blue-100 p-4 mb-6 hidden">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
+                                    <i class="fa-solid fa-user-check text-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Live Count</p>
+                                    <p class="text-sm font-bold text-slate-700">Total Workers on Floor</p>
+                                </div>
+                            </div>
+                            <div class="text-3xl font-black text-emerald-600" id="hub-summary-value">0</div>
+                        </div>
+                        <div class="pt-3 mt-3 border-t border-slate-100">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Category Breakdown</p>
+                            <div id="hub-breakdown-container" class="flex flex-wrap gap-2">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                         <button id="btn-hub-entry" class="bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
                             <i class="fa-solid fa-user-plus text-3xl sm:text-4xl"></i>
@@ -484,6 +505,32 @@
                 </div>
             </div>
 
+            <!-- ====== DISPENSING SUB-HUB VIEW ====== -->
+            <div id="dispensing-hub-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
+                <div class="max-w-3xl mx-auto bg-blue-50/40 rounded-3xl shadow-sm border border-blue-100 p-6 sm:p-8 backdrop-blur-sm">
+                    <div class="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 pb-6 border-b border-blue-200/50">
+                        <button id="btn-back-production-from-dispensing" class="text-blue-400 hover:text-blue-600 transition-colors mr-1" title="Back to Production">
+                            <i class="fa-solid fa-arrow-left text-xl"></i>
+                        </button>
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white text-blue-600 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-scale-balanced text-sm sm:text-base"></i>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-blue-900">Dispensing Section</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <button id="btn-prod-disp-entry" class="bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-keyboard text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Dispensing Shift Entry</span>
+                        </button>
+                        <button id="btn-prod-disp-dash" class="bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-chart-pie text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Dispensing Dashboard</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- ====== MODALS ====== -->
 
           <!-- === DISPENSING MAIN MODAL === -->
@@ -494,7 +541,7 @@
                     <!-- Header -->
                     <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between bg-white gap-3 sm:gap-4 shrink-0">
                         <div class="flex items-center gap-4">
-                            <h3 class="text-lg sm:text-xl font-bold text-emerald-700 flex items-center gap-2">
+                            <h3 id="disp-modal-title" class="text-lg sm:text-xl font-bold text-emerald-700 flex items-center gap-2">
                                 <i class="fa-solid fa-scale-balanced"></i> Dispensing Section
                             </h3>
                             <div id="disp-operator-badge" class="hidden items-center gap-2 bg-emerald-100 border-2 border-emerald-300 text-emerald-900 px-4 py-1.5 rounded-xl shadow-md transition-all">
@@ -522,16 +569,6 @@
                                 <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
                             </button>
                         </div>
-                    </div>
-
-                    <!-- NEW BUTTON TABS -->
-                    <div class="flex bg-slate-100 p-3 gap-3 shrink-0 border-b border-slate-200">
-                        <button id="tab-disp-entry" class="bg-white shadow-md border border-slate-200 text-emerald-700 font-black text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2">
-                            <i class="fa-solid fa-keyboard"></i> Dispensing Shift Data Entry
-                        </button>
-                        <button id="tab-disp-dash" class="text-slate-500 hover:bg-white hover:shadow border border-transparent hover:border-slate-200 hover:text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie"></i> Dispensing Dashboard
-                        </button>
                     </div>
 
                   <!-- TAB 1: DATA ENTRY -->
@@ -858,35 +895,27 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                                 <div class="space-y-1.5 sm:space-y-2">
-                                    <label for="mp-type" class="block text-xs sm:text-sm font-semibold text-slate-700">Worker Type</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none"><i class="fa-solid fa-id-badge text-slate-400 text-sm"></i></div>
-                                        <select id="mp-type" class="dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg sm:rounded-xl block p-2.5 sm:p-3 pl-9 sm:pl-11 text-sm sm:text-base appearance-none transition-all cursor-pointer" required>
-                                            <option value="" disabled selected>Select type...</option>
-                                            <option value="Company">Company</option>
-                                            <option value="Contractual">Contractual</option>
-                                            <option value="Housekeeping">Housekeeping</option>
-                                            <option value="Operator">Operator</option>
-                                            <option value="Jar Line Executive">Jar Line Executive</option>
-                                        </select>
-                                        <div class="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center pointer-events-none"><i class="fa-solid fa-chevron-down text-slate-400 text-xs sm:text-sm"></i></div>
+                                    <label class="block text-xs sm:text-sm font-semibold text-slate-700">Worker Type</label>
+                                    <input type="text" id="mp-type" class="dashboard-input w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-lg p-2.5 text-sm font-semibold cursor-default focus:outline-none" placeholder="Select an option below..." readonly required>
+                                    <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-colors" data-target="mp-type" data-val="Company">Company</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-colors" data-target="mp-type" data-val="Contractual">Contractual</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-colors" data-target="mp-type" data-val="Housekeeping">Housekeeping</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-colors" data-target="mp-type" data-val="Operator">Operator</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-colors" data-target="mp-type" data-val="Jar Line Executive">Jar Line Exec</button>
                                     </div>
                                 </div>
 
                                 <div class="space-y-1.5 sm:space-y-2">
-                                    <label for="mp-section" class="block text-xs sm:text-sm font-semibold text-slate-700">Assigned Section</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none"><i class="fa-solid fa-puzzle-piece text-slate-400 text-sm"></i></div>
-                                        <select id="mp-section" class="dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg sm:rounded-xl block p-2.5 sm:p-3 pl-9 sm:pl-11 text-sm sm:text-base appearance-none transition-all cursor-pointer" required>
-                                            <option value="" disabled selected>Select section...</option>
-                                            <option value="Dispensing">Dispensing</option>
-                                            <option value="Wet Process">Wet Process</option>
-                                            <option value="Spray Dryer">Spray Dryer</option>
-                                            <option value="Blending">Blending</option>
-                                            <option value="Packing">Packing</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                        <div class="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center pointer-events-none"><i class="fa-solid fa-chevron-down text-slate-400 text-xs sm:text-sm"></i></div>
+                                    <label class="block text-xs sm:text-sm font-semibold text-slate-700">Assigned Section</label>
+                                    <input type="text" id="mp-section" class="dashboard-input w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-lg p-2.5 text-sm font-semibold cursor-default focus:outline-none" placeholder="Select an option below..." readonly required>
+                                    <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Dispensing">Dispensing</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Wet Process">Wet Process</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Spray Dryer">Spray Dryer</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Blending">Blending</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Packing">Packing</button>
+                                        <button type="button" class="val-btn px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" data-target="mp-section" data-val="Other">Other</button>
                                     </div>
                                 </div>
 
@@ -998,45 +1027,35 @@
                         </div>
 
                         <div id="out-worker-list-view" class="hidden flex flex-col h-full gap-4">
-                            <div class="flex flex-col sm:flex-row gap-3 justify-between shrink-0">
-                                <button id="btn-back-out-categories" class="inline-flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-700 font-semibold hover:bg-slate-50 transition-all text-sm w-full sm:w-auto">
-                                    <i class="fa-solid fa-arrow-left"></i> Back to Categories
-                                </button>
-                                <div class="relative w-full sm:w-64">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fa-solid fa-magnifying-glass text-slate-400"></i></div>
-                                    <input type="text" id="out-name-search" class="dashboard-input w-full bg-white border border-slate-200 text-slate-800 rounded-lg block p-2 pl-9 text-sm transition-all" placeholder="Search by name...">
-                                </div>
-                            </div>
-
-                            <!-- BULK MARK OUT ROW -->
-                            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 sm:p-4 flex flex-col lg:flex-row items-start lg:items-start gap-3 shrink-0 shadow-sm">
-                                <div class="w-full lg:w-auto flex-grow grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <!-- BULK MARK OUT ROW (Compact) -->
+                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-2 sm:p-3 flex flex-col lg:flex-row items-start gap-2 shrink-0 shadow-sm mt-2">
+                                <div class="w-full lg:w-auto flex-grow grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     <div>
-                                        <label class="block text-[10px] sm:text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">Target In-Time Filter</label>
+                                        <label class="block text-[9px] sm:text-[10px] font-bold text-indigo-800 uppercase tracking-wider mb-0.5">Target In-Time Filter</label>
                                         <div class="relative">
-                                            <select id="bulk-target-in" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded-lg p-2 text-sm appearance-none cursor-pointer">
+                                            <select id="bulk-target-in" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded py-1 px-2 text-xs appearance-none cursor-pointer">
                                                 <option value="">All In-Times...</option>
                                             </select>
-                                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none"><i class="fa-solid fa-chevron-down text-indigo-400 text-xs"></i></div>
+                                            <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none"><i class="fa-solid fa-chevron-down text-indigo-400 text-[10px]"></i></div>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[10px] sm:text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">Set Out-Time</label>
-                                        <input type="text" id="bulk-set-out" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded-lg p-2 text-sm mb-1.5" placeholder="HH:MM" maxlength="5">
+                                        <label class="block text-[9px] sm:text-[10px] font-bold text-indigo-800 uppercase tracking-wider mb-0.5">Set Out-Time</label>
+                                        <input type="text" id="bulk-set-out" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded py-1 px-2 text-xs mb-1" placeholder="HH:MM" maxlength="5">
                                         <div class="flex flex-wrap gap-1">
-                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="06:00">06:00</button>
-                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="10:00">10:00</button>
-                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="14:00">14:00</button>
-                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="18:00">18:00</button>
-                                            <button type="button" class="time-btn px-1.5 py-1 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[10px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="22:00">22:00</button>
+                                            <button type="button" class="time-btn px-1 py-0.5 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[9px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="06:00">06:00</button>
+                                            <button type="button" class="time-btn px-1 py-0.5 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[9px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="10:00">10:00</button>
+                                            <button type="button" class="time-btn px-1 py-0.5 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[9px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="14:00">14:00</button>
+                                            <button type="button" class="time-btn px-1 py-0.5 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[9px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="18:00">18:00</button>
+                                            <button type="button" class="time-btn px-1 py-0.5 bg-white hover:bg-indigo-100 text-indigo-600 rounded text-[9px] font-bold border border-indigo-200 transition-colors shadow-sm" data-target="bulk-set-out" data-val="22:00">22:00</button>
                                         </div>
                                     </div>
                                     <div class="col-span-1">
-                                        <label class="block text-[10px] sm:text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">OT Reason (If Any)</label>
-                                        <input type="text" id="bulk-ot-reason" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded-lg p-2 text-sm" placeholder="Optional">
+                                        <label class="block text-[9px] sm:text-[10px] font-bold text-indigo-800 uppercase tracking-wider mb-0.5">OT Reason (If Any)</label>
+                                        <input type="text" id="bulk-ot-reason" class="dashboard-input w-full bg-white border border-indigo-200 text-slate-800 rounded py-1 px-2 text-xs" placeholder="Optional">
                                     </div>
                                 </div>
-                                <button type="button" id="btn-bulk-mark-out" class="w-full lg:w-auto whitespace-nowrap bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors shadow-sm flex items-center justify-center gap-2 h-[38px] lg:mt-[22px]">
+                                <button type="button" id="btn-bulk-mark-out" class="w-full lg:w-auto whitespace-nowrap bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-1.5 px-3 rounded text-xs transition-colors shadow-sm flex items-center justify-center gap-1.5 h-[30px] lg:mt-[17px]">
                                     <i id="bulk-btn-icon" class="fa-solid fa-users-slash"></i>
                                     <i id="bulk-btn-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
                                     <span id="bulk-btn-text">Bulk Mark Out</span>
@@ -1496,6 +1515,8 @@ let dispActivePlan = [];
                     switchToMainDashboardView();
                 } else if (state.view === 'production') {
                     switchToProductionView();
+                } else if (state.view === 'dispensing-hub') {
+                    switchToDispensingHubView();
                 }
             } else if (currentUser) {
                 switchToWelcomeView();
@@ -1763,11 +1784,11 @@ let dispActivePlan = [];
                 }
                 updateMainDashboardMetrics();
                 
-                if (!document.getElementById('present-modal')?.classList.contains('hidden')) renderPresentTable();
-                if (!document.getElementById('out-modal')?.classList.contains('hidden') && currentOutCategory) renderOutWorkerList();
-                if (!document.getElementById('history-modal')?.classList.contains('hidden')) renderHistoryTable();
-                if (!document.getElementById('ot-modal')?.classList.contains('hidden')) renderOTReportTable();
-                if (!document.getElementById('monthly-ot-modal')?.classList.contains('hidden')) renderMonthlyOTTable();
+                renderPresentTable();
+                if (currentOutCategory) renderOutWorkerList();
+                renderHistoryTable();
+                renderOTReportTable();
+                renderMonthlyOTTable();
 
             } catch(e) {
                 console.error("Data processing error:", e);
@@ -1775,7 +1796,7 @@ let dispActivePlan = [];
         }
 
         function switchMainView(targetViewId, instant = false) {
-            const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view'];
+            const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view', 'dispensing-hub-view'];
             views.forEach(vid => {
                 const el = document.getElementById(vid);
                 if (!el) return;
@@ -1818,6 +1839,7 @@ let dispActivePlan = [];
         function switchToManpowerView(instant = false) { switchMainView('manpower-view', instant); }
         function switchToMainDashboardView(instant = false) { switchMainView('main-dashboard-view', instant); }
         function switchToProductionView(instant = false) { switchMainView('production-view', instant); }
+        function switchToDispensingHubView(instant = false) { switchMainView('dispensing-hub-view', instant); }
 
         function setModalVisible(modalId, contentId, show) {
             const modal = document.getElementById(modalId);
@@ -1847,6 +1869,7 @@ let dispActivePlan = [];
             setModalVisible('manage-users-modal', 'manage-users-modal-content', false);
             setModalVisible('entry-modal', 'entry-modal-content', false);
             setModalVisible('out-modal', 'out-modal-content', false);
+            setModalVisible('dispensing-modal', 'dispensing-modal-content', false);
         }
 
         function handleLoginSuccess(instant = false) {
@@ -1974,6 +1997,8 @@ let dispActivePlan = [];
             isEditing = false;
             editOrigData = null;
             document.getElementById('manpower-form')?.reset();
+            updateValBtnStyles('mp-type', null);
+            updateValBtnStyles('mp-section', null);
             if(document.getElementById('mp-intime')) document.getElementById('mp-intime').value = getCurrentTimeHHMM();
             document.getElementById('edit-out-time-container')?.classList.add('hidden');
             document.getElementById('edit-ot-reason-container')?.classList.add('hidden');
@@ -2300,23 +2325,39 @@ let dispActivePlan = [];
             }
         });
 
-        document.getElementById('mp-type')?.addEventListener('change', function() {
-            if (this.value !== '') {
-                document.getElementById('mp-section')?.focus();
-            }
-        });
-
-        document.getElementById('mp-section')?.addEventListener('change', function() {
-            if (this.value !== '') {
-                document.getElementById('mp-intime')?.focus();
-            }
-        });
+        // Helper to style active val-btns
+        function updateValBtnStyles(targetId, value) {
+            const container = document.getElementById(targetId)?.nextElementSibling;
+            if(!container) return;
+            const buttons = container.querySelectorAll('.val-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-offset-1', 'bg-indigo-500', 'bg-emerald-500', 'text-white', 'border-indigo-500', 'border-emerald-500');
+                btn.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+                if (value && btn.getAttribute('data-val') === value) {
+                    btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+                    if (targetId === 'mp-type') {
+                        btn.classList.add('bg-indigo-500', 'text-white', 'border-indigo-500', 'ring-2', 'ring-offset-1', 'ring-indigo-200');
+                    } else {
+                        btn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-500', 'ring-2', 'ring-offset-1', 'ring-emerald-200');
+                    }
+                }
+            });
+        }
 
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('time-btn')) {
                 const targetId = e.target.getAttribute('data-target');
                 const el = document.getElementById(targetId);
                 if (el) { el.value = e.target.getAttribute('data-val'); el.focus(); el.blur(); }
+            }
+            if (e.target.classList.contains('val-btn')) {
+                const targetId = e.target.getAttribute('data-target');
+                const val = e.target.getAttribute('data-val');
+                const el = document.getElementById(targetId);
+                if (el) { 
+                    el.value = val; 
+                    updateValBtnStyles(targetId, val);
+                }
             }
         });
 
@@ -2380,6 +2421,7 @@ let dispActivePlan = [];
                     if(document.getElementById('mp-intime')) document.getElementById('mp-intime').value = getCurrentTimeHHMM();
                     saveNameSuggestion(workerName);
                     
+                    let wasEditing = isEditing;
                     if (isEditing) {
                         isEditing = false;
                         editOrigData = null;
@@ -2388,9 +2430,19 @@ let dispActivePlan = [];
                         document.getElementById('edit-ot-reason-container')?.classList.add('hidden');
                     } 
                     
+                    // Reset quick-select buttons styling if function exists
+                    if (typeof updateValBtnStyles === 'function') {
+                        updateValBtnStyles('mp-type', null);
+                        updateValBtnStyles('mp-section', null);
+                    }
+                    
                     await fetchHistoryDataInBackground(); 
                     
-                    document.getElementById('mp-name')?.focus();
+                    if (wasEditing) {
+                        history.back(); // Automatically close modal and go back to history after saving edit
+                    } else {
+                        document.getElementById('mp-name')?.focus();
+                    }
 
                 } else showToast('error', data.message || "Save failed.");
             } catch (err) { showToast('error', "Connection error."); } 
@@ -2421,7 +2473,7 @@ let dispActivePlan = [];
                 inTime: row[5]
             }));
 
-            if(countEl) countEl.textContent = liveActiveWorkers.length;
+            // countEl updated dynamically inside renderOutWorkerList
 
             const counts = { 'COMPANY': 0, 'CONTRACTUAL': 0, 'OPERATOR': 0, 'HOUSEKEEPING': 0, 'JAR LINE EXECUTIVE': 0, 'OTHER': 0 };
             liveActiveWorkers.forEach(w => {
@@ -2447,16 +2499,16 @@ let dispActivePlan = [];
 
             list.innerHTML = '';
             
-            const searchVal = document.getElementById('out-name-search') ? document.getElementById('out-name-search').value.toLowerCase().trim() : '';
-            
-            // 1. Base filter (Category + Search)
+            // 1. Base filter (Category only, search removed)
             let baseFiltered = liveActiveWorkers.filter(w => {
                 const t = String(w.type).toUpperCase().trim();
                 const targetCat = String(currentOutCategory).toUpperCase();
-                const matchesCat = (targetCat === 'OTHER') ? !['COMPANY','CONTRACTUAL','OPERATOR','HOUSEKEEPING','JAR LINE EXECUTIVE'].includes(t) : (t === targetCat);
-                const matchesSearch = !searchVal || w.name.toLowerCase().includes(searchVal);
-                return matchesCat && matchesSearch;
+                return (targetCat === 'OTHER') ? !['COMPANY','CONTRACTUAL','OPERATOR','HOUSEKEEPING','JAR LINE EXECUTIVE'].includes(t) : (t === targetCat);
             });
+            
+            // Update Page Total Badge dynamically!
+            const countEl = document.getElementById('active-count');
+            if(countEl) countEl.textContent = baseFiltered.length;
 
             baseFiltered.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -3072,12 +3124,22 @@ let dispActivePlan = [];
             const row = currentHistoryData.find(r => r[0] == date && r[2] == name && r[5] == inTime);
             if(!row) return;
 
-            history.back(); 
+            // Simply hide history without popping state!
+            setModalVisible('history-modal', 'history-modal-content', false);
 
             setTimeout(() => {
                 if(document.getElementById('mp-name')) document.getElementById('mp-name').value = row[2] || '';
-                if(document.getElementById('mp-type')) document.getElementById('mp-type').value = row[3] || '';
-                if(document.getElementById('mp-section')) document.getElementById('mp-section').value = row[4] || '';
+                
+                if(document.getElementById('mp-type')) {
+                    document.getElementById('mp-type').value = row[3] || '';
+                    updateValBtnStyles('mp-type', row[3] || '');
+                }
+                
+                if(document.getElementById('mp-section')) {
+                    document.getElementById('mp-section').value = row[4] || '';
+                    updateValBtnStyles('mp-section', row[4] || '');
+                }
+                
                 if(document.getElementById('mp-intime')) document.getElementById('mp-intime').value = row[5] || '';
                 
                 const outTimeContainer = document.getElementById('edit-out-time-container');
@@ -3273,6 +3335,28 @@ let dispActivePlan = [];
                 }
                 const mdPresentBadges = document.getElementById('md-present-badges');
                 if(mdPresentBadges) mdPresentBadges.innerHTML = badgesHtml || '<span class="text-slate-400 text-sm">No workers on floor</span>';
+
+                // --- NEW HUB SUMMARY LOGIC ---
+                const hubSummary = document.getElementById('hub-present-summary');
+                const hubSummaryValue = document.getElementById('hub-summary-value');
+                const hubBreakdown = document.getElementById('hub-breakdown-container');
+                
+                if (hubSummary && hubSummaryValue && hubBreakdown) {
+                    if (presentTotal > 0) {
+                        hubSummary.classList.remove('hidden');
+                        hubSummaryValue.textContent = presentTotal;
+                        let hubBadges = '';
+                        for (const [cat, count] of Object.entries(presentCounts)) {
+                            if(count > 0) {
+                                hubBadges += `<span class="${getBadgeStyle(cat)} text-[10px] sm:text-xs">${cat}: ${count}</span>`;
+                            }
+                        }
+                        hubBreakdown.innerHTML = hubBadges;
+                    } else {
+                        hubSummary.classList.add('hidden');
+                    }
+                }
+                // -----------------------------
 
                 const fmtHrs = v => (v % 1 === 0 ? v : parseFloat(v.toFixed(2)));
                 
@@ -3546,19 +3630,10 @@ let dispActivePlan = [];
             });
         }
 
-        const btnTabEntry = document.getElementById('tab-disp-entry'); const btnTabDash = document.getElementById('tab-disp-dash');
-        const viewEntry = document.getElementById('disp-data-entry-tab'); const viewDash = document.getElementById('disp-dashboard-tab');
-
-        btnTabEntry?.addEventListener('click', () => {
-            btnTabEntry.className = "bg-white shadow-md border border-slate-200 text-emerald-700 font-black text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2";
-            btnTabDash.className = "text-slate-500 hover:bg-white hover:shadow border border-transparent hover:border-slate-200 hover:text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2";
-            viewEntry.classList.remove('hidden'); viewEntry.classList.add('flex'); viewDash.classList.remove('flex'); viewDash.classList.add('hidden');
-        });
-        btnTabDash?.addEventListener('click', () => {
-            btnTabDash.className = "bg-white shadow-md border border-slate-200 text-emerald-700 font-black text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2";
-            btnTabEntry.className = "text-slate-500 hover:bg-white hover:shadow border border-transparent hover:border-slate-200 hover:text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-lg transition-all flex items-center gap-2";
-            viewDash.classList.remove('hidden'); viewDash.classList.add('flex'); viewEntry.classList.remove('flex'); viewEntry.classList.add('hidden');
-        });
+        // Tab UI removed - Views are now handled by separate Hub buttons
+        const viewEntry = document.getElementById('disp-data-entry-tab'); 
+        const viewDash = document.getElementById('disp-dashboard-tab');
+        const dispModalTitle = document.getElementById('disp-modal-title');
 
         document.getElementById('btn-disp-add-row')?.addEventListener('click', () => {
             const tbody = document.getElementById('disp-entry-tbody');
@@ -3760,19 +3835,44 @@ let dispActivePlan = [];
             }
         }
 
-       const closeDispensing = () => { 
-            setModalVisible('dispensing-modal', 'dispensing-modal-content', false); // Explicitly hide this modal
-            history.pushState({ view: 'production' }, '', '#production'); 
-            switchToProductionView(true); // Jump to production hub
-        };
-        document.getElementById('btn-close-dispensing')?.addEventListener('click', closeDispensing);
-        document.getElementById('dispensing-modal-bg')?.addEventListener('click', closeDispensing);
+       document.getElementById('btn-close-dispensing')?.addEventListener('click', () => history.back());
+        document.getElementById('dispensing-modal-bg')?.addEventListener('click', () => history.back());
 
         document.getElementById('btn-prod-dispensing')?.addEventListener('click', () => {
-            history.pushState({ modal: 'dispensing' }, '', '#dispensing');
+            history.pushState({ view: 'dispensing-hub' }, '', '#dispensing-hub');
+            switchToDispensingHubView();
+        });
+
+        document.getElementById('btn-back-production-from-dispensing')?.addEventListener('click', () => {
+            if (history.state && history.state.view === 'dispensing-hub') {
+                history.back();
+            } else {
+                history.pushState({ view: 'production' }, '', '#production');
+                switchToProductionView();
+            }
+        });
+
+        document.getElementById('btn-prod-disp-entry')?.addEventListener('click', () => {
+            history.pushState({ modal: 'dispensing' }, '', '#dispensing-entry');
+            if(dispModalTitle) dispModalTitle.innerHTML = '<i class="fa-solid fa-keyboard"></i> Dispensing Shift Data Entry';
+            if(viewEntry) { viewEntry.classList.remove('hidden'); viewEntry.classList.add('flex'); }
+            if(viewDash) { viewDash.classList.remove('flex'); viewDash.classList.add('hidden'); }
+            
             setModalVisible('dispensing-modal', 'dispensing-modal-content', true);
             if (currentUser && currentUser.role === 'Admin') document.getElementById('btn-disp-upload-plan')?.classList.remove('hidden');
             else document.getElementById('btn-disp-upload-plan')?.classList.add('hidden');
+            loadDispensingDashboard();
+        });
+
+        document.getElementById('btn-prod-disp-dash')?.addEventListener('click', () => {
+            history.pushState({ modal: 'dispensing' }, '', '#dispensing-dashboard');
+            if(dispModalTitle) dispModalTitle.innerHTML = '<i class="fa-solid fa-chart-pie"></i> Dispensing Dashboard';
+            if(viewDash) { viewDash.classList.remove('hidden'); viewDash.classList.add('flex'); }
+            if(viewEntry) { viewEntry.classList.remove('flex'); viewEntry.classList.add('hidden'); }
+            
+            setModalVisible('dispensing-modal', 'dispensing-modal-content', true);
+            // Hide upload plan on dashboard view to keep it clean
+            document.getElementById('btn-disp-upload-plan')?.classList.add('hidden');
             loadDispensingDashboard();
         });
 
