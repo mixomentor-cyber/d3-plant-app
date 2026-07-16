@@ -463,6 +463,10 @@
                             <i class="fa-solid fa-calendar-days text-3xl sm:text-4xl"></i>
                             <span class="font-bold text-sm sm:text-base text-center">Monthly OT Report</span>
                         </button>
+                        <button id="btn-hub-perm-emp" class="bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-address-book text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Perm. Employees Database</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -532,6 +536,68 @@
             </div>
 
             <!-- ====== MODALS ====== -->
+
+            <!-- === PERMANENT EMPLOYEES DATABASE MODAL === -->
+            <div id="perm-emp-modal" class="fixed inset-0 z-[70] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="perm-emp-modal-bg"></div>
+                <div class="relative bg-white w-full max-w-4xl mx-2 sm:mx-4 max-h-[95vh] md:max-h-[90vh] rounded-xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="perm-emp-modal-content">
+                    
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-teal-50/50 shrink-0">
+                        <h3 class="text-lg sm:text-xl font-bold text-teal-800 flex items-center gap-2">
+                            <i class="fa-solid fa-address-book text-teal-600"></i> Permanent Employees Database
+                        </h3>
+                        <button id="btn-close-perm-emp" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" title="Back">
+                            <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 overflow-y-auto flex-grow">
+                        <div class="md:col-span-1 border-r border-slate-100 pr-0 md:pr-4">
+                            <h4 class="text-sm font-bold text-slate-800 mb-3">Add Employee</h4>
+                            <form id="add-pe-form" class="space-y-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-semibold text-slate-700">Worker Name</label>
+                                    <input type="text" id="pe-name" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm" required>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-semibold text-slate-700">Worker Type</label>
+                                    <select id="pe-type" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm cursor-pointer" required>
+                                        <option value="Company">Company</option>
+                                        <option value="Operator">Operator</option>
+                                        <option value="Jar Line Executive">Jar Line Executive</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-semibold text-slate-700">Assigned Section (Optional)</label>
+                                    <select id="pe-section" class="dashboard-input w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm cursor-pointer">
+                                        <option value="-">- N/A -</option>
+                                        <option value="Dispensing">Dispensing</option>
+                                        <option value="Wet Process">Wet Process</option>
+                                        <option value="Spray Dryer">Spray Dryer</option>
+                                        <option value="Blending">Blending</option>
+                                        <option value="Packing">Packing</option>
+                                    </select>
+                                </div>
+                                <button type="submit" id="btn-save-pe" class="w-full relative group overflow-hidden rounded-lg bg-teal-600 text-white font-bold py-2.5 mt-4 transition-all hover:bg-teal-700 disabled:opacity-70">
+                                    <span class="relative z-10 flex items-center justify-center gap-2">
+                                        <i id="pe-icon" class="fa-solid fa-plus"></i>
+                                        <i id="pe-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+                                        <span id="pe-text">Add to Database</span>
+                                    </span>
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="md:col-span-2 flex flex-col h-full max-h-[40vh] md:max-h-full">
+                            <h4 class="text-sm font-bold text-slate-800 mb-3 shrink-0">Current Preloaded Database</h4>
+                            <div class="bg-slate-50 rounded-lg border border-slate-200 overflow-hidden flex-grow flex flex-col">
+                                <ul id="pe-list" class="divide-y divide-slate-100 px-3 overflow-y-auto flex-grow min-h-[250px]">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
           <!-- === DISPENSING MAIN MODAL === -->
             <div id="dispensing-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
@@ -885,7 +951,7 @@
                     <div class="p-4 sm:p-8">
                         <form id="manpower-form" class="space-y-4 sm:space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                                <div class="space-y-1.5 sm:space-y-2 bg-purple-50 p-4 rounded-xl border border-purple-200 shadow-sm">
+                                <div class="space-y-1.5 sm:space-y-2 bg-purple-50 p-4 rounded-lg border-2 border-purple-400 shadow-sm">
                                     <label class="block text-xs sm:text-sm font-bold text-purple-800 mb-2">Worker Type</label>
                                     <input type="hidden" id="mp-type" value="">
                                     <div class="flex flex-wrap gap-1.5 sm:gap-2">
@@ -897,7 +963,7 @@
                                     </div>
                                 </div>
 
-                                <div class="space-y-1.5 sm:space-y-2 bg-emerald-50 p-4 rounded-xl border border-emerald-200 shadow-sm">
+                                <div class="space-y-1.5 sm:space-y-2 bg-emerald-50 p-4 rounded-lg border-2 border-emerald-400 shadow-sm">
                                     <label class="block text-xs sm:text-sm font-bold text-emerald-800 mb-2">Assigned Section</label>
                                     <input type="hidden" id="mp-section" value="">
                                     <div class="flex flex-wrap gap-1.5 sm:gap-2">
@@ -910,7 +976,7 @@
                                     </div>
                                 </div>
 
-                                <div class="space-y-1.5 sm:space-y-2 bg-orange-50 p-4 rounded-xl border border-orange-200 shadow-sm">
+                                <div class="space-y-1.5 sm:space-y-2 bg-orange-50 p-4 rounded-lg border-2 border-orange-400 shadow-sm">
                                     <label for="mp-intime" class="block text-xs sm:text-sm font-bold text-orange-800">In-Time</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none"><i class="fa-solid fa-clock text-slate-400 text-sm"></i></div>
@@ -925,7 +991,7 @@
                                     </div>
                                 </div>
                                 
-                                <div id="edit-out-time-container" class="space-y-1.5 sm:space-y-2 hidden bg-rose-50 p-4 rounded-xl border border-rose-200 shadow-sm">
+                                <div id="edit-out-time-container" class="space-y-1.5 sm:space-y-2 hidden bg-rose-50 p-4 rounded-lg border-2 border-rose-400 shadow-sm">
                                     <label for="mp-outtime" class="block text-xs sm:text-sm font-bold text-rose-800">Out-Time (Edit Mode)</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none"><i class="fa-regular fa-clock text-slate-400 text-sm"></i></div>
@@ -940,18 +1006,38 @@
                                     </div>
                                 </div>
                                 
-                                <div id="edit-ot-reason-container" class="space-y-1.5 sm:space-y-2 hidden col-span-1 md:col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm">
+                                <div id="edit-ot-reason-container" class="space-y-1.5 sm:space-y-2 hidden col-span-1 md:col-span-2 bg-slate-50 p-4 rounded-lg border-2 border-slate-300 shadow-sm">
                                     <label for="mp-otreason" class="block text-xs sm:text-sm font-bold text-slate-700">OT Reason (Edit Mode)</label>
                                     <input type="text" id="mp-otreason" class="dashboard-input w-full bg-white border border-slate-200 text-slate-800 rounded-lg sm:rounded-xl block p-2.5 sm:p-3 text-sm sm:text-base transition-all">
                                 </div>
                             </div>
 
-                            <div class="space-y-1.5 sm:space-y-2 mt-4 sm:mt-6 bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-sm">
-                                <label for="mp-name" class="block text-sm font-bold text-blue-800">Worker Name (Enter Last)</label>
+                            <div class="space-y-1.5 sm:space-y-2 mt-4 sm:mt-6 bg-blue-50 p-4 rounded-lg border-2 border-blue-400 shadow-sm">
+                                <label class="block text-sm font-bold text-blue-800">Worker Name (Select Last)</label>
                                 <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none"><i class="fa-solid fa-user-tag text-blue-500 text-sm"></i></div>
-                                    <input type="text" id="mp-name" list="worker-names" autocomplete="off" class="dashboard-input w-full bg-white border-2 border-blue-300 text-slate-800 rounded-lg sm:rounded-xl block p-3 pl-11 text-base font-bold transition-all focus:border-blue-500 shadow-inner" placeholder="Type name and press Enter to Save" required>
+                                    <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none z-10"><i class="fa-solid fa-user-tag text-blue-500 text-sm"></i></div>
+                                    
+                                    <!-- Placeholder when unselected -->
+                                    <div id="mp-name-placeholder" class="dashboard-input w-full bg-slate-50 border-2 border-slate-200 text-slate-400 rounded-lg sm:rounded-xl flex items-center p-3 pl-11 text-base font-bold shadow-inner cursor-not-allowed select-none min-h-[52px]">
+                                        Select Worker Type & Assigned Section first...
+                                    </div>
+
+                                    <!-- Free Text Entry (Contractual / Housekeeping) -->
+                                    <input type="text" id="mp-name-text" list="worker-names" autocomplete="off" class="hidden dashboard-input w-full bg-white border-2 border-blue-300 text-slate-800 rounded-lg sm:rounded-xl block p-3 pl-11 text-base font-bold transition-all focus:border-blue-500 shadow-inner" placeholder="Type name and press Enter to Save">
                                     <datalist id="worker-names"></datalist>
+                                    
+                                    <!-- CUSTOM MULTI-SELECT UI (Company / Operator / Jar Line Exec) -->
+                                    <div id="mp-name-multi-container" class="hidden relative w-full">
+                                        <div id="mp-name-multi-header" class="dashboard-input w-full bg-white border-2 border-blue-300 text-slate-800 rounded-lg sm:rounded-xl p-3 pl-11 pr-10 text-base font-bold transition-all hover:border-blue-400 shadow-inner cursor-pointer flex justify-between items-center min-h-[52px]">
+                                            <span id="mp-name-multi-text" class="truncate text-slate-500 font-normal">Select workers...</span>
+                                        </div>
+                                        <div id="name-select-arrow" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none"><i class="fa-solid fa-chevron-down text-blue-500 text-sm"></i></div>
+                                        
+                                        <!-- Multi-Select Dropdown List -->
+                                        <div id="mp-name-multi-dropdown" class="absolute z-50 left-0 right-0 top-[105%] bg-white border-2 border-blue-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto hidden flex flex-col origin-top">
+                                            <!-- Checkboxes injected here -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1423,7 +1509,8 @@
         
         let liveActiveWorkers = [];
         let currentOutCategory = null;
-let dispActivePlan = []; 
+        let permEmployeesData = []; // Stores the preloaded DB
+        let dispActivePlan = []; 
         let dispTempUpload = [];
         let dispTableRowCount = 0;
 
@@ -1870,6 +1957,7 @@ let dispActivePlan = [];
             setModalVisible('entry-modal', 'entry-modal-content', false);
             setModalVisible('out-modal', 'out-modal-content', false);
             setModalVisible('dispensing-modal', 'dispensing-modal-content', false);
+            setModalVisible('perm-emp-modal', 'perm-emp-modal-content', false);
         }
 
         function handleLoginSuccess(instant = false) {
@@ -1880,7 +1968,10 @@ let dispActivePlan = [];
             if (currentUser.role === 'Admin') document.getElementById('btn-add-user')?.classList.remove('hidden');
             else document.getElementById('btn-add-user')?.classList.add('hidden');
 
-            setTimeout(fetchHistoryDataInBackground, 100);
+            setTimeout(() => {
+                fetchHistoryDataInBackground();
+                fetchPermEmployees();
+            }, 100);
 
             history.replaceState({ view: 'welcome' }, '', '#welcome');
 
@@ -2219,6 +2310,115 @@ let dispActivePlan = [];
         document.getElementById('btn-close-manage-users')?.addEventListener('click', () => history.back());
         document.getElementById('manage-users-modal-bg')?.addEventListener('click', () => history.back());
 
+        // --- PRELOADED DB MODAL LOGIC ---
+        document.getElementById('btn-hub-perm-emp')?.addEventListener('click', () => {
+            history.pushState({ modal: 'perm-emp' }, '', '#perm-emp');
+            setModalVisible('perm-emp-modal', 'perm-emp-modal-content', true);
+            renderPermEmployeesList();
+        });
+        document.getElementById('btn-close-perm-emp')?.addEventListener('click', () => history.back());
+        document.getElementById('perm-emp-modal-bg')?.addEventListener('click', () => history.back());
+
+        function renderPermEmployeesList() {
+            const list = document.getElementById('pe-list');
+            if(!list) return;
+            list.innerHTML = '';
+            if(permEmployeesData.length === 0) {
+                list.innerHTML = '<li class="py-4 text-sm text-slate-500 text-center">No employees found.</li>';
+                return;
+            }
+
+            // Define custom order of categories
+            const categoryOrder = ['Company', 'Operator', 'Jar Line Executive'];
+            const presentCategories = [...new Set(permEmployeesData.map(e => e.type))];
+            
+            presentCategories.sort((a, b) => {
+                let idxA = categoryOrder.indexOf(a);
+                let idxB = categoryOrder.indexOf(b);
+                if (idxA === -1) idxA = 999;
+                if (idxB === -1) idxB = 999;
+                return idxA - idxB;
+            });
+
+            presentCategories.forEach(cat => {
+                let emps = permEmployeesData.filter(e => e.type === cat);
+                if (emps.length === 0) return;
+                
+                // 1. Add Main Category Heading
+                const heading = document.createElement('li');
+                heading.className = "bg-slate-200/80 backdrop-blur-sm px-3 py-2 text-xs font-black text-indigo-800 uppercase tracking-wider sticky top-0 border-y border-slate-300 z-10 shadow-sm";
+                heading.innerHTML = `<i class="fa-solid fa-layer-group mr-1"></i> ${cat} WORKERS`;
+                list.appendChild(heading);
+
+                // 2. Sort Logic (Operators sort by section first)
+                if (cat === 'Operator') {
+                    emps.sort((a,b) => a.section.localeCompare(b.section) || a.name.localeCompare(b.name));
+                } else {
+                    emps.sort((a,b) => a.name.localeCompare(b.name));
+                }
+
+                let currentSection = null;
+
+                // 3. Append Workers
+                emps.forEach(emp => {
+                    // Inject Sub-Headers for Operator Sections
+                    if (cat === 'Operator' && emp.section !== currentSection) {
+                        currentSection = emp.section;
+                        const subHeading = document.createElement('li');
+                        subHeading.className = "bg-slate-50 px-3 py-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100 pl-6";
+                        subHeading.innerHTML = `<i class="fa-solid fa-puzzle-piece mr-1"></i> ${currentSection} Section`;
+                        list.appendChild(subHeading);
+                    }
+
+                    const li = document.createElement('li');
+                    li.className = `py-2.5 px-3 flex justify-between items-center text-sm hover:bg-slate-50 border-b border-slate-100 last:border-0 ${cat === 'Operator' ? 'pl-8' : ''}`;
+                    li.innerHTML = `
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-800">${emp.name}</span>
+                            <span class="text-[10px] text-slate-500">${emp.type} &bull; ${emp.section}</span>
+                        </div>
+                        <button type="button" onclick="deletePermEmployee('${emp.name}', '${emp.type}', '${emp.section}')" class="text-red-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors"><i class="fa-solid fa-trash"></i></button>
+                    `;
+                    list.appendChild(li);
+                });
+            });
+        }
+
+        window.deletePermEmployee = async function(name, type, section) {
+            if(!confirm(`Delete ${name} from Database?`)) return;
+            try {
+                const res = await fetch(API_URL, {
+                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                    body: JSON.stringify({ action: "delete_perm_employee", name, type, section })
+                });
+                if(JSON.parse(await res.text()).status === "success") {
+                    showToast('success', 'Deleted!');
+                    fetchPermEmployees();
+                } else showToast('error', 'Delete failed');
+            } catch(e) { showToast('error', 'Connection error'); }
+        };
+
+        document.getElementById('add-pe-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-pe');
+            setBtnLoading(btn, document.getElementById('pe-icon'), document.getElementById('pe-spinner'), document.getElementById('pe-text'), true, "Add to Database");
+            const payload = {
+                action: "add_perm_employee",
+                name: document.getElementById('pe-name').value.trim(),
+                type: document.getElementById('pe-type').value,
+                section: document.getElementById('pe-section').value
+            };
+            try {
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                if(JSON.parse(await res.text()).status === "success") {
+                    showToast('success', 'Added to Database!');
+                    document.getElementById('add-pe-form').reset();
+                    fetchPermEmployees();
+                } else showToast('error', 'Failed to add');
+            } catch(e) { showToast('error', 'Connection error'); }
+            finally { setBtnLoading(btn, document.getElementById('pe-icon'), document.getElementById('pe-spinner'), document.getElementById('pe-text'), false, "Add to Database"); }
+        });
+
         document.getElementById('add-user-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const newName = document.getElementById('new-username').value.trim();
@@ -2314,7 +2514,7 @@ let dispActivePlan = [];
         }
         loadNameSuggestions();
 
-        document.getElementById('mp-name')?.addEventListener('keydown', function(e) {
+        document.getElementById('mp-name-text')?.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault(); 
                 if (this.value.trim() !== '') {
@@ -2322,9 +2522,9 @@ let dispActivePlan = [];
                     const assignedSection = document.getElementById('mp-section').value;
                     const inTime = document.getElementById('mp-intime').value;
                     
-                    if (!workerType) { showToast('error', 'Please select a Worker Type first.'); return; }
-                    if (!assignedSection) { showToast('error', 'Please select an Assigned Section first.'); return; }
-                    if (!inTime) { showToast('error', 'Please provide an In-Time.'); return; }
+                    if (!workerType) { showToast('error', 'Error: Please select a Worker Type first.'); return; }
+                    if (!assignedSection) { showToast('error', 'Error: Please select an Assigned Section first.'); return; }
+                    if (!inTime) { showToast('error', 'Error: Please provide an In-Time.'); return; }
                     
                     document.getElementById('btn-save-manpower')?.click();
                 }
@@ -2348,6 +2548,135 @@ let dispActivePlan = [];
                     }
                 }
             });
+            updateNameDropdownLogic();
+        }
+
+        // --- PRELOADED DATABASE LOGIC ---
+        async function fetchPermEmployees() {
+            try {
+                const res = await fetch(API_URL, { 
+                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                    body: JSON.stringify({ action: "get_perm_employees" }) 
+                });
+                const data = JSON.parse(await res.text());
+                if (data.status === "success") {
+                    permEmployeesData = data.data;
+                    renderPermEmployeesList();
+                }
+            } catch(e) { console.error("Error fetching perm employees", e); }
+        }
+
+        let selectedMultiWorkers = [];
+
+        function toggleMultiSelect(forceClose = false) {
+            const dropdown = document.getElementById('mp-name-multi-dropdown');
+            if (!dropdown) return;
+            if (forceClose || !dropdown.classList.contains('hidden')) {
+                dropdown.classList.add('hidden');
+            } else {
+                dropdown.classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('mp-name-multi-header')?.addEventListener('click', () => toggleMultiSelect());
+        
+        // Close dropdown when clicking anywhere outside of it
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('mp-name-multi-container');
+            if (container && !container.contains(e.target)) {
+                toggleMultiSelect(true);
+            }
+        });
+
+        function updateNameDropdownLogic() {
+            const type = document.getElementById('mp-type')?.value;
+            const section = document.getElementById('mp-section')?.value;
+            const textInput = document.getElementById('mp-name-text');
+            const multiContainer = document.getElementById('mp-name-multi-container');
+            const dropdown = document.getElementById('mp-name-multi-dropdown');
+            const multiText = document.getElementById('mp-name-multi-text');
+            const placeholder = document.getElementById('mp-name-placeholder');
+            
+            if(!textInput || !multiContainer || !placeholder) return;
+
+            // Reset multi-select state
+            selectedMultiWorkers = [];
+            if(multiText) {
+                multiText.textContent = "Select workers...";
+                multiText.classList.replace('text-slate-800', 'text-slate-500');
+                multiText.classList.remove('font-bold');
+            }
+
+            // 1. Hide everything initially
+            textInput.classList.add('hidden');
+            textInput.removeAttribute('required');
+            multiContainer.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+
+            // 2. Strict Check: Do not reveal inputs unless BOTH Type and Section are selected
+            if (!type || !section) {
+                return; 
+            }
+
+            // 3. Reveal UI logic since both are selected
+            placeholder.classList.add('hidden');
+
+            if (['Company', 'Operator', 'Jar Line Executive'].includes(type)) {
+                // Show Custom Dropdown UI
+                multiContainer.classList.remove('hidden');
+                
+                // Populate options
+                dropdown.innerHTML = '';
+                let filtered = permEmployeesData.filter(e => e.type === type);
+                
+                // Filter Operators and Jar Line Execs specifically by section. 
+                // (Company shows full list as requested, but still forced them to pick a section first)
+                if (type === 'Operator' || type === 'Jar Line Executive') {
+                    filtered = filtered.filter(e => e.section === section || e.section === '-');
+                }
+                
+                if (filtered.length === 0) {
+                    dropdown.innerHTML = '<div class="p-4 text-sm font-semibold text-rose-500 italic text-center bg-rose-50">No employees assigned to this category/section.</div>';
+                } else {
+                    filtered.forEach((emp, idx) => {
+                        const label = document.createElement('label');
+                        label.className = "flex items-center gap-3 px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-slate-100 last:border-0 transition-colors";
+                        label.innerHTML = `
+                            <input type="checkbox" value="${emp.name}" class="w-5 h-5 text-blue-600 rounded border-slate-300 focus:ring-blue-500 multi-worker-cb shadow-sm cursor-pointer">
+                            <span class="text-sm font-bold text-slate-700 select-none">${emp.name}</span>
+                        `;
+                        
+                        const cb = label.querySelector('input');
+                        cb.addEventListener('change', (e) => {
+                            if (e.target.checked) {
+                                if (!selectedMultiWorkers.includes(emp.name)) selectedMultiWorkers.push(emp.name);
+                            } else {
+                                selectedMultiWorkers = selectedMultiWorkers.filter(n => n !== emp.name);
+                            }
+                            
+                            // Update the main header text dynamically
+                            if (selectedMultiWorkers.length === 0) {
+                                multiText.textContent = "Select workers...";
+                                multiText.classList.replace('text-slate-800', 'text-slate-500');
+                                multiText.classList.remove('font-bold');
+                            } else if (selectedMultiWorkers.length === 1) {
+                                multiText.textContent = selectedMultiWorkers[0];
+                                multiText.classList.replace('text-slate-500', 'text-slate-800');
+                                multiText.classList.add('font-bold');
+                            } else {
+                                multiText.textContent = `${selectedMultiWorkers.length} workers selected`;
+                                multiText.classList.replace('text-slate-500', 'text-slate-800');
+                                multiText.classList.add('font-bold');
+                            }
+                        });
+                        dropdown.appendChild(label);
+                    });
+                }
+            } else {
+                // Show Free Text Input for Contractual / Housekeeping
+                textInput.classList.remove('hidden');
+                textInput.setAttribute('required', 'true');
+            }
         }
 
         document.addEventListener('click', (e) => {
@@ -2369,7 +2698,18 @@ let dispActivePlan = [];
 
         document.getElementById('manpower-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const workerName = document.getElementById('mp-name').value.trim();
+            
+            let workerNamesArray = [];
+            const textInput = document.getElementById('mp-name-text');
+            const multiContainer = document.getElementById('mp-name-multi-container');
+            
+            if (!textInput.classList.contains('hidden')) {
+                const txt = textInput.value.trim();
+                if (txt) workerNamesArray.push(txt);
+            } else {
+                workerNamesArray = [...selectedMultiWorkers];
+            }
+            
             const workerType = document.getElementById('mp-type').value;
             const assignedSection = document.getElementById('mp-section').value;
             const inTime = document.getElementById('mp-intime').value;
@@ -2378,7 +2718,11 @@ let dispActivePlan = [];
             if (!workerType) { showToast('error', 'Error: Please select a Worker Type.'); return; }
             if (!assignedSection) { showToast('error', 'Error: Please select an Assigned Section.'); return; }
             if (!inTime) { showToast('error', 'Error: Please provide an In-Time.'); return; }
+            if (workerNamesArray.length === 0) { showToast('error', 'Error: Please provide at least one Worker Name.'); return; }
             
+            // If editing, block multiple selection
+            if (isEditing && workerNamesArray.length > 1) { showToast('error', 'Error: Cannot select multiple workers while editing a single entry.'); return; }
+
             const outTimeEl = document.getElementById('mp-outtime');
             const outTime = outTimeEl ? outTimeEl.value : "";
             
@@ -2404,9 +2748,8 @@ let dispActivePlan = [];
                     }
                 }
 
-                const newRowData = [rowDate, inchargeIn, workerName, workerType, assignedSection, inTime, finalOutTime, inchargeOut, otReason];
-
-          if (isEditing) {
+                if (isEditing) {
+                    const newRowData = [rowDate, inchargeIn, workerNamesArray[0], workerType, assignedSection, inTime, finalOutTime, inchargeOut, otReason];
                     payload = {
                         action: "edit_entry",
                         sheetName: "Manpower",
@@ -2416,8 +2759,16 @@ let dispActivePlan = [];
                         rowData: newRowData
                     };
                 } else {
-                    // FIXED: Added the missing 'action' key so new entries save correctly!
-                    payload = { action: "save_entry", sheetName: "Manpower", rowData: newRowData };
+                    // Create an array of rows for ALL selected workers
+                    const rowsDataArray = workerNamesArray.map(name => {
+                        return [rowDate, inchargeIn, name, workerType, assignedSection, inTime, finalOutTime, inchargeOut, otReason];
+                    });
+                    
+                    if (rowsDataArray.length === 1) {
+                        payload = { action: "save_entry", sheetName: "Manpower", rowData: rowsDataArray[0] };
+                    } else {
+                        payload = { action: "save_multiple_entries", sheetName: "Manpower", rowsData: rowsDataArray };
+                    }
                 }
 
                 const res = await fetch(API_URL, {
@@ -2446,15 +2797,29 @@ let dispActivePlan = [];
                         }
                     } else {
                         // NEW UX FOR FAST ENTRY: Keep Category, Section, and In-Time. ONLY clear the name!
-                        document.getElementById('mp-name').value = '';
+                        if(document.getElementById('mp-name-text')) document.getElementById('mp-name-text').value = '';
+                        
+                        // Clear Multi-Select
+                        selectedMultiWorkers = [];
+                        const multiText = document.getElementById('mp-name-multi-text');
+                        if (multiText) {
+                            multiText.textContent = "Select workers...";
+                            multiText.classList.replace('text-slate-800', 'text-slate-500');
+                            multiText.classList.remove('font-bold');
+                        }
+                        const checkboxes = document.querySelectorAll('.multi-worker-cb');
+                        checkboxes.forEach(cb => cb.checked = false);
+                        toggleMultiSelect(true); // Auto close dropdown upon success
                     }
                     
                     await fetchHistoryDataInBackground(); 
                     
                     if (wasEditing) {
-                        history.back(); // Automatically close modal and go back to history after saving edit
+                        history.back(); 
                     } else {
-                        document.getElementById('mp-name')?.focus(); // Keep cursor in name box for the next fast entry
+                        if (document.getElementById('mp-name-text') && !document.getElementById('mp-name-text').classList.contains('hidden')) {
+                            document.getElementById('mp-name-text').focus();
+                        }
                     }
 
                 } else showToast('error', data.message || "Save failed.");
@@ -3141,8 +3506,7 @@ let dispActivePlan = [];
             setModalVisible('history-modal', 'history-modal-content', false);
 
             setTimeout(() => {
-                if(document.getElementById('mp-name')) document.getElementById('mp-name').value = row[2] || '';
-                
+                // Pre-set type and section so dropdown logic fires correctly
                 if(document.getElementById('mp-type')) {
                     document.getElementById('mp-type').value = row[3] || '';
                     updateValBtnStyles('mp-type', row[3] || '');
@@ -3151,6 +3515,27 @@ let dispActivePlan = [];
                 if(document.getElementById('mp-section')) {
                     document.getElementById('mp-section').value = row[4] || '';
                     updateValBtnStyles('mp-section', row[4] || '');
+                }
+                
+                // Now populate the active name input
+                if(document.getElementById('mp-name-text') && !document.getElementById('mp-name-text').classList.contains('hidden')) {
+                    document.getElementById('mp-name-text').value = row[2] || '';
+                } else {
+                    // For multi-select editing, just auto-check the single worker we are editing
+                    const workerToEdit = row[2] || '';
+                    if (workerToEdit) {
+                        selectedMultiWorkers = [workerToEdit];
+                        const multiText = document.getElementById('mp-name-multi-text');
+                        if (multiText) {
+                            multiText.textContent = workerToEdit;
+                            multiText.classList.replace('text-slate-500', 'text-slate-800');
+                            multiText.classList.add('font-bold');
+                        }
+                        const checkboxes = document.querySelectorAll('.multi-worker-cb');
+                        checkboxes.forEach(cb => {
+                            if (cb.value === workerToEdit) cb.checked = true;
+                        });
+                    }
                 }
                 
                 if(document.getElementById('mp-intime')) document.getElementById('mp-intime').value = row[5] || '';
