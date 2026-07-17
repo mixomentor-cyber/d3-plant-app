@@ -108,6 +108,9 @@
         <span id="success-toast-msg" class="text-sm font-medium break-words">Action successful!</span>
     </div>
 
+    <!-- 16 HR OT WARNING CONTAINER -->
+    <div id="ot-warning-container" class="fixed bottom-4 right-4 z-[90] flex flex-col gap-3 w-[90%] sm:w-auto max-w-sm pointer-events-none"></div>
+
     <div id="bg-login" class="fixed inset-0 z-[-2] bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 transition-opacity duration-1000 opacity-100"></div>
     <div id="bg-dashboard" class="fixed inset-0 z-[-1] bg-slate-50 transition-opacity duration-1000 opacity-0"></div>
 
@@ -1201,13 +1204,13 @@
                         <div class="border border-slate-200 rounded-lg sm:rounded-xl shadow-sm flex-grow overflow-hidden flex flex-col">
                             <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[60vh] min-h-[250px]">
                                 <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
-                                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider sticky top-0 z-10 shadow-sm">
+                                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[9px] uppercase font-bold tracking-wider sticky top-0 z-20 shadow-sm">
                                         <tr>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">Sr. No.</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Date</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Name</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Type</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Section</th>
+                                            <th class="px-1 py-2 text-center sticky left-0 z-30 bg-slate-50 border-r border-slate-200">Sr. No.</th>
+                                            <th class="px-1 py-2 sticky left-[30px] z-30 bg-slate-50 border-r border-slate-200">Name</th>
+                                            <th class="px-1 py-2 sticky left-[130px] z-30 bg-slate-50 border-r border-slate-200">Type</th>
+                                            <th class="px-1 py-2">Date</th>
+                                            <th class="px-1 py-2">Section</th>
                                             <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">In-Time</th>
                                             <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">Out-Time</th>
                                             <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">Duty</th>
@@ -1267,8 +1270,8 @@
 
                     <div class="flex-grow overflow-hidden relative flex flex-col p-4 sm:p-6 gap-3 sm:gap-4">
                         <div class="border border-slate-200 rounded-lg sm:rounded-xl shadow-sm flex-grow overflow-hidden flex flex-col">
-                            <div class="overflow-x-auto overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh] min-h-[250px]">
-                                <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
+                            <div id="ot-card-container" class="overflow-y-auto w-full h-full max-h-[50vh] sm:max-h-[60vh] min-h-[250px] p-2 sm:p-4 bg-slate-50/50">
+                                <table id="old-ot-table" class="hidden">
                                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider sticky top-0 z-10 shadow-sm">
                                         <tr>
                                             <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">Sr. No.</th>
@@ -1355,6 +1358,7 @@
                             </div>
                         </div>
                         
+                        <div id="mot-top-performers" class="grid grid-cols-2 gap-3 shrink-0 hidden"></div>
                         <div id="mot-summary-footer" class="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-purple-50/80 border border-purple-100 grid grid-cols-3 gap-2 sm:gap-4 shrink-0 backdrop-blur-sm shadow-sm hidden">
                             <div class="flex flex-col items-center justify-center p-2 sm:p-3 bg-white rounded-lg sm:rounded-xl shadow-sm">
                                 <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center">Operator OT</p>
@@ -1402,11 +1406,7 @@
                                 <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap min-w-max">
                                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-800 text-[10px] sm:text-xs uppercase font-bold tracking-wider sticky top-0 z-10 shadow-sm">
                                         <tr>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">Sr. No.</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Name</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Type</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3">Section</th>
-                                            <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">In-Time</th>
+                                            <th class="px-2 sm:px-4 py-2 sm:py-3" colspan="2">Worker Details & In-Time</th>
                                         </tr>
                                     </thead>
                                     <tbody id="present-table-body" class="divide-y divide-slate-100 bg-white">
@@ -1549,7 +1549,7 @@
             setTimeout(() => {
                 toast.classList.add('hidden');
                 toast.classList.remove('flex');
-            }, 3000);
+            }, 7000);
         }
         // -------------------------
       function parseCustomDate(dateStr) {
@@ -1870,6 +1870,7 @@
                     syncActiveWorkers();
                 }
                 updateMainDashboardMetrics();
+                check16HourViolations();
                 
                 renderPresentTable();
                 if (currentOutCategory) renderOutWorkerList();
@@ -1881,6 +1882,72 @@
                 console.error("Data processing error:", e);
             }
         }
+
+        function check16HourViolations() {
+            const container = document.getElementById('ot-warning-container');
+            if (!container) return;
+            container.innerHTML = ''; // Clear current alerts
+            
+            const now = new Date();
+            
+            currentHistoryData.forEach((row) => {
+                const dateStr = row[0]; const nameStr = row[2];
+                const inTimeStr = row[5]; const outTimeStr = row[6];
+                const ackStatus = row[9]; // Reads Column J for internal flag
+                
+                if (inTimeStr && inTimeStr !== '-' && (!outTimeStr || outTimeStr === '-' || outTimeStr.trim() === '') && ackStatus !== 'ACKNOWLEDGED') {
+                    try {
+                        const inTimeParts = inTimeStr.split(':');
+                        let inDateTime = parseCustomDate(dateStr);
+                        if (!isNaN(inDateTime.getTime()) && inTimeParts.length === 2) {
+                            inDateTime.setHours(parseInt(inTimeParts[0], 10), parseInt(inTimeParts[1], 10), 0, 0);
+                            const diffHrs = (now.getTime() - inDateTime.getTime()) / (1000 * 60 * 60);
+                            
+                            // Check if exceeds 16.5 hours
+                            if (diffHrs >= 16.5) {
+                                // Calculate exactly when 16 hours was completed
+                                let hit16Hrs = new Date(inDateTime.getTime() + (16 * 60 * 60 * 1000));
+                                let hitTimeStr = String(hit16Hrs.getHours()).padStart(2, '0') + ':' + String(hit16Hrs.getMinutes()).padStart(2, '0');
+                                
+                                const alertDiv = document.createElement('div');
+                                alertDiv.className = "bg-rose-600/95 backdrop-blur-md border border-rose-400 text-white p-4 rounded-xl shadow-2xl pointer-events-auto flex flex-col gap-3 animate-fade-in-up";
+                                alertDiv.innerHTML = `
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0 shadow-inner">
+                                            <i class="fa-solid fa-triangle-exclamation text-xl text-white animate-pulse"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-black text-sm tracking-wide uppercase mb-1">Critical Overtime</h4>
+                                            <p class="text-xs text-rose-50 leading-relaxed"><b>${nameStr}</b> 16 hrs duty complete at <b>${hitTimeStr} HRS</b>, Please acknowledge to exceed it's duty beyond 16 HRS.</p>
+                                        </div>
+                                    </div>
+                                    <button onclick="acknowledge16h('${dateStr}', '${nameStr}', '${inTimeStr}')" class="w-full bg-white text-rose-600 hover:bg-rose-50 font-bold py-2.5 rounded-lg text-xs transition-colors shadow-sm">
+                                        <i class="fa-solid fa-check-double mr-1"></i> Acknowledge
+                                    </button>
+                                `;
+                                container.appendChild(alertDiv);
+                            }
+                        }
+                    } catch(e) {}
+                }
+            });
+        }
+
+        window.acknowledge16h = async function(dateStr, nameStr, inTimeStr) {
+            if (!confirm(`Acknowledge 16+ hours for ${nameStr}?`)) return;
+            showToast('success', 'Acknowledging...');
+            try {
+                const res = await fetch(API_URL, {
+                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow",
+                    body: JSON.stringify({ action: "acknowledge_16h", sheetName: "Manpower", date: dateStr, workerName: nameStr, inTime: inTimeStr })
+                });
+                const data = JSON.parse(await res.text());
+                if (data.status === "success") {
+                    showToast('success', 'Acknowledged successfully.');
+                    fetchHistoryDataInBackground(); // Instantly fetch to remove the banner
+                } else { showToast('error', data.message || 'Failed to acknowledge.'); }
+            } catch (err) { showToast('error', 'Network error.'); }
+        };
 
         function switchMainView(targetViewId, instant = false) {
             const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view', 'dispensing-hub-view'];
@@ -3052,6 +3119,16 @@
         document.getElementById('btn-close-present')?.addEventListener('click', () => history.back());
         document.getElementById('present-modal-bg')?.addEventListener('click', () => history.back());
 
+function getInTimeBadgeStyle(t) {
+            const base = "text-[10px] font-bold px-2 py-0.5 rounded border font-mono tracking-wide";
+            if (t === '06:00') return `${base} text-emerald-700 bg-emerald-50 border-emerald-200`;
+            if (t === '10:00') return `${base} text-amber-700 bg-amber-50 border-amber-200`;
+            if (t === '14:00') return `${base} text-blue-700 bg-blue-50 border-blue-200`;
+            if (t === '18:00') return `${base} text-rose-700 bg-rose-50 border-rose-200`;
+            if (t === '22:00') return `${base} text-indigo-700 bg-indigo-50 border-indigo-200`;
+            return `${base} text-slate-700 bg-slate-50 border-slate-200`; // Default
+        }
+
         function renderPresentTable() {
             const tbody = document.getElementById('present-table-body');
             const emptyState = document.getElementById('present-empty');
@@ -3100,13 +3177,17 @@
                             }
                         } catch(e) {}
 
+                        // Append section only if it exists and isn't '-' or 'Other'
                         rowsHTML += `
-                            <tr class="hover:bg-slate-50/50 transition-colors">
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${nameStr} ${displayDateBadge}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="${getBadgeStyle(typeStr)}">${typeStr}</span></td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600 font-semibold">${inTimeStr}</td>
+                            <tr class="hover:bg-slate-50/50 transition-colors border-b border-slate-100 last:border-0">
+                                <td class="px-2 sm:px-4 py-2 sm:py-3" colspan="2">
+                                    <div class="flex items-center flex-wrap gap-y-2">
+                                        <span class="font-bold text-slate-800 text-sm mr-2">${nameStr}</span>
+                                        <span class="${getBadgeStyle(typeStr)} mr-2">${typeStr}</span>
+                                        <span class="${getInTimeBadgeStyle(inTimeStr)}"><i class="fa-solid fa-clock mr-1"></i>${inTimeStr}</span>
+                                        ${displayDateBadge}
+                                    </div>
+                                </td>
                             </tr>
                         `;
                     });
@@ -3136,8 +3217,8 @@
             document.getElementById('ot-empty')?.classList.add('hidden');
             document.getElementById('ot-summary-footer')?.classList.add('hidden');
             
-            const tbody = document.getElementById('ot-table-body');
-            if(tbody) tbody.innerHTML = '<tr><td colspan="100%" class="text-center py-8"><i class="fa-solid fa-circle-notch fa-spin text-3xl text-indigo-500"></i><p class="text-slate-500 text-sm mt-2">Syncing live data...</p></td></tr>';
+            const cardContainer = document.getElementById('ot-card-container');
+            if(cardContainer) cardContainer.innerHTML = '<div class="flex flex-col items-center justify-center py-10"><i class="fa-solid fa-circle-notch fa-spin text-3xl text-indigo-500"></i><p class="text-slate-500 text-sm mt-2 font-medium">Syncing live data...</p></div>';
             
             await fetchHistoryDataInBackground();
             renderOTReportTable();
@@ -3176,12 +3257,14 @@
         });
 
         function renderOTReportTable() {
-            const tbody = document.getElementById('ot-table-body');
+            const cardContainer = document.getElementById('ot-card-container');
             const emptyState = document.getElementById('ot-empty');
             const summaryFooter = document.getElementById('ot-summary-footer');
-            if(!tbody) return;
+            if(!cardContainer) return;
             
-            tbody.innerHTML = '';
+            const oldTable = document.getElementById('old-ot-table');
+            if(oldTable) oldTable.remove(); // Safely deletes the old table from the DOM
+            cardContainer.innerHTML = '';
             const fromDateVal = document.getElementById('ot-from-date') ? document.getElementById('ot-from-date').value : '';
             const toDateVal = document.getElementById('ot-to-date') ? document.getElementById('ot-to-date').value : '';
             const nameFilterVal = document.getElementById('ot-name-filter') ? document.getElementById('ot-name-filter').value.trim().toLowerCase() : '';
@@ -3227,6 +3310,9 @@
                 } catch(e) {}
             });
 
+            // Sort by highest OT hours descending
+            otRecords.sort((a, b) => b.otVal - a.otVal);
+
             if (otRecords.length === 0) {
                 if(emptyState) emptyState.classList.remove('hidden');
                 if(summaryFooter) summaryFooter.classList.add('hidden');
@@ -3241,23 +3327,40 @@
                 try {
                     otRecords.forEach((rec, idx) => {
                         html += `
-                            <tr class="hover:bg-slate-50/50 transition-colors">
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${idx + 1}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-medium">${rec.displayDate}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold text-slate-800">${rec.nameStr}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="${getBadgeStyle(rec.typeStr)}">${rec.typeStr}</span></td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600">${rec.inTimeStr}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-rose-600">${rec.outTimeStr}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-indigo-600 bg-indigo-50/30">${rec.otStr}</td>
-                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs italic text-slate-500 max-w-[150px] truncate" title="${rec.otReasonStr}">${rec.otReasonStr}</td>
-                            </tr>
+                            <div class="bg-white rounded-xl shadow-[0_2px_10px_rgb(0,0,0,0.04)] border border-slate-200 overflow-hidden mb-3 animate-fade-in-up transition-all hover:shadow-md" style="animation-delay: ${idx * 0.05}s">
+                                <!-- Visible Header (Clickable) -->
+                                <div class="p-3 sm:p-4 cursor-pointer flex justify-between items-center hover:bg-slate-50/80 transition-colors group" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.fa-chevron-down').classList.toggle('rotate-180')">
+                                    <div class="flex flex-col gap-1.5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] sm:text-xs font-bold text-slate-400 bg-slate-100 w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full shrink-0">${idx + 1}</span>
+                                            <span class="font-bold text-slate-800 text-sm sm:text-base">${rec.nameStr}</span>
+                                        </div>
+                                        <div class="ml-7 sm:ml-8"><span class="${getBadgeStyle(rec.typeStr)}">${rec.typeStr}</span></div>
+                                    </div>
+                                    <div class="flex items-center gap-3 sm:gap-4">
+                                        <div class="text-right flex flex-col">
+                                            <span class="text-[9px] sm:text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-0.5">Overtime</span>
+                                            <span class="font-black text-indigo-600 text-sm sm:text-lg">${rec.otStr}</span>
+                                        </div>
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 shrink-0 group-hover:bg-indigo-50 group-hover:text-indigo-500 transition-colors">
+                                            <i class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Expanded Details Grid (Hidden by Default) -->
+                                <div class="hidden bg-slate-50/80 border-t border-slate-100 p-4 grid grid-cols-2 gap-4">
+                                    <div class="flex flex-col gap-1"><span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-calendar-day mr-1"></i> Date</span><span class="font-bold text-slate-700 text-xs sm:text-sm pl-1">${rec.displayDate}</span></div>
+                                    <div class="flex flex-col gap-1"><span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-clock mr-1"></i> Shift Timing</span><span class="font-bold text-slate-700 text-xs sm:text-sm pl-1"><span class="text-emerald-600">${rec.inTimeStr}</span> to <span class="text-rose-600">${rec.outTimeStr}</span></span></div>
+                                    <div class="flex flex-col gap-1 col-span-2"><span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-message mr-1"></i> OT Reason</span><span class="italic font-medium text-slate-600 text-xs sm:text-sm bg-white border border-slate-200 rounded-lg p-2 mt-0.5">${rec.otReasonStr}</span></div>
+                                </div>
+                            </div>
                         `;
                     });
                 } catch(e) {
                     console.error("Render error:", e);
-                    html = '<tr><td colspan="100%" class="text-center text-red-500 py-4">Error displaying data</td></tr>';
+                    html = '<div class="text-center text-red-500 py-4 font-bold">Error displaying data</div>';
                 }
-                tbody.innerHTML = html;
+                cardContainer.innerHTML = html;
             }
         }
 
@@ -3334,9 +3437,30 @@
             if (sortedArr.length === 0) {
                 if(emptyState) emptyState.classList.remove('hidden');
                 if(summaryFooter) summaryFooter.classList.add('hidden');
+                document.getElementById('mot-top-performers').classList.add('hidden');
             } else {
                 if(emptyState) emptyState.classList.add('hidden');
                 if(summaryFooter) summaryFooter.classList.remove('hidden');
+                
+                // Calculate Top Performers
+                let topOp = { name: "None", sum: 0 };
+                let topComp = { name: "None", sum: 0 };
+                
+                sortedArr.forEach(rec => {
+                    const type = String(rec.type).toUpperCase().trim();
+                    if (type === 'OPERATOR' && rec.sum > topOp.sum) topOp = { name: rec.name, sum: rec.sum };
+                    if (type === 'COMPANY' && rec.sum > topComp.sum) topComp = { name: rec.name, sum: rec.sum };
+                });
+
+                const topContainer = document.getElementById('mot-top-performers');
+                topContainer.innerHTML = '';
+                if(topOp.sum > 0 || topComp.sum > 0) {
+                    topContainer.classList.remove('hidden');
+                    if(topOp.sum > 0) topContainer.innerHTML += `<div class="bg-amber-50 border border-amber-200 p-3 rounded-xl flex flex-col items-center"><span class="text-[9px] font-bold text-amber-600 uppercase">Highest overtime Operator</span><span class="font-bold text-xs text-slate-800">${topOp.name}</span><span class="text-[10px] font-black text-amber-700">${fmtHrs(topOp.sum)}</span></div>`;
+                    if(topComp.sum > 0) topContainer.innerHTML += `<div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl flex flex-col items-center"><span class="text-[9px] font-bold text-indigo-600 uppercase">Highest overtime Company worker</span><span class="font-bold text-xs text-slate-800">${topComp.name}</span><span class="text-[10px] font-black text-indigo-700">${fmtHrs(topComp.sum)}</span></div>`;
+                } else {
+                    topContainer.classList.add('hidden');
+                }
                 
                 if(document.getElementById('mot-operator-value')) document.getElementById('mot-operator-value').textContent = fmtHrs(operatorOT);
                 if(document.getElementById('mot-company-value')) document.getElementById('mot-company-value').textContent = fmtHrs(companyOT);
@@ -3633,12 +3757,12 @@
                     const canEdit = currentUser && (currentUser.role === "Admin" || (isToday && (inInStr === currentUser.name || inOutStr === currentUser.name)));
 
                     rowsHTML += `
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-medium text-slate-500">${index + 1}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 font-medium">${displayDate}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 font-bold">${nameStr}</td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3"><span class="${getBadgeStyle(typeStr)}">${typeStr}</span></td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3">${secStr}</td>
+                        <tr class="hover:bg-slate-50/50 transition-colors text-[10px]">
+                            <td class="px-1 py-2 text-center text-slate-500 sticky left-0 z-10 bg-white border-r border-slate-100">${index + 1}</td>
+                            <td class="px-1 py-2 font-bold sticky left-[30px] z-10 bg-white border-r border-slate-100">${nameStr}</td>
+                            <td class="px-1 py-2 sticky left-[130px] z-10 bg-white border-r border-slate-100"><span class="${getBadgeStyle(typeStr)} text-[8px]">${typeStr}</span></td>
+                            <td class="px-1 py-2">${displayDate}</td>
+                            <td class="px-1 py-2">${secStr}</td>
                             <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-emerald-600">${inTimeStr}</td>
                             <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-mono text-xs text-rose-600">${outTimeStr}</td>
                             <td class="px-2 sm:px-4 py-2 sm:py-3 text-center font-bold text-slate-700 bg-slate-50/50">${dutyStr}</td>
