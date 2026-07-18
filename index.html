@@ -272,7 +272,7 @@
                             <i class="fa-solid fa-industry text-sm sm:text-base"></i>
                         </div>
                         <span class="font-bold text-lg sm:text-xl text-slate-800 tracking-tight">D3-Plant <span class="font-normal text-slate-500 hidden md:inline">| Operations</span></span>
-                        <span id="nav-hub-title" class="hidden text-slate-400 font-bold ml-2">| Manpower Hub</span>
+                        <span id="nav-hub-title" class="hidden text-slate-400 font-bold ml-2"></span>
                     </div>
 
                     <div class="flex items-center gap-3 sm:gap-6">
@@ -438,9 +438,9 @@
                     </div>
 
                     <div class="flex flex-col gap-3">
-                        <button id="btn-hub-entry" class="w-full flex items-center px-5 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-user-plus mr-4 text-lg"></i>MANPOWER ENTRY</button>
-                        <button id="btn-hub-out" class="w-full flex items-center px-5 py-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-user-minus mr-4 text-lg"></i>MANPOWER OUT</button>
-                        <button id="btn-hub-present" class="w-full flex items-center px-5 py-4 bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-users mr-4 text-lg"></i>PRESENT WORKERS</button>
+                        <button id="btn-hub-entry" class="w-full flex items-center px-5 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-user-plus mr-4 text-lg"></i>MANPOWER CHECK-IN</button>
+                        <button id="btn-hub-out" class="w-full flex items-center px-5 py-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-user-minus mr-4 text-lg"></i>MANPOWER CHECK-OUT</button>
+                        <button id="btn-hub-present" class="w-full flex items-center px-5 py-4 bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-users mr-4 text-lg"></i>LIVE ATTENDENCE</button>
                         <button id="btn-hub-history" class="w-full flex items-center px-5 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-clock-rotate-left mr-4 text-lg"></i>MANPOWER HISTORY</button>
                         <button id="btn-hub-daily-ot" class="w-full flex items-center px-5 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-file-invoice-dollar mr-4 text-lg"></i>DAILY OT REPORT</button>
                         <button id="btn-hub-monthly-ot" class="w-full flex items-center px-5 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-xl shadow-md hover:shadow-lg font-bold tracking-wide transition-all hover:scale-[1.01]"><i class="fa-solid fa-calendar-days mr-4 text-lg"></i>MONTHLY OT REPORT</button>
@@ -1159,6 +1159,17 @@
                             <button id="btn-history-next-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-600 hover:bg-indigo-100 hover:text-indigo-600 transition-colors mr-2" title="Next Day">
                                 <i class="fa-solid fa-chevron-right text-sm"></i>
                             </button>
+                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                <label class="text-[10px] sm:text-xs font-semibold text-slate-500">Type:</label>
+                                <select id="history-type-filter" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500/20 transition-all w-24 sm:w-32">
+                                    <option value="">All</option>
+                                    <option value="Company">Company</option>
+                                    <option value="Contractual">Contractual</option>
+                                    <option value="Operator">Operator</option>
+                                    <option value="Housekeeping">Housekeeping</option>
+                                    <option value="Jar Line Executive">Jar Line Exec</option>
+                                </select>
+                            </div>
                             <div class="flex items-center gap-1.5 sm:gap-2">
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-500">Name:</label>
                                 <input type="text" id="history-name-filter" placeholder="Search name..." class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1 sm:py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500/20 transition-all w-24 sm:w-32 md:w-48">
@@ -3530,11 +3541,13 @@ function getInTimeBadgeStyle(t) {
         document.getElementById('history-from-date')?.addEventListener('change', applyHistoryFilters);
         document.getElementById('history-to-date')?.addEventListener('change', applyHistoryFilters);
         document.getElementById('history-name-filter')?.addEventListener('input', applyHistoryFilters);
+        document.getElementById('history-type-filter')?.addEventListener('change', applyHistoryFilters);
         
         document.getElementById('btn-clear-history-filter')?.addEventListener('click', () => { 
             if(document.getElementById('history-from-date')) document.getElementById('history-from-date').value = ''; 
             if(document.getElementById('history-to-date')) document.getElementById('history-to-date').value = ''; 
             if(document.getElementById('history-name-filter')) document.getElementById('history-name-filter').value = ''; 
+            if(document.getElementById('history-type-filter')) document.getElementById('history-type-filter').value = ''; 
             renderHistoryTable(); 
         });
 
@@ -3695,12 +3708,13 @@ function getInTimeBadgeStyle(t) {
             const fromDateVal = document.getElementById('history-from-date') ? document.getElementById('history-from-date').value : '';
             const toDateVal = document.getElementById('history-to-date') ? document.getElementById('history-to-date').value : '';
             const nameFilterVal = document.getElementById('history-name-filter') ? document.getElementById('history-name-filter').value.trim().toLowerCase() : '';
+            const typeFilterVal = document.getElementById('history-type-filter') ? document.getElementById('history-type-filter').value.trim().toLowerCase() : '';
             
             let filteredData = currentHistoryData;
             
             const prodDateToday = getProductionDate();
 
-            if (fromDateVal || toDateVal || nameFilterVal) {
+            if (fromDateVal || toDateVal || nameFilterVal || typeFilterVal) {
                 let fDate = fromDateVal ? new Date(fromDateVal) : null;
                 if(fDate) fDate.setHours(0,0,0,0);
                 
@@ -3710,8 +3724,10 @@ function getInTimeBadgeStyle(t) {
                 filteredData = currentHistoryData.filter(row => {
                     const dStr = row[0] ? String(row[0]) : '';
                     const nStr = row[2] ? String(row[2]).toLowerCase() : '';
+                    const tStr = row[3] ? String(row[3]).toLowerCase() : '';
                     
                     if (nameFilterVal && !nStr.includes(nameFilterVal)) return false;
+                    if (typeFilterVal && tStr !== typeFilterVal) return false;
 
                     try { 
                         const d = parseCustomDate(dStr); 
