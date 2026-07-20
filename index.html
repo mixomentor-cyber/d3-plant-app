@@ -512,8 +512,195 @@
                     </div>
                 </div>
             </div>
+<!-- ====== WET PROCESS HUB VIEW ====== -->
+            <div id="wet-process-hub-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
+                <div class="max-w-4xl mx-auto bg-teal-50/40 rounded-3xl shadow-sm border border-teal-100 p-6 sm:p-8 backdrop-blur-sm">
+                    <div class="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 pb-6 border-b border-teal-200/50">
+                        <button id="btn-back-production-from-wp-hub" class="text-teal-400 hover:text-teal-600 transition-colors mr-1" title="Back to Production">
+                            <i class="fa-solid fa-arrow-left text-xl"></i>
+                        </button>
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white text-teal-600 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-flask text-sm sm:text-base"></i>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-teal-900">Wet Process Section</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                        <button id="btn-wp-hub-entry" class="bg-teal-500 hover:bg-teal-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-keyboard text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">Wet Process Entry</span>
+                        </button>
+                        <button id="btn-wp-hub-dash" onclick="alert('Wet Process Dashboard Coming Soon!')" class="bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-chart-pie text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">WP Dashboard</span>
+                        </button>
+                        <button id="btn-wp-hub-cip" class="bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center gap-3 transition-transform hover:-translate-y-1">
+                            <i class="fa-solid fa-shower text-3xl sm:text-4xl"></i>
+                            <span class="font-bold text-sm sm:text-base text-center">CIP Database</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- ====== WET PROCESS VIEW ====== -->
+            <div id="wet-process-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
+                <div class="max-w-7xl mx-auto space-y-6">
+                    
+                    <!-- Header & Date Filter -->
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <div class="flex items-center space-x-3">
+                            <button id="btn-back-production-from-wet" class="text-teal-400 hover:text-teal-600 transition-colors mr-1" title="Back to Production">
+                                <i class="fa-solid fa-arrow-left text-xl"></i>
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap space-x-2 sm:space-x-4 items-center">
+                            <button id="btn-wp-prev-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-teal-100 text-teal-600 border border-slate-200"><i class="fa-solid fa-chevron-left text-sm"></i></button>
+                            <div class="flex items-center gap-1.5">
+                                <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">From:</label>
+                                <input type="date" id="wp-from-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-teal-500/20">
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">To:</label>
+                                <input type="date" id="wp-to-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-teal-500/20">
+                            </div>
+                            <button id="btn-wp-next-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-teal-100 text-teal-600 border border-slate-200 mr-2"><i class="fa-solid fa-chevron-right text-sm"></i></button>
+                            <button onclick="loadWPTodayLogs()" class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all">Load Data</button>
+                        </div>
+                    </div>
+
+                    <!-- Active Dumping Plan Box -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                        <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 border-b pb-2"><i class="fa-solid fa-list-ol mr-1 text-teal-500"></i> Active Dumping Plan (From Dispensing)</h3>
+                        <div class="overflow-x-auto max-h-[25vh]">
+                            <table class="w-full text-sm text-left whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-600 text-[10px] sm:text-xs uppercase font-bold sticky top-0 shadow-sm">
+                                    <tr>
+                                        <th class="py-2 px-4">Seq</th>
+                                        <th class="py-2 px-4">PRODUCT</th>
+                                        <th class="py-2 px-4">BATCH NO</th>
+                                        <th class="py-2 px-4">PLAN QTY</th>
+                                        <th class="py-2 px-4 text-green-600">READY QTY</th>
+                                        <th class="py-2 px-4 text-blue-600">DUMPED QTY</th>
+                                        <th class="py-2 px-4 text-orange-600">REMAINING</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wp-active-plan-table" class="divide-y divide-slate-100 text-xs sm:text-sm text-slate-600">
+                                    <!-- Data will be injected here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Main Dumping Entry Log -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider"><i class="fa-solid fa-keyboard mr-1 text-teal-500"></i> Shift Entry Log (Live)</h3>
+                            <button onclick="addWPEntryRow()" class="text-xs bg-white border border-teal-200 text-teal-700 px-3 py-1.5 rounded-lg hover:bg-teal-100 font-bold transition-colors shadow-sm"><i class="fa-solid fa-plus mr-1"></i> Add Entry Row</button>
+                        </div>
+                        <div class="overflow-x-auto max-h-[35vh]">
+                            <table class="w-full text-sm text-left whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-600 text-[10px] sm:text-xs uppercase font-bold sticky top-0 shadow-sm">
+                                    <tr>
+                                        <th class="py-2 px-2">START</th>
+                                        <th class="py-2 px-2">PRODUCT (Batch)</th>
+                                        <th class="py-2 px-2">BATCH MAKER</th>
+                                        <th class="py-2 px-2">SCADA OP.</th>
+                                        <th class="py-2 px-2">DUMPED (kg)</th>
+                                        <th class="py-2 px-2">OLD REWORK QTY</th>
+                                        <th class="py-2 px-2">STARTING REWORK</th>
+                                        <th class="py-2 px-2 text-indigo-600 bg-indigo-50">TOTAL INPUT</th>
+                                        <th class="py-2 px-2">STOP</th>
+                                        <th class="py-2 px-2">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wp-entry-log-table" class="divide-y divide-slate-100 text-xs sm:text-sm text-slate-600">
+                                    <!-- Data will be injected here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- CIP Entry Log -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider"><i class="fa-solid fa-shower mr-1 text-blue-500"></i> CIP Entry Log</h3>
+                            <button onclick="addWPCIPRow()" class="text-xs bg-white border border-blue-200 text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-100 font-bold transition-colors shadow-sm"><i class="fa-solid fa-plus mr-1"></i> Add CIP Row</button>
+                        </div>
+                        <div class="overflow-x-auto max-h-[30vh]">
+                            <table class="w-full text-sm text-left whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-600 text-[10px] sm:text-xs uppercase font-bold sticky top-0 shadow-sm">
+                                    <tr>
+                                        <th class="py-2 px-4">CIP TYPE</th>
+                                        <th class="py-2 px-4">START TIME</th>
+                                        <th class="py-2 px-4">STOP TIME</th>
+                                        <th class="py-2 px-4 text-center">STD HRS</th>
+                                        <th class="py-2 px-4 text-center text-blue-600">ACTUAL HRS</th>
+                                        <th class="py-2 px-4 text-center">VARIANCE</th>
+                                        <th class="py-2 px-4">DONE BY (OP.)</th>
+                                        <th class="py-2 px-4">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wp-cip-log-table" class="divide-y divide-slate-100 text-xs sm:text-sm text-slate-600">
+                                    <!-- CIP Data will be injected here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown Log -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider"><i class="fa-solid fa-triangle-exclamation mr-1 text-red-500"></i> Breakdown Log</h3>
+                            <button onclick="addWPBreakdownRow()" class="text-xs bg-white border border-red-200 text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-100 font-bold transition-colors shadow-sm"><i class="fa-solid fa-plus mr-1"></i> Add Breakdown</button>
+                        </div>
+                        <div class="overflow-x-auto max-h-[30vh]">
+                            <table class="w-full text-sm text-left whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-600 text-[10px] sm:text-xs uppercase font-bold sticky top-0 shadow-sm">
+                                    <tr>
+                                        <th class="py-2 px-4">BREAKDOWN TYPE</th>
+                                        <th class="py-2 px-4">DETAILS</th>
+                                        <th class="py-2 px-4">FROM</th>
+                                        <th class="py-2 px-4">TO</th>
+                                        <th class="py-2 px-4 text-center">TOTAL HRS</th>
+                                        <th class="py-2 px-4">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wp-bd-log-table" class="divide-y divide-slate-100 text-xs sm:text-sm text-slate-600">
+                                    <!-- Breakdown Data will be injected here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <!-- ====== MODALS ====== -->
+             <!-- === CIP DATABASE MODAL === -->
+            <div id="cip-db-modal" class="fixed inset-0 z-[70] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="cip-db-modal-bg"></div>
+                <div class="relative bg-white w-full max-w-2xl mx-2 sm:mx-auto rounded-xl md:rounded-3xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="cip-db-modal-content">
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-blue-50/50">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-shower text-blue-500 mr-2"></i> CIP Database Master</h3>
+                        <button id="btn-close-cip-db" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="p-4 sm:p-6 flex flex-col gap-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="text-xs font-bold text-slate-600 uppercase mb-3">Add New CIP Standard</h4>
+                            <div class="grid grid-cols-5 gap-3">
+                                <div class="col-span-3"><input type="text" id="new-cip-name" class="dashboard-input w-full bg-white border border-slate-300 rounded-lg p-2 text-sm" placeholder="e.g. Caustic CIP"></div>
+                                <div class="col-span-2 relative"><input type="number" id="new-cip-hrs" class="dashboard-input w-full bg-white border border-slate-300 rounded-lg p-2 text-sm" placeholder="Hours (e.g. 1.5)"><span class="absolute right-3 top-2 text-slate-400 text-sm pointer-events-none">hrs</span></div>
+                                <div class="col-span-5"><button type="button" id="btn-save-cip-master" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg text-sm shadow-sm transition-colors">Add to Database</button></div>
+                            </div>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <h4 class="text-xs font-bold text-slate-600 uppercase mb-3">Current CIP List</h4>
+                            <ul id="cip-master-list" class="space-y-2 max-h-60 overflow-y-auto min-h-[100px]">
+                                <!-- List renders here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- === PERMANENT EMPLOYEES DATABASE MODAL === -->
             <div id="perm-emp-modal" class="fixed inset-0 z-[70] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
@@ -1936,8 +2123,7 @@
         };
 
         function switchMainView(targetViewId, instant = false) {
-            const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view', 'dispensing-hub-view'];
-            views.forEach(vid => {
+const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view', 'dispensing-hub-view', 'wet-process-hub-view', 'wet-process-view'];            views.forEach(vid => {
                 const el = document.getElementById(vid);
                 if (!el) return;
                 
@@ -4369,9 +4555,33 @@ function getInTimeBadgeStyle(t) {
        document.getElementById('btn-close-dispensing')?.addEventListener('click', () => history.back());
         document.getElementById('dispensing-modal-bg')?.addEventListener('click', () => history.back());
 
+        // Navigating to Dispensing
         document.getElementById('btn-prod-dispensing')?.addEventListener('click', () => {
             history.pushState({ view: 'dispensing-hub' }, '', '#dispensing-hub');
             switchToDispensingHubView();
+        });
+
+    // Navigating to Wet Process Hub
+        document.getElementById('btn-prod-wet')?.addEventListener('click', () => {
+            history.pushState({ view: 'wet-process-hub' }, '', '#wet-process-hub');
+            switchMainView('wet-process-hub-view');
+        });
+
+        // Hub -> Entry View
+        document.getElementById('btn-wp-hub-entry')?.addEventListener('click', () => {
+            history.pushState({ view: 'wet-process' }, '', '#wet-process');
+            switchMainView('wet-process-view');
+        });
+
+        // Back buttons
+        document.getElementById('btn-back-production-from-wp-hub')?.addEventListener('click', () => {
+            history.pushState({ view: 'production' }, '', '#production');
+            switchToProductionView();
+        });
+        document.getElementById('btn-back-production-from-wet')?.addEventListener('click', () => {
+            // Now back from Entry takes you to Hub
+            history.pushState({ view: 'wet-process-hub' }, '', '#wet-process-hub');
+            switchMainView('wet-process-hub-view');
         });
 
         document.getElementById('btn-back-production-from-dispensing')?.addEventListener('click', () => {
@@ -4436,6 +4646,488 @@ function getInTimeBadgeStyle(t) {
                 if (JSON.parse(await res.text()).status === "success") { showToast('success', 'Plan Saved!'); setModalVisible('disp-upload-modal', 'disp-upload-modal-content', false); await loadDispensingDashboard(); }
             } catch(e) {} finally { setBtnLoading(btn, document.getElementById('disp-up-save-icon'), document.getElementById('disp-up-save-spinner'), document.getElementById('disp-up-save-text'), false, "Save Final Plan"); }
         });
+
+       // ================= WET PROCESS SECTION LOGIC =================
+
+        // Helper: Get Shift
+        function getShiftByTime() {
+            const hour = new Date().getHours();
+            if (hour >= 6 && hour < 14) return 'Shift A';
+            if (hour >= 14 && hour < 22) return 'Shift B';
+            return 'Shift C';
+        }
+
+// Helper: Production Date (6 AM Logic)
+        function getWPProductionDate() {
+            let now = new Date();
+            if (now.getHours() < 6) now.setDate(now.getDate() - 1); 
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            // FIX: वापस Google Sheet वाले सही फॉर्मेट (YYYY-MM-DD) में सेट किया गया
+            return `${year}-${month}-${day}`; 
+        }
+
+        let globalWPProductOptions = '<option value="" disabled selected>Load Data First...</option>';
+
+        // AUTO-FETCH TRIGGER (Watches if user opens the tab)
+        let wpTabInitialized = false;
+        setInterval(() => {
+            const wpView = document.getElementById('wet-process-view');
+            if (wpView && !wpView.classList.contains('hidden') && !wpTabInitialized) {
+                wpTabInitialized = true;
+                initWetProcessTab();
+            } else if (wpView && wpView.classList.contains('hidden')) {
+                wpTabInitialized = false; // Reset when user leaves tab
+            }
+        }, 500);
+
+async function initWetProcessTab() {
+            const fDateInput = document.getElementById('wp-from-date');
+            const tDateInput = document.getElementById('wp-to-date');
+            let today = getWPProductionDate();
+            
+            if(fDateInput && !fDateInput.value) fDateInput.value = today;
+            if(tDateInput && !tDateInput.value) tDateInput.value = today;
+
+            await loadWetProcessData();  
+            await loadWPTodayLogs();     
+        }
+
+      // 1. LOAD DISPENSING DATA
+     window.loadWetProcessData = async function() {
+            const btn = document.querySelector('button[onclick="loadWetProcessData()"]');
+            if(btn) { btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...'; btn.disabled = true; }
+            try {
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow", body: JSON.stringify({ action: "get_dispensing_dashboard" }) });
+                const data = await res.json();
+                if (data.status === "success") {
+                    let pData = data.planData.length > 1 ? data.planData.slice(1) : [];
+                    let lData = data.logData.length > 1 ? data.logData.slice(1) : [];
+                    const tbody = document.getElementById('wp-active-plan-table'); tbody.innerHTML = '';
+                    globalWPProductOptions = '<option value="" disabled selected>Select Product...</option>';
+                    let hasActive = false;
+
+                    pData.forEach((p, index) => {
+                        const batch = p[3]; const prod = p[2];
+                        const batchLogs = lData.filter(l => l[3] == batch && l[2] == prod);
+                        let totalCompleted = 0; batchLogs.forEach(l => { totalCompleted += parseFloat(l[6]) || 0; });
+                        
+                        let totalDumped = 0;
+                        if(data.wpMainData) {
+                            data.wpMainData.forEach(row => {
+                                if(row[2] == prod && row[3] == batch) {
+                                    totalDumped += parseFloat(row[6]) || 0;
+                                }
+                            });
+                        }
+                        
+                        let remaining = totalCompleted - totalDumped;
+                        if (remaining < 0) remaining = 0;
+
+                        if (totalCompleted > 0) {
+                            hasActive = true;
+                            globalWPProductOptions += `<option data-ready-qty="${totalCompleted}" value="${prod} | ${batch}">${prod} (${batch}) - Ready: ${totalCompleted}kg</option>`;
+                            tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="py-2 px-4 font-bold">${index + 1}</td><td class="py-2 px-4">${prod}</td><td class="py-2 px-4 text-xs">${batch}</td><td class="py-2 px-4">${p[4]} kg</td><td class="py-2 px-4 text-emerald-600 font-bold">${totalCompleted} kg</td><td class="py-2 px-4 text-blue-600 font-bold">${totalDumped} kg</td><td class="py-2 px-4 text-orange-600 font-bold">${remaining} kg</td></tr>`;
+                        }
+                    });
+                    if (!hasActive) tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-slate-400">No Ready batches found.</td></tr>';
+                }
+            } catch (e) { console.log(e); } 
+            finally { if(btn) { btn.innerHTML = 'Load Data'; btn.disabled = false; } }
+        };
+
+      window.loadWPTodayLogs = async function() {
+            document.getElementById('wp-entry-log-table').innerHTML = '';
+            document.getElementById('wp-cip-log-table').innerHTML = '';
+            document.getElementById('wp-bd-log-table').innerHTML = '';
+            
+            let fDate = document.getElementById('wp-from-date').value;
+            let tDate = document.getElementById('wp-to-date').value;
+            
+            if(!fDate || !tDate) {
+                let today = getWPProductionDate();
+                document.getElementById('wp-from-date').value = today;
+                document.getElementById('wp-to-date').value = today;
+                fDate = today; tDate = today;
+            }
+            
+            try {
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow", body: JSON.stringify({ action: "get_wp_today_data", fromDate: fDate, toDate: tDate }) });
+                const data = await res.json();
+                
+                if (data.status === "success") {
+                    if (data.mainData && data.mainData.length > 0) data.mainData.forEach(hist => addWPEntryRow(hist));
+                    if (data.cipData && data.cipData.length > 0) data.cipData.forEach(hist => addWPCIPRow(hist));
+                    if (data.bdData && data.bdData.length > 0) data.bdData.forEach(hist => addWPBreakdownRow(hist));
+                }
+            } catch (e) { console.error("History Failed:", e); }
+        };
+        // Arrows logic
+        document.getElementById('btn-wp-prev-day')?.addEventListener('click', () => {
+            const fd = document.getElementById('wp-from-date'); const td = document.getElementById('wp-to-date');
+            if(fd.value) {
+                let d = new Date(fd.value); d.setDate(d.getDate() - 1); 
+                fd.value = d.toLocaleDateString('en-CA'); td.value = d.toLocaleDateString('en-CA');
+                loadWPTodayLogs();
+            }
+        });
+        document.getElementById('btn-wp-next-day')?.addEventListener('click', () => {
+            const fd = document.getElementById('wp-from-date'); const td = document.getElementById('wp-to-date');
+            if(fd.value) {
+                let d = new Date(fd.value); d.setDate(d.getDate() + 1); 
+                fd.value = d.toLocaleDateString('en-CA'); td.value = d.toLocaleDateString('en-CA');
+                loadWPTodayLogs();
+            }
+        });
+        document.getElementById('wp-from-date')?.addEventListener('change', loadWPTodayLogs);
+        document.getElementById('wp-to-date')?.addEventListener('change', loadWPTodayLogs);
+        // UI HELPER: Lock/Unlock Rows for Edit Mode
+        window.toggleRowEdit = function(rowId, isLocked) {
+            const row = document.getElementById(rowId); if(!row) return;
+            const inputs = row.querySelectorAll('input:not([type="hidden"]), select');
+            const saveBtn = document.getElementById(`btn-save-${rowId}`);
+            const editBtn = document.getElementById(`btn-edit-${rowId}`);
+            
+            inputs.forEach(el => {
+                if(isLocked) {
+                    el.dataset.origBg = el.classList.contains('bg-slate-100') ? 'bg-slate-100' : 'bg-white';
+                    el.classList.remove('bg-white', 'bg-slate-100', 'border-slate-300', 'border-slate-200', 'border-blue-400', 'border-2', 'shadow-inner');
+                    el.classList.add('bg-transparent', 'border-transparent', 'pointer-events-none');
+                } else {
+                    el.classList.remove('bg-transparent', 'border-transparent', 'pointer-events-none');
+                    if(el.dataset.origBg) el.classList.add(el.dataset.origBg, 'border-slate-300', 'shadow-inner');
+                }
+            });
+            
+            if(isLocked) { if(saveBtn) saveBtn.classList.add('hidden'); if(editBtn) editBtn.classList.remove('hidden'); } 
+            else { if(saveBtn) saveBtn.classList.remove('hidden'); if(editBtn) editBtn.classList.add('hidden'); }
+        };
+
+        // UI HELPER: Universal Delete from DB
+        window.deleteWPLog = async function(btn, rowId, sheetName) {
+            const row = document.getElementById(rowId);
+            const rIndex = row.dataset.rowIndex;
+            if(!rIndex) { row.remove(); return; } // Not saved yet
+            if(!confirm("Are you sure you want to delete this saved entry?")) return;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            try {
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: 'delete_wp_log', sheetName: sheetName, rowIndex: rIndex }) });
+                const data = await res.json();
+                if(data.status === 'success') { row.remove(); showToast('success', 'Deleted'); } 
+                else { showToast('error', data.message); btn.innerHTML = '<i class="fa-solid fa-trash"></i>'; }
+            } catch(e) { showToast('error', 'Network error'); btn.innerHTML = '<i class="fa-solid fa-trash"></i>'; }
+        };
+let cipMasterData = [];
+
+        async function fetchCIPMaster() {
+            try {
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow", body: JSON.stringify({ action: "get_cip_master" }) });
+                const data = await res.json();
+                if (data.status === "success") {
+                    cipMasterData = data.data.length > 1 ? data.data.slice(1) : [];
+                    renderCIPMasterList();
+                }
+            } catch(e) {}
+        }
+        
+        // Fetch on load
+        setTimeout(fetchCIPMaster, 2000);
+
+        function renderCIPMasterList() {
+            const list = document.getElementById('cip-master-list'); if(!list) return;
+            list.innerHTML = '';
+            if(cipMasterData.length === 0) { list.innerHTML = '<li class="text-xs text-slate-400 p-2">No CIP data found.</li>'; return; }
+            cipMasterData.forEach((item, idx) => {
+                list.innerHTML += `<li class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center shadow-sm">
+                    <div><strong class="text-sm text-slate-700">${item[0]}</strong> <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded ml-2 font-bold">${item[1]} Hrs</span></div>
+                    <button onclick="deleteCIPMaster(${idx+2})" class="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-1.5 rounded"><i class="fa-solid fa-trash"></i></button>
+                </li>`;
+            });
+        }
+
+        window.deleteCIPMaster = async function(rowIndex) {
+            if(!confirm("Delete this CIP standard?")) return;
+            try {
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow", body: JSON.stringify({ action: "delete_cip_master", rowIndex }) });
+                if ((await res.json()).status === "success") { showToast('success', 'Deleted'); fetchCIPMaster(); }
+            } catch(e) {}
+        }
+
+        document.getElementById('btn-wp-hub-cip')?.addEventListener('click', () => {
+            setModalVisible('cip-db-modal', 'cip-db-modal-content', true);
+            fetchCIPMaster();
+        });
+        document.getElementById('btn-close-cip-db')?.addEventListener('click', () => setModalVisible('cip-db-modal', 'cip-db-modal-content', false));
+        document.getElementById('cip-db-modal-bg')?.addEventListener('click', () => setModalVisible('cip-db-modal', 'cip-db-modal-content', false));
+
+        document.getElementById('btn-save-cip-master')?.addEventListener('click', async () => {
+            const name = document.getElementById('new-cip-name').value;
+            const hrs = document.getElementById('new-cip-hrs').value;
+            if(!name || !hrs) { showToast('error', 'Enter both Name and Hours'); return; }
+            const btn = document.getElementById('btn-save-cip-master'); btn.innerHTML = 'Saving...'; btn.disabled = true;
+            try {
+                const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow", body: JSON.stringify({ action: "add_cip_master", cipName: name, cipHrs: hrs }) });
+                if ((await res.json()).status === "success") {
+                    showToast('success', 'CIP Added'); document.getElementById('new-cip-name').value = ''; document.getElementById('new-cip-hrs').value = '';
+                    fetchCIPMaster();
+                }
+            } catch(e) {} finally { btn.innerHTML = 'Add to Database'; btn.disabled = false; }
+        });
+        // --- CALC HELPERS ---
+       window.calculateWPTotalInput = function(rowId) {
+            let dumpedQty = parseFloat(document.getElementById(`wp-dump-${rowId}`).value) || 0;
+            let oldRw = parseFloat(document.getElementById(`wp-oldrw-${rowId}`).value) || 0;
+            
+            // NOTE: Spray Drying मास बैलेंस में Starting Dryer (SD) पाउडर आमतौर पर टोटल इनपुट में नहीं जुड़ता, 
+            // इसलिए यहाँ Total = Dumped + Old RW रखा गया है। 
+            let total = dumpedQty + oldRw; 
+            
+            document.getElementById(`wp-total-${rowId}`).innerHTML = `${total} kg<input type="hidden" id="wp-total-hidden-${rowId}" value="${total}">`;
+        };
+
+   window.calcCIPHours = function(rowId) {
+            const selectedType = document.getElementById(`cip-type-${rowId}`).value;
+            // मास्टर डेटाबेस से नाम मैच करके स्टैंडर्ड ऑवर निकालें
+            const match = cipMasterData.find(c => c[0] === selectedType);
+            const stdHrs = match ? parseFloat(match[1]) : 0;
+            
+            document.getElementById(`cip-std-${rowId}`).value = stdHrs.toFixed(2) + ' h';
+            const start = document.getElementById(`cip-start-${rowId}`).value; 
+            const stop = document.getElementById(`cip-stop-${rowId}`).value;
+            
+            if(start && stop) {
+                const diff = (new Date(stop) - new Date(start)) / (1000 * 60 * 60);
+                if(diff > 0) {
+                    document.getElementById(`cip-actual-${rowId}`).value = diff.toFixed(2) + ' h';
+                    const varEl = document.getElementById(`cip-var-${rowId}`); 
+                    const variance = diff - stdHrs;
+                    varEl.value = (variance > 0 ? "+" : "") + variance.toFixed(2) + ' h';
+                    varEl.className = variance > 0 ? "dashboard-input bg-red-50 text-red-600 rounded p-1 text-center text-xs font-bold w-16" : "dashboard-input bg-emerald-50 text-emerald-600 rounded p-1 text-center text-xs font-bold w-16";
+                }
+            }
+        };
+
+      // --- ENTRY LOG ---
+      window.addWPEntryRow = function(hist = null) {
+            const tbody = document.getElementById('wp-entry-log-table');
+            const rowId = 'wp-row-' + Date.now() + Math.floor(Math.random() * 1000);
+            const tr = document.createElement('tr');
+            tr.className = "bg-teal-50/30 border-b border-slate-200 hover:bg-slate-50 transition-colors";
+            tr.id = rowId;
+            
+            if (hist && hist[13]) {
+                tr.dataset.rowIndex = hist[13]; 
+            }
+
+            let prodOptions = globalWPProductOptions;
+            let baseOpOptions = '<option value="" disabled selected>Select...</option>';
+            
+            if (typeof liveActiveWorkers !== 'undefined') {
+                let wpOperators = liveActiveWorkers.filter(w => w.section === 'Wet Process' || w.section === 'Operator');
+                wpOperators.forEach(op => { baseOpOptions += `<option value="${op.name}">${op.name}</option>`; });
+            }
+
+            let makerOptions = baseOpOptions;
+            let scadaOptions = baseOpOptions;
+
+            // अगर पुराना डेटा मौजूद है, तो ड्रॉपडाउन में उसे सेलेक्टेड दिखाएं
+            if (hist) {
+                let currentMatch = `${hist[2]} | ${hist[3]}`;
+                if(!prodOptions.includes(currentMatch)) {
+                    prodOptions += `<option value="${currentMatch}">${currentMatch} (History)</option>`;
+                }
+                prodOptions = prodOptions.replace(`value="${currentMatch}"`, `value="${currentMatch}" selected`);
+                
+                // Batch Maker Logic (hist[4])
+                let maker = hist[4];
+                if (maker) {
+                    if (!makerOptions.includes(`value="${maker}"`)) makerOptions += `<option value="${maker}">${maker} (History)</option>`;
+                    makerOptions = makerOptions.replace('value="" disabled selected', 'value="" disabled').replace(`value="${maker}"`, `value="${maker}" selected`);
+                }
+
+                // SCADA Op Logic (hist[5])
+                let scada = hist[5];
+                if (scada) {
+                    if (!scadaOptions.includes(`value="${scada}"`)) scadaOptions += `<option value="${scada}">${scada} (History)</option>`;
+                    scadaOptions = scadaOptions.replace('value="" disabled selected', 'value="" disabled').replace(`value="${scada}"`, `value="${scada}" selected`);
+                }
+            }
+
+            let now = new Date();
+            
+            tr.innerHTML = `
+                <td class="px-2 py-2"><input type="datetime-local" id="wp-start-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-[10px] w-36 shadow-inner" value="${hist ? hist[10].replace(" ", "T") : now.toISOString().slice(0,16)}"></td>
+                <td class="px-2 py-2"><select id="wp-prod-${rowId}" class="dashboard-input bg-white border border-teal-300 rounded p-1.5 text-xs text-slate-800 font-bold w-full min-w-[250px] whitespace-normal text-wrap">${prodOptions}</select></td>
+                <td class="px-2 py-2"><select id="wp-maker-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs">${makerOptions}</select></td>
+                <td class="px-2 py-2"><select id="wp-scada-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs">${scadaOptions}</select></td>
+                <td class="px-2 py-2 border-l border-slate-200"><input type="number" id="wp-dump-${rowId}" oninput="calculateWPTotalInput('${rowId}')" placeholder="Dump" class="dashboard-input bg-white border-2 border-blue-400 rounded p-1.5 text-xs w-16 text-center font-bold text-blue-700 shadow-inner" value="${hist ? hist[6] : ''}"></td>
+                
+                <td class="px-2 py-2"><input type="number" id="wp-oldrw-${rowId}" oninput="calculateWPTotalInput('${rowId}')" placeholder="Old RW" class="dashboard-input bg-amber-50 border border-amber-200 rounded p-1.5 text-xs w-16 text-center" value="${hist ? hist[7] : ''}"></td>
+                <td class="px-2 py-2"><input type="number" id="wp-sdrw-${rowId}" oninput="calculateWPTotalInput('${rowId}')" placeholder="SD RW" class="dashboard-input bg-rose-50 border border-rose-200 rounded p-1.5 text-xs w-16 text-center" value="${hist ? hist[8] : ''}"></td>
+                
+                <td class="px-2 py-2 text-center font-bold text-indigo-700 bg-indigo-50 border-x border-slate-200" id="wp-total-${rowId}">${hist ? hist[9] : '0'} kg<input type="hidden" id="wp-total-hidden-${rowId}" value="${hist ? hist[9] : '0'}"></td>
+                <td class="px-2 py-2"><input type="datetime-local" id="wp-stop-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-[10px] w-36 shadow-inner" value="${hist && hist[11] ? hist[11].replace(" ", "T") : ''}"></td>
+                <td class="px-2 py-2 text-center flex items-center justify-center gap-2">
+                    <button id="btn-edit-${rowId}" type="button" onclick="toggleRowEdit('${rowId}', false)" class="hidden text-amber-500 hover:text-amber-600 px-2"><i class="fa-solid fa-pencil"></i></button>
+                    <button id="btn-save-${rowId}" type="button" onclick="saveWPEntry('${rowId}')" class="text-white bg-teal-500 hover:bg-teal-600 px-3 py-1 text-xs rounded font-bold shadow-sm">Save</button>
+                    <button type="button" onclick="deleteWPLog(this, '${rowId}', 'WP_Main_Log')" class="text-slate-400 hover:text-red-500 px-2"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            `;
+            
+            tbody.appendChild(tr);
+
+            if (hist && hist[12] === 'Completed') {
+                toggleRowEdit(rowId, true);
+            }
+        };
+ window.saveWPEntry = async function(rowId) {
+            const btn = document.getElementById(`btn-save-${rowId}`);
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+            try {
+                const payload = {
+                    action: 'save_wp_entry', rowIndex: document.getElementById(rowId).dataset.rowIndex,
+                    date: document.getElementById('wp-from-date').value, shift: getShiftByTime(),
+                    productBatch: document.getElementById(`wp-prod-${rowId}`).value, 
+                    batchMaker: document.getElementById(`wp-maker-${rowId}`).value, 
+                    scadaOp: document.getElementById(`wp-scada-${rowId}`).value, 
+                    dumpedQty: document.getElementById(`wp-dump-${rowId}`).value, 
+                    oldRwQty: document.getElementById(`wp-oldrw-${rowId}`).value, // NEW
+                    sdRwQty: document.getElementById(`wp-sdrw-${rowId}`).value,   // NEW
+                    totalInput: document.getElementById(`wp-total-hidden-${rowId}`).value, 
+                    startTime: document.getElementById(`wp-start-${rowId}`).value, 
+                    stopTime: document.getElementById(`wp-stop-${rowId}`).value
+                };
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.status === "success") { 
+                    document.getElementById(rowId).dataset.rowIndex = data.rowIndex;
+                    showToast('success', 'Saved!'); toggleRowEdit(rowId, true);
+                    loadWetProcessData(); // NEW: Active Plan को तुरंत अपडेट करने के लिए
+                } else throw new Error(data.message);
+            } catch(e) { showToast('error', e.message); } 
+            finally { btn.innerHTML = 'Save'; btn.disabled = false; }
+        };
+
+        // --- CIP LOG ---
+        window.addWPCIPRow = function(hist = null) {
+            const tbody = document.getElementById('wp-cip-log-table');
+            const rowId = `wp-cip-${Date.now()}-${Math.floor(Math.random()*100)}`;
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            
+            let opOptions = '<option value="" disabled selected>Select...</option>';
+            if (typeof liveActiveWorkers !== 'undefined') {
+                let wpOperators = liveActiveWorkers.filter(w => w.section === 'Wet Process' || w.section === 'Operator');
+                wpOperators.forEach(op => { opOptions += `<option value="${op.name}">${op.name}</option>`; });
+            }
+
+            // Ensure historical CIP operator is in the list even if they checked out
+            if (hist && hist[8]) {
+                let savedOp = hist[8];
+                if (!opOptions.includes(`value="${savedOp}"`)) {
+                    opOptions += `<option value="${savedOp}">${savedOp} (History)</option>`;
+                }
+            }
+
+            // NEW: CIP DATABASE से डायनामिक ऑप्शंस बनाना
+            let cipOptions = '<option value="" disabled selected>Select CIP...</option>';
+            cipMasterData.forEach(c => { cipOptions += `<option value="${c[0]}">${c[0]}</option>`; });
+
+            const tr = document.createElement('tr');
+            tr.className = "bg-blue-50/30 border-b border-slate-200 hover:bg-slate-50 transition-colors";
+            tr.id = rowId; tr.dataset.rowIndex = hist ? hist[9] : "";
+            
+            // tr.innerHTML में हमने हार्डकोडेड ऑप्शंस हटाकर ${cipOptions} लगा दिया है
+            tr.innerHTML = `
+                <td class="px-4 py-2"><select id="cip-type-${rowId}" onchange="calcCIPHours('${rowId}')" class="dashboard-input w-full bg-white border border-blue-300 rounded p-1.5 text-xs font-semibold text-slate-700">${cipOptions}</select></td>
+                <td class="px-4 py-2"><input type="datetime-local" id="cip-start-${rowId}" oninput="calcCIPHours('${rowId}')" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-[10px] w-36 shadow-inner" value="${hist ? hist[3].replace(" ", "T") : now.toISOString().slice(0,16)}"></td>
+                <td class="px-4 py-2"><input type="datetime-local" id="cip-stop-${rowId}" oninput="calcCIPHours('${rowId}')" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-[10px] w-36 shadow-inner" value="${hist && hist[4] ? hist[4].replace(" ", "T") : ''}"></td>
+                <td class="px-4 py-2 text-center"><input type="text" id="cip-std-${rowId}" class="dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 w-16 text-center text-xs font-bold text-slate-600" readonly value="${hist ? hist[5] : ''}"></td>
+                <td class="px-4 py-2 text-center"><input type="text" id="cip-actual-${rowId}" class="dashboard-input bg-blue-50 border border-blue-200 rounded p-1.5 w-16 text-center text-xs font-bold text-blue-700" readonly value="${hist ? hist[6] : ''}"></td>
+                <td class="px-4 py-2 text-center"><input type="text" id="cip-var-${rowId}" class="dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 w-16 text-center text-xs font-bold text-slate-500" readonly value="${hist ? hist[7] : ''}"></td>
+                <td class="px-4 py-2"><select id="cip-op-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs">${opOptions}</select></td>
+                <td class="px-4 py-2 flex items-center gap-2">
+                    <button id="btn-edit-${rowId}" type="button" onclick="toggleRowEdit('${rowId}', false)" class="hidden text-amber-500 hover:text-amber-600 px-2"><i class="fa-solid fa-pencil"></i></button>
+                    <button id="btn-save-${rowId}" type="button" onclick="saveWPCIP('${rowId}')" class="text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 text-xs rounded font-bold shadow-sm">Save</button>
+                    <button type="button" onclick="deleteWPLog(this, '${rowId}', 'WP_CIP_Log')" class="text-slate-400 hover:text-red-500 px-2"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            `;
+            // हमेशा नई/पुरानी रो को टेबल के अंत में जोड़ें
+            tbody.appendChild(tr);
+            
+            if(hist) {
+                // अगर हिस्ट्री में कोई ऐसा CIP है जो डिलीट हो चुका है, तो उसे भी ऑप्शन में दिखाएं
+                if(!cipOptions.includes(`value="${hist[2]}"`)) {
+                    const selectEl = tr.querySelector(`#cip-type-${rowId}`);
+                    selectEl.innerHTML += `<option value="${hist[2]}">${hist[2]}</option>`;
+                }
+                document.getElementById(`cip-type-${rowId}`).value = hist[2];
+                document.getElementById(`cip-op-${rowId}`).value = hist[8];
+                calcCIPHours(rowId); toggleRowEdit(rowId, true);
+            }
+        };
+
+        window.saveWPCIP = async function(rowId) {
+            const btn = document.getElementById(`btn-save-${rowId}`);
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+            try {
+                const payload = {
+                    action: 'save_wp_cip', rowIndex: document.getElementById(rowId).dataset.rowIndex, date: document.getElementById('wp-from-date').value, shift: getShiftByTime(), cipType: document.getElementById(`cip-type-${rowId}`).value, startTime: document.getElementById(`cip-start-${rowId}`).value, stopTime: document.getElementById(`cip-stop-${rowId}`).value, stdHrs: document.getElementById(`cip-std-${rowId}`).value, actualHrs: document.getElementById(`cip-actual-${rowId}`).value, variance: document.getElementById(`cip-var-${rowId}`).value, doneBy: document.getElementById(`cip-op-${rowId}`).value
+                };
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.status === "success") { document.getElementById(rowId).dataset.rowIndex = data.rowIndex; showToast('success', 'CIP Saved!'); toggleRowEdit(rowId, true); } else throw new Error(data.message);
+            } catch(e) { showToast('error', e.message); } 
+            finally { btn.innerHTML = 'Save'; btn.disabled = false; }
+        };
+
+        // --- BREAKDOWN LOG ---
+        window.addWPBreakdownRow = function(hist = null) {
+            const tbody = document.getElementById('wp-bd-log-table');
+            const rowId = `wp-bd-${Date.now()}-${Math.floor(Math.random()*100)}`;
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+            const tr = document.createElement('tr');
+            tr.className = "bg-red-50/30 hover:bg-slate-50 transition-colors";
+            tr.id = rowId; tr.dataset.rowIndex = hist ? hist[7] : "";
+            
+            tr.innerHTML = `
+                <td class="px-4 py-2"><select id="bd-type-${rowId}" class="dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs font-semibold text-slate-700"><option value="Mechanical">Mechanical</option><option value="Electrical">Electrical</option><option value="Process">Process</option><option value="Utility">Utility</option><option value="Other">Other</option></select></td>
+                <td class="px-4 py-2"><input type="text" id="bd-details-${rowId}" class="dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs" value="${hist ? hist[3] : ''}"></td>
+                <td class="px-4 py-2"><input type="datetime-local" id="bd-from-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1 text-[10px] w-32 text-center shadow-inner" value="${hist ? hist[4] : now.toISOString().slice(0,16)}"></td>
+                <td class="px-4 py-2"><input type="datetime-local" id="bd-to-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1 text-[10px] w-32 text-center shadow-inner" value="${hist ? hist[5] : ''}"></td>
+                <td class="px-4 py-2 text-center"><input type="text" id="bd-hrs-${rowId}" class="dashboard-input bg-slate-100 border border-slate-200 rounded p-1 w-16 text-center text-xs font-bold text-red-600" readonly value="${hist ? hist[6] : ''}"></td>
+                <td class="px-4 py-2 flex items-center gap-2">
+                    <button id="btn-edit-${rowId}" type="button" onclick="toggleRowEdit('${rowId}', false)" class="hidden text-amber-500 hover:text-amber-600 px-2"><i class="fa-solid fa-pencil"></i></button>
+                    <button id="btn-save-${rowId}" type="button" onclick="saveWPBreakdown('${rowId}')" class="text-white bg-red-600 hover:bg-red-700 px-3 py-1 text-xs rounded font-bold shadow-sm">Save</button>
+                    <button type="button" onclick="deleteWPLog(this, '${rowId}', 'WP_Breakdown_Log')" class="text-slate-400 hover:text-red-500 px-2"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+            
+            const fIn = document.getElementById(`bd-from-${rowId}`); const tIn = document.getElementById(`bd-to-${rowId}`); const hIn = document.getElementById(`bd-hrs-${rowId}`);
+            tIn.addEventListener('input', () => {
+                if(fIn.value && tIn.value) { const diff = (new Date(tIn.value) - new Date(fIn.value)) / (1000 * 60 * 60); hIn.value = diff > 0 ? diff.toFixed(2) + ' h' : ''; }
+            });
+            
+            if(hist) { document.getElementById(`bd-type-${rowId}`).value = hist[2]; toggleRowEdit(rowId, true); }
+        };
+
+        window.saveWPBreakdown = async function(rowId) {
+            const btn = document.getElementById(`btn-save-${rowId}`);
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+            try {
+                const payload = {
+                    action: 'save_wp_breakdown', rowIndex: document.getElementById(rowId).dataset.rowIndex, date: document.getElementById('wp-from-date').value, shift: getShiftByTime(), type: document.getElementById(`bd-type-${rowId}`).value, details: document.getElementById(`bd-details-${rowId}`).value, from: document.getElementById(`bd-from-${rowId}`).value, to: document.getElementById(`bd-to-${rowId}`).value, hrs: document.getElementById(`bd-hrs-${rowId}`).value.replace(' h', '')
+                };
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.status === "success") { document.getElementById(rowId).dataset.rowIndex = data.rowIndex; showToast('success', 'Breakdown Saved!'); toggleRowEdit(rowId, true); } else throw new Error(data.message);
+            } catch(e) { showToast('error', e.message); } 
+            finally { btn.innerHTML = 'Save'; btn.disabled = false; }
+        };
+
         // ============================================================     
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
