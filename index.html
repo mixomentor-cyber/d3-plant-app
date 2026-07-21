@@ -1643,6 +1643,7 @@
                                         <select id="new-role" class="dashboard-input w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base appearance-none transition-all cursor-pointer" required>
                                             <option value="Shift Incharge">Shift Incharge</option>
                                             <option value="Admin">Admin</option>
+                                            <option value="Operator">Operator</option>
                                         </select>
                                         <div class="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center pointer-events-none"><i class="fa-solid fa-chevron-down text-slate-400 text-xs sm:text-sm"></i></div>
                                     </div>
@@ -1768,7 +1769,12 @@
                     }
 
                 } else if (state.view === 'welcome') {
-                    switchToWelcomeView();
+                    if (currentUser && currentUser.role === 'Operator') {
+                        switchToManpowerView();
+                        history.replaceState({ view: 'manpower' }, '', '#manpower');
+                    } else {
+                        switchToWelcomeView();
+                    }
                 } else if (state.view === 'manpower') {
                     switchToManpowerView();
                 } else if (state.view === 'main-dashboard') {
@@ -1779,8 +1785,13 @@
                     switchToDispensingHubView();
                 }
             } else if (currentUser) {
-                switchToWelcomeView();
-                history.replaceState({ view: 'welcome' }, '', '#welcome');
+                if (currentUser.role === 'Operator') {
+                    switchToManpowerView();
+                    history.replaceState({ view: 'manpower' }, '', '#manpower');
+                } else {
+                    switchToWelcomeView();
+                    history.replaceState({ view: 'welcome' }, '', '#welcome');
+                }
             }
         });
 
@@ -1941,7 +1952,8 @@
                     const data = JSON.parse(await res.text());
 
                     if (data.status === "success") {
-                        currentUser = { name: data.name || userVal, role: data.role || "Shift Incharge" };
+                        const safeRole = (data.role && String(data.role).trim() !== "") ? String(data.role).trim() : "Shift Incharge";
+                        currentUser = { name: data.name || userVal, role: safeRole };
                         localStorage.setItem('d3plant_user', JSON.stringify(currentUser));
                         showToast('success', 'Password set successfully!');
                         handleLoginSuccess();
@@ -1978,7 +1990,8 @@
                     const data = JSON.parse(await res.text());
 
                     if (data.status === "success") {
-                        currentUser = { name: data.name || userVal, role: data.role || "Operator" };
+                        const safeRole = (data.role && String(data.role).trim() !== "") ? String(data.role).trim() : "Shift Incharge";
+                        currentUser = { name: data.name || userVal, role: safeRole };
                         localStorage.setItem('d3plant_user', JSON.stringify(currentUser));
                         handleLoginSuccess();
                     } else {
@@ -2123,6 +2136,15 @@
         };
 
         function switchMainView(targetViewId, instant = false) {
+            
+            // 🚨 ULTIMATE OPERATOR FIREWALL: Instantly block non-Manpower views
+            if (currentUser && currentUser.role.trim() === 'Operator' && targetViewId !== 'manpower-view') {
+                targetViewId = 'manpower-view';
+                history.replaceState({ view: 'manpower' }, '', '#manpower');
+                document.getElementById('nav-back-hub').classList.add('hidden'); // Ensure back arrow is gone
+                document.getElementById('nav-hub-title').classList.remove('hidden');
+            }
+
 const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view', 'dispensing-hub-view', 'wet-process-hub-view', 'wet-process-view'];            views.forEach(vid => {
                 const el = document.getElementById(vid);
                 if (!el) return;
@@ -2161,29 +2183,41 @@ const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'producti
             });
         }
 
-        function switchToWelcomeView(instant = false) { switchMainView('welcome-view', instant); }
         function switchToManpowerView(instant = false) { 
             document.getElementById('nav-hub-title').classList.remove('hidden');
-            document.getElementById('nav-back-hub').classList.remove('hidden');
+            if (currentUser && currentUser.role.trim() === 'Operator') {
+                document.getElementById('nav-back-hub').classList.add('hidden');
+            } else {
+                document.getElementById('nav-back-hub').classList.remove('hidden');
+            }
             switchMainView('manpower-view', instant); 
         }
 
         function switchToWelcomeView(instant = false) { 
+            if (currentUser && currentUser.role.trim() === 'Operator') { history.replaceState({ view: 'manpower' }, '', '#manpower'); return switchToManpowerView(instant); }
             document.getElementById('nav-hub-title').classList.add('hidden');
             document.getElementById('nav-back-hub').classList.add('hidden');
             switchMainView('welcome-view', instant); 
         }
-        
-        // Also update the back button listener
+
+        // --- RESTORED NAVIGATION FUNCTIONS WITH OPERATOR LOCKS ---
         document.getElementById('nav-back-hub')?.addEventListener('click', () => history.back());
 
         function switchToMainDashboardView(instant = false) { 
+            if (currentUser && currentUser.role.trim() === 'Operator') { history.replaceState({ view: 'manpower' }, '', '#manpower'); return switchToManpowerView(instant); }
             document.getElementById('nav-hub-title').classList.add('hidden');
             document.getElementById('nav-back-hub').classList.add('hidden');
             switchMainView('main-dashboard-view', instant); 
         }
-        function switchToProductionView(instant = false) { switchMainView('production-view', instant); }
-        function switchToDispensingHubView(instant = false) { switchMainView('dispensing-hub-view', instant); }
+        function switchToProductionView(instant = false) { 
+            if (currentUser && currentUser.role.trim() === 'Operator') { history.replaceState({ view: 'manpower' }, '', '#manpower'); return switchToManpowerView(instant); }
+            switchMainView('production-view', instant); 
+        }
+        function switchToDispensingHubView(instant = false) { 
+            if (currentUser && currentUser.role.trim() === 'Operator') { history.replaceState({ view: 'manpower' }, '', '#manpower'); return switchToManpowerView(instant); }
+            switchMainView('dispensing-hub-view', instant); 
+        }
+        // --------------------------------------------------------
 
         function setModalVisible(modalId, contentId, show) {
             const modal = document.getElementById(modalId);
@@ -2218,7 +2252,7 @@ const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'producti
         }
 
         function handleLoginSuccess(instant = false) {
-            document.getElementById('logged-in-user').textContent = currentUser.name;
+            document.getElementById('logged-in-user').textContent = currentUser.name + " (" + currentUser.role + ")";
             if(document.getElementById('welcome-header')) document.getElementById('welcome-header').textContent = `Welcome, ${currentUser.name}.`;
             document.getElementById('user-initial').textContent = currentUser.name.charAt(0).toUpperCase();
 
@@ -2230,18 +2264,24 @@ const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'producti
                 fetchPermEmployees();
             }, 100);
 
-            history.replaceState({ view: 'welcome' }, '', '#welcome');
+            const targetView = (currentUser && currentUser.role === 'Operator') ? 'manpower' : 'welcome';
+            history.replaceState({ view: targetView }, '', '#' + targetView);
 
             const loginView = document.getElementById('login-view');
             const appView = document.getElementById('app-view');
             
+            const routeUser = (isInst) => {
+                if (targetView === 'manpower') switchToManpowerView(isInst);
+                else switchToWelcomeView(isInst);
+            };
+
             if (instant) {
                 loginView.classList.add('hidden');
                 document.getElementById('bg-login').classList.replace('opacity-100', 'opacity-0');
                 document.getElementById('bg-dashboard').classList.replace('opacity-0', 'opacity-100');
                 appView.classList.remove('hidden', 'opacity-0', 'translate-y-8');
                 appView.classList.add('flex', 'opacity-100', 'translate-y-0');
-                switchToWelcomeView(true);
+                routeUser(true);
             } else {
                 loginView.classList.replace('opacity-100', 'opacity-0');
                 loginView.classList.replace('scale-100', 'scale-95');
@@ -2251,7 +2291,7 @@ const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'producti
                     document.getElementById('bg-dashboard').classList.replace('opacity-0', 'opacity-100');
                     appView.classList.remove('hidden');
                     appView.classList.add('flex');
-                    switchToWelcomeView(true);
+                    routeUser(true);
                     setTimeout(() => {
                         appView.classList.replace('opacity-0', 'opacity-100');
                         appView.classList.replace('translate-y-8', 'translate-y-0');
@@ -2334,6 +2374,7 @@ const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'producti
 
         document.getElementById('nav-brand')?.addEventListener('click', () => {
             if (!currentUser) return; 
+            if (currentUser.role === 'Operator') return; // Operators cannot go to Welcome Dashboard
             if (!history.state || history.state.view !== 'welcome') {
                 closeAllModals();
                 history.pushState({ view: 'welcome' }, '', '#welcome');
