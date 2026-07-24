@@ -567,7 +567,7 @@
                                 <input type="date" id="wp-to-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-teal-500/20">
                             </div>
                             <button id="btn-wp-next-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-teal-100 text-teal-600 border border-slate-200 mr-2"><i class="fa-solid fa-chevron-right text-sm"></i></button>
-                            <button onclick="loadWPTodayLogs()" class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all">Load Data</button>
+                            <button onclick="loadWetProcessData(); loadWPTodayLogs();" class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all">Load Data</button>
                         </div>
                     </div>
 
@@ -608,6 +608,7 @@
                                         <th class="py-2 px-2">PRODUCT (Batch)</th>
                                         <th class="py-2 px-2">BATCH MAKER</th>
                                         <th class="py-2 px-2">SCADA OP.</th>
+                                        <th class="py-2 px-2 text-orange-600">REMAINING QTY</th>
                                         <th class="py-2 px-2">DUMPED (kg)</th>
                                         <th class="py-2 px-2">OLD REWORK QTY</th>
                                         <th class="py-2 px-2">STARTING REWORK</th>
@@ -619,6 +620,8 @@
                                 <tbody id="wp-entry-log-table" class="divide-y divide-slate-100 text-xs sm:text-sm text-slate-600">
                                     <!-- Data will be injected here -->
                                 </tbody>
+                                <tfoot id="wp-entry-log-tfoot" class="bg-slate-100 font-extrabold text-slate-800 sticky bottom-0 z-10 shadow-md border-t-2 border-slate-300">
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -717,11 +720,29 @@
                         </div>
                     </div>
 
-                    <!-- PRODUCTION CARDS GRID -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-6">
-                        <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 border-b pb-2"><i class="fa-solid fa-box-open mr-1 text-teal-500"></i> Production Data (Batches)</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="wp-dash-production-cards">
-                            <!-- Cards Injected Here by JS -->
+                    <!-- PRODUCTION TABULAR VIEW -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-6 overflow-hidden">
+                        <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 border-b pb-2 flex items-center justify-between flex-wrap gap-2">
+                            <span><i class="fa-solid fa-table-list mr-1.5 text-teal-500"></i> Production Data (Batches)</span>
+                            <span class="text-[10px] font-semibold text-slate-400 lowercase italic">completed batches automatically hide after their completion date</span>
+                        </h3>
+                        <div class="overflow-x-auto max-h-[50vh]">
+                            <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-700 text-[10px] sm:text-xs uppercase font-extrabold sticky top-0 shadow-2xs z-10 border-b border-slate-200">
+                                    <tr>
+                                        <th class="py-3 px-4">Seq</th>
+                                        <th class="py-3 px-4">Product Name</th>
+                                        <th class="py-3 px-4">Batch No</th>
+                                        <th class="py-3 px-4 text-center">Total Plan Qty</th>
+                                        <th class="py-3 px-4 text-center text-blue-600">Dumped Qty</th>
+                                        <th class="py-3 px-4 text-center text-orange-600">Remaining Qty</th>
+                                        <th class="py-3 px-4 text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wp-dash-production-table" class="divide-y divide-slate-100 font-medium text-slate-700">
+                                    <!-- Table rows injected here by JS -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -746,7 +767,245 @@
                 </div>
             </div>
 
-            <!-- ====== MODALS ====== -->
+            <!-- ====== SPRAY DRY HUB VIEW ====== -->
+            <div id="spray-dry-hub-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
+                <div class="max-w-4xl mx-auto bg-sky-50/40 rounded-3xl shadow-sm border border-sky-100 p-6 sm:p-8 backdrop-blur-sm">
+                    <div class="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 pb-6 border-b border-sky-200/50">
+                        <button id="btn-back-production-from-sd-hub" class="text-sky-400 hover:text-sky-600 transition-colors mr-1" title="Back to Production">
+                            <i class="fa-solid fa-arrow-left text-xl"></i>
+                        </button>
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white text-sky-600 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-wind text-sm sm:text-base"></i>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-sky-900">Spray Dry Section</h2>
+                    </div>
+
+                    <!-- TWO REQUESTED BUTTONS -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
+                        <button id="btn-sd-hub-entry" class="bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow-md p-8 flex flex-col items-center justify-center gap-4 transition-all hover:-translate-y-1 hover:shadow-lg group">
+                            <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-3xl transition-transform group-hover:scale-110">
+                                <i class="fa-solid fa-keyboard"></i>
+                            </div>
+                            <span class="font-bold text-base sm:text-lg text-center">Spray Dryer Data Entry</span>
+                        </button>
+                        
+                        <button id="btn-sd-hub-dash" class="bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-md p-8 flex flex-col items-center justify-center gap-4 transition-all hover:-translate-y-1 hover:shadow-lg group">
+                            <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-3xl transition-transform group-hover:scale-110">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <span class="font-bold text-base sm:text-lg text-center">Spray Dryer Dashboard</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+           <!-- ====== SPRAY DRY DATA ENTRY VIEW ====== -->
+            <div id="spray-dry-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
+                <div class="max-w-7xl mx-auto space-y-6">
+                    
+                    <!-- Header & Date Controls -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <button id="btn-back-sd-hub-from-entry" class="text-sky-400 hover:text-sky-600 transition-colors mr-1" title="Back to Hub">
+                                <i class="fa-solid fa-arrow-left text-xl"></i>
+                            </button>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shadow-inner">
+                                <i class="fa-solid fa-wind"></i>
+                            </div>
+                            <h2 class="text-lg sm:text-xl font-bold text-slate-800">Spray Dryer Data Entry</h2>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
+                            <button id="btn-sd-prev-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-sky-100 text-sky-600 border border-slate-200 transition-colors"><i class="fa-solid fa-chevron-left text-sm"></i></button>
+                            <div class="flex items-center gap-1.5">
+                                <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">From:</label>
+                                <input type="date" id="sd-from-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-sky-500/20">
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">To:</label>
+                                <input type="date" id="sd-to-date" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-sky-500/20">
+                            </div>
+                            <button id="btn-sd-next-day" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-sky-100 text-sky-600 border border-slate-200 mr-1 transition-colors"><i class="fa-solid fa-chevron-right text-sm"></i></button>
+                            <button onclick="loadSprayDryerData()" class="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-rotate"></i> <span>Sync</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 1: DRYER PREHEATING LOG -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-fire text-orange-500"></i> Dryer Preheating Log
+                            </h3>
+                        </div>
+
+                        <!-- Preheating Input Form -->
+                        <div class="bg-orange-50/50 border border-orange-100 rounded-xl p-4 mb-4 grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
+                            <div>
+                                <label class="block text-[10px] font-bold text-orange-800 uppercase tracking-wider mb-1">From (Date & Time)</label>
+                                <input type="datetime-local" id="sd-preheat-from" class="dashboard-input w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-orange-800 uppercase tracking-wider mb-1">To (Date & Time)</label>
+                                <input type="datetime-local" id="sd-preheat-to" class="dashboard-input w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-orange-800 uppercase tracking-wider mb-1">Operator</label>
+                                <select id="sd-preheat-op" class="dashboard-input w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-bold text-slate-700 cursor-pointer">
+                                    <option value="" disabled selected>Loading Operators...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button type="button" onclick="addSDPreheatRow()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 h-[34px]">
+                                    <i class="fa-solid fa-plus"></i> Add Preheating
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Preheating Table -->
+                        <div class="overflow-x-auto max-h-[25vh]">
+                            <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-700 text-[10px] sm:text-xs uppercase font-extrabold sticky top-0 shadow-2xs border-b border-slate-200">
+                                    <tr>
+                                        <th class="py-2.5 px-4">Seq</th>
+                                        <th class="py-2.5 px-4">From Datetime</th>
+                                        <th class="py-2.5 px-4">To Datetime</th>
+                                        <th class="py-2.5 px-4 text-center">Total Hours</th>
+                                        <th class="py-2.5 px-4">Operator</th>
+                                        <th class="py-2.5 px-4 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sd-preheat-tbody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                                    <tr><td colspan="6" class="text-center py-4 text-slate-400 italic text-xs">No preheating logged yet.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: SHIFT ENTRY LOG -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-clipboard-list text-sky-500"></i> Shift Entry Log (Live Production)
+                            </h3>
+                            <button onclick="addSDEntryRow()" class="text-xs bg-white border border-sky-200 text-sky-700 px-3 py-1.5 rounded-lg hover:bg-sky-50 font-bold transition-colors shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> Add Entry Row
+                            </button>
+                        </div>
+
+                        <!-- Shift Entry Table -->
+                        <div class="overflow-x-auto max-h-[40vh]">
+                            <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-700 text-[10px] sm:text-xs uppercase font-extrabold sticky top-0 shadow-2xs border-b border-slate-200">
+                                    <tr>
+                                        <th class="py-2.5 px-3">Feed Start</th>
+                                        <th class="py-2.5 px-3">Product (Batch from WP)</th>
+                                        <th class="py-2.5 px-3 text-center text-indigo-600 bg-indigo-50/50">Total Input (kg)</th>
+                                        <th class="py-2.5 px-3 text-center text-emerald-600 bg-emerald-50/50">Total Fresh Powder (kg)</th>
+                                        <th class="py-2.5 px-3">Feed Stop</th>
+                                        <th class="py-2.5 px-3 text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sd-entry-tbody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                                    <tr><td colspan="6" class="text-center py-6 text-slate-400 italic text-xs">No production rows added. Click "Add Entry Row" to begin.</td></tr>
+                                </tbody>
+                                <tfoot id="sd-entry-tfoot" class="bg-slate-50 font-black text-slate-800 sticky bottom-0 border-t-2 border-slate-300 hidden">
+                                    <tr>
+                                        <td colspan="2" class="py-2.5 px-3 text-right uppercase text-xs text-slate-500">Shift Grand Totals:</td>
+                                        <td class="py-2.5 px-3 text-center text-indigo-700 bg-indigo-50/80" id="sd-gt-input">0 kg</td>
+                                        <td class="py-2.5 px-3 text-center text-emerald-700 bg-emerald-50/80" id="sd-gt-powder">0 kg</td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: WET CLEANING LOG -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-shower text-blue-500"></i> Wet Cleaning Log
+                            </h3>
+                            <button onclick="addSDWetCleaningRow()" class="text-xs bg-white border border-blue-200 text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 font-bold transition-colors shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> Add Wet Cleaning Row
+                            </button>
+                        </div>
+
+                        <!-- Wet Cleaning Table -->
+                        <div class="overflow-x-auto max-h-[35vh]">
+                            <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-700 text-[10px] sm:text-xs uppercase font-extrabold sticky top-0 shadow-2xs border-b border-slate-200">
+                                    <tr>
+                                        <th class="py-2.5 px-3">Dryer Final Feed Stop</th>
+                                        <th class="py-2.5 px-3">Wet Cleaning Start</th>
+                                        <th class="py-2.5 px-3">Wet Cleaning Stop (Next Day OK)</th>
+                                        <th class="py-2.5 px-3 text-center">Total Duration</th>
+                                        <th class="py-2.5 px-3 text-center">Status</th>
+                                        <th class="py-2.5 px-3 text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sd-wc-tbody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                                    <tr><td colspan="6" class="text-center py-6 text-slate-400 italic text-xs">No wet cleaning logged yet. Click "Add Wet Cleaning Row" to begin.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 4: SPRAY DRYER BREAKDOWN LOG -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-triangle-exclamation text-red-500"></i> Spray Dryer Breakdown Log
+                            </h3>
+                            <button onclick="addSDBreakdownRow()" class="text-xs bg-white border border-red-200 text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-50 font-bold transition-colors shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> Add Breakdown
+                            </button>
+                        </div>
+
+                        <!-- Breakdown Table -->
+                        <div class="overflow-x-auto max-h-[35vh]">
+                            <table class="w-full text-left text-xs sm:text-sm text-slate-600 whitespace-nowrap">
+                                <thead class="bg-slate-50 text-slate-700 text-[10px] sm:text-xs uppercase font-extrabold sticky top-0 shadow-2xs border-b border-slate-200">
+                                    <tr>
+                                        <th class="py-2.5 px-3">Logged By</th>
+                                        <th class="py-2.5 px-3">Breakdown Type</th>
+                                        <th class="py-2.5 px-3">Details</th>
+                                        <th class="py-2.5 px-3 text-center">From (Date & Time)</th>
+                                        <th class="py-2.5 px-3 text-center">To (Date & Time)</th>
+                                        <th class="py-2.5 px-3 text-center text-red-600 bg-red-50/50">Total Hrs</th>
+                                        <th class="py-2.5 px-3 text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sd-bd-tbody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                                    <tr><td colspan="7" class="text-center py-6 text-slate-400 italic text-xs">No breakdowns logged for Spray Dryer.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ====== SPRAY DRY DASHBOARD VIEW (Placeholder) ====== -->
+            <div id="spray-dry-dashboard-view" class="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 top-6 sm:top-8 hidden opacity-0 transition-all duration-500 transform translate-x-10 pointer-events-none">
+                <div class="max-w-7xl mx-auto space-y-6">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <button id="btn-back-sd-hub-from-dash" class="text-sky-400 hover:text-sky-600 transition-colors mr-1" title="Back to Hub">
+                                <i class="fa-solid fa-arrow-left text-xl"></i>
+                            </button>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-inner">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <h2 class="text-lg sm:text-xl font-bold text-slate-800">Spray Dryer Dashboard</h2>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-8 border border-slate-100 text-center text-slate-400 italic">
+                        Spray Dry KPI charts and live metrics will appear here.
+                    </div>
+                </div>
+            </div>
              <!-- === CIP DATABASE MODAL === -->
             <div id="cip-db-modal" class="fixed inset-0 z-[70] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
                 <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="cip-db-modal-bg"></div>
@@ -854,6 +1113,7 @@
                         </div>
 
                         <div class="flex flex-wrap items-center gap-3">
+                            <button id="btn-disp-prev-date" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-emerald-100 text-emerald-600 border border-slate-200 transition-colors"><i class="fa-solid fa-chevron-left text-sm"></i></button>
                             <div class="flex items-center gap-1.5 sm:gap-2">
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">From:</label>
                                 <input type="date" id="disp-filter-from" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-emerald-500/20">
@@ -862,6 +1122,7 @@
                                 <label class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase">To:</label>
                                 <input type="date" id="disp-filter-to" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-2 py-1.5 text-xs focus:ring-2 focus:ring-emerald-500/20">
                             </div>
+                            <button id="btn-disp-next-date" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-emerald-100 text-emerald-600 border border-slate-200 transition-colors"><i class="fa-solid fa-chevron-right text-sm"></i></button>
                             <div id="disp-loading-indicator" class="hidden items-center gap-2 text-emerald-600 text-xs font-bold ml-2">
                                 <i class="fa-solid fa-circle-notch fa-spin"></i> Syncing...
                             </div>
@@ -2245,7 +2506,7 @@
                 document.getElementById('nav-hub-title').classList.remove('hidden');
             }
 
-const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view', 'dispensing-hub-view', 'wet-process-hub-view', 'wet-process-view', 'wet-process-dashboard-view'];            views.forEach(vid => {
+const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'production-view', 'dispensing-hub-view', 'wet-process-hub-view', 'wet-process-view', 'wet-process-dashboard-view', 'spray-dry-hub-view', 'spray-dry-view', 'spray-dry-dashboard-view'];            views.forEach(vid => {
                 const el = document.getElementById(vid);
                 if (!el) return;
                 
@@ -2281,6 +2542,9 @@ const views = ['welcome-view', 'manpower-view', 'main-dashboard-view', 'producti
                     }
                 }
             });
+            if (targetViewId === 'spray-dry-view' && typeof window.loadSprayDryerData === 'function') {
+                window.loadSprayDryerData();
+            }
         }
 
         function switchToManpowerView(instant = false) { 
@@ -3960,6 +4224,436 @@ function getInTimeBadgeStyle(t) {
             }
         };
 
+// ================= SPRAY DRYER DATA ENTRY LOGIC =================
+        let sdPreheatCount = 0;
+        let sdEntryCount = 0;
+        let sdAvailableProducts = []; 
+
+        function buildSDProductOptionsHtml() {
+            let prodOptions = '<option value="" disabled selected>Select Product from WP...</option>';
+            sdAvailableProducts.forEach((p, idx) => {
+                prodOptions += `<option value="${idx}" data-input="${p.totalInput}">${p.prod} (${p.batch})</option>`;
+            });
+            if (sdAvailableProducts.length === 0) {
+                prodOptions = '<option value="" disabled selected>No WP batches found for selected date</option>';
+            }
+            return prodOptions;
+        }
+
+        function refreshSDEntryDropdowns() {
+            document.querySelectorAll('#sd-entry-tbody .sd-prod-select').forEach(sel => {
+                const prevVal = sel.value;
+                sel.innerHTML = buildSDProductOptionsHtml();
+                if (prevVal !== '' && sdAvailableProducts[prevVal]) {
+                    sel.value = prevVal;
+                    const p = sdAvailableProducts[prevVal];
+                    const totalInput = sel.closest('tr')?.querySelector('.sd-total-input');
+                    if (p && totalInput) totalInput.value = p.totalInput;
+                }
+            });
+        }
+
+        function bindSDProductSelect(sel) {
+            sel.addEventListener('change', (e) => {
+                const p = sdAvailableProducts[e.target.value];
+                const totalInput = e.target.closest('tr')?.querySelector('.sd-total-input');
+                if (p && totalInput) totalInput.value = p.totalInput;
+            });
+        }
+
+        // Date Arrow Controls & Auto-Sync
+        document.getElementById('sd-from-date')?.addEventListener('change', () => loadSprayDryerData());
+        document.getElementById('sd-to-date')?.addEventListener('change', () => loadSprayDryerData());
+        
+        document.getElementById('btn-sd-prev-day')?.addEventListener('click', () => {
+            const fd = document.getElementById('sd-from-date'); 
+            const td = document.getElementById('sd-to-date');
+            if (fd && fd.value) {
+                let d = new Date(fd.value); 
+                d.setDate(d.getDate() - 1);
+                const newStr = d.toLocaleDateString('en-CA');
+                fd.value = newStr; 
+                if (td) td.value = newStr;
+                loadSprayDryerData();
+            }
+        });
+
+        document.getElementById('btn-sd-next-day')?.addEventListener('click', () => {
+            const fd = document.getElementById('sd-from-date'); 
+            const td = document.getElementById('sd-to-date');
+            if (fd && fd.value) {
+                let d = new Date(fd.value); 
+                d.setDate(d.getDate() + 1);
+                const newStr = d.toLocaleDateString('en-CA');
+                fd.value = newStr; 
+                if (td) td.value = newStr;
+                loadSprayDryerData();
+            }
+        });
+
+        // 2. Load Operators, WP Dumps & Saved Backend Data
+        window.loadSprayDryerData = async function() {
+            populateSDOperators();
+            
+            // Default dates to Today if empty (USING CORRECT getProductionDate FUNCTION!)
+            const todayStr = getProductionDate();
+            if (document.getElementById('sd-from-date') && !document.getElementById('sd-from-date').value) document.getElementById('sd-from-date').value = todayStr;
+            if (document.getElementById('sd-to-date') && !document.getElementById('sd-to-date').value) document.getElementById('sd-to-date').value = todayStr;
+
+            const fromDate = document.getElementById('sd-from-date')?.value || todayStr;
+            const toDate = document.getElementById('sd-to-date')?.value || todayStr;
+
+            // Fetch Wet Process batches for the Product (Batch from WP) dropdown
+            try {
+                const res = await fetch(API_URL, { 
+                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                    body: JSON.stringify({ action: "get_wp_batches_by_date", fromDate: fromDate, toDate: toDate }) 
+                });
+                const data = await res.json();
+                sdAvailableProducts = (data.status === "success" && Array.isArray(data.batches)) ? data.batches : [];
+            } catch(e) { console.error("Failed to sync WP batches:", e); sdAvailableProducts = []; }
+
+            refreshSDEntryDropdowns();
+
+            // Fetch Saved Spray Dryer Records from Google Sheets
+            try {
+                const resSD = await fetch(API_URL, {
+                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ action: "get_sd_data", fromDate: fromDate, toDate: toDate })
+                });
+                const sdData = await resSD.json();
+                if (sdData.status === "success") {
+                    const attachIndex = (arr) => arr.map(r => { r.rowIndex = r.pop(); return r; });
+                    renderSDPreheatTable(attachIndex(sdData.preheat || []));
+                    renderSDEntryTable(attachIndex(sdData.production || []));
+                    renderSDWcTable(attachIndex(sdData.wetCleaning || []));
+                    renderSDBdTable(attachIndex(sdData.breakdown || []));
+                }
+            } catch(e) { console.error("Failed to fetch SD backend data:", e); }
+        };
+
+        function populateSDOperators() {
+            const select = document.getElementById('sd-preheat-op');
+            if (!select) return;
+            select.innerHTML = '<option value="" disabled selected>Select Operator...</option>';
+            let ops = permEmployeesData.filter(e => e.type === 'Operator' && (e.section === 'Spray Dryer' || e.section === '-'));
+            if (ops.length === 0) ops = permEmployeesData.filter(e => e.type === 'Operator');
+            ops.forEach(op => { select.innerHTML += `<option value="${op.name}">${op.name} (${op.section})</option>`; });
+        }
+
+        // --- PREHEATING TABLE & SAVE ---
+        function renderSDPreheatTable(rows) {
+            window.sdPreheatRows = rows;
+            const tbody = document.getElementById('sd-preheat-tbody'); if (!tbody) return;
+            tbody.innerHTML = ''; sdPreheatCount = 0;
+            if (rows.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-slate-400 italic text-xs">No preheating logged yet.</td></tr>'; return; }
+            rows.forEach((r, idx) => {
+                sdPreheatCount = idx + 1;
+                tbody.innerHTML += `<tr id="ph-row-${r.rowIndex}" class="hover:bg-slate-50/80 transition-colors border-b border-slate-100">
+                    <td class="py-2.5 px-4 font-bold text-slate-700">${sdPreheatCount}</td>
+                    <td class="py-2.5 px-4 font-mono text-xs text-slate-600">${formatDateTimeBold(r[1])}</td>
+                    <td class="py-2.5 px-4 font-mono text-xs text-slate-600">${formatDateTimeBold(r[2])}</td>
+                    <td class="py-2.5 px-4 text-center font-black text-orange-600 bg-orange-50/40 rounded">${r[3]} hrs</td>
+                    <td class="py-2.5 px-4 font-bold text-slate-800"><i class="fa-solid fa-user-gear text-slate-400 mr-1.5"></i>${r[4]}</td>
+                    <td class="py-2.5 px-4 text-center"><button onclick="editSDPreheatRow(${r.rowIndex}, ${sdPreheatCount})" class="text-slate-400 hover:text-blue-500 p-1.5"><i class="fa-solid fa-pen"></i></button><button onclick="deleteSDBackendRecord('delete_sd_preheat', ${r.rowIndex})" class="text-slate-400 hover:text-red-500 p-1.5"><i class="fa-solid fa-trash"></i></button></td>
+                </tr>`;
+            });
+        }
+
+        window.addSDPreheatRow = async function() {
+            const fromVal = document.getElementById('sd-preheat-from')?.value, toVal = document.getElementById('sd-preheat-to')?.value, opVal = document.getElementById('sd-preheat-op')?.value;
+            if (!fromVal || !toVal || !opVal) { showToast('error', 'Enter From/To dates and select Operator.'); return; }
+            const diffHrs = ((new Date(toVal) - new Date(fromVal)) / (1000 * 60 * 60)).toFixed(2);
+            if (diffHrs <= 0) { showToast('error', 'To Datetime must be later than From Datetime.'); return; }
+            showToast('success', 'Saving to Google Sheets...');
+            const rowDate = document.getElementById('sd-from-date')?.value || getProductionDate();
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save_sd_preheat", rowData: [rowDate, fromVal, toVal, diffHrs, opVal] }) });
+            loadSprayDryerData();
+        };
+
+        window.editSDPreheatRow = function(rowIndex, seqNum) {
+            const r = window.sdPreheatRows.find(item => item.rowIndex === rowIndex), tr = document.getElementById(`ph-row-${rowIndex}`);
+            if (!r || !tr) return;
+            const fmtDt = (str) => { if(!str) return ''; try { const d = new Date(str); return isNaN(d.getTime()) ? '' : d.toISOString().slice(0,16); } catch(e){return '';} };
+            const opOptions = document.getElementById('sd-preheat-op')?.innerHTML || '';
+            tr.innerHTML = `
+                <td class="py-2.5 px-4 font-bold text-slate-700">${seqNum}</td>
+                <td class="py-2 px-2"><input type="datetime-local" class="ph-from-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${fmtDt(r[1])}"></td>
+                <td class="py-2 px-2"><input type="datetime-local" class="ph-to-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${fmtDt(r[2])}"></td>
+                <td class="py-2.5 px-4 text-center font-bold text-orange-600">Auto</td>
+                <td class="py-2 px-2"><select class="ph-op-edit dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs font-bold">${opOptions}</select></td>
+                <td class="py-2 px-2 text-center"><button onclick="saveSDPreheatEdit(${rowIndex})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold shadow-sm">Save</button></td>`;
+            const sel = tr.querySelector('.ph-op-edit'); if (sel && r[4]) sel.value = r[4];
+        };
+
+        window.saveSDPreheatEdit = async function(rowIndex) {
+            const tr = document.getElementById(`ph-row-${rowIndex}`); if (!tr) return;
+            const origRow = window.sdPreheatRows.find(item => item.rowIndex === rowIndex);
+            const rowDate = origRow ? origRow[0] : (document.getElementById('sd-from-date')?.value || getProductionDate());
+            const fromVal = tr.querySelector('.ph-from-edit')?.value, toVal = tr.querySelector('.ph-to-edit')?.value, opVal = tr.querySelector('.ph-op-edit')?.value;
+            if (!fromVal || !toVal || !opVal) { showToast('error', 'Fill all fields.'); return; }
+            const diffHrs = ((new Date(toVal) - new Date(fromVal)) / (1000 * 60 * 60)).toFixed(2);
+            if (diffHrs <= 0) { showToast('error', 'To Datetime must be later than From Datetime.'); return; }
+            showToast('success', 'Updating Google Sheets...');
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "edit_sd_preheat", rowIndex: rowIndex, rowData: [rowDate, fromVal, toVal, diffHrs, opVal] }) });
+            showToast('success', 'Updated successfully!');
+            loadSprayDryerData();
+        };
+
+        // --- SHIFT ENTRY TABLE & SAVE ---
+        function renderSDEntryTable(rows) {
+            window.sdEntryRows = rows;
+            const tbody = document.getElementById('sd-entry-tbody'); if (!tbody) return;
+            tbody.innerHTML = ''; sdEntryCount = 0;
+            if (rows.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-slate-400 italic text-xs">No production rows added. Click "Add Entry Row" to begin.</td></tr>'; document.getElementById('sd-entry-tfoot')?.classList.add('hidden'); return; }
+            document.getElementById('sd-entry-tfoot')?.classList.remove('hidden');
+            rows.forEach((r, idx) => {
+                sdEntryCount = idx + 1;
+                tbody.innerHTML += `<tr id="entry-row-${r.rowIndex}" class="hover:bg-slate-50/80 border-b border-slate-100">
+                    <td class="py-2 px-3 font-mono text-xs">${formatDateTimeBold(r[1])}</td>
+                    <td class="py-2 px-3 font-bold text-slate-800">${r[2]}</td>
+                    <td class="py-2 px-3 text-center font-black text-indigo-700 bg-indigo-50/30">${r[3]} kg</td>
+                    <td class="py-2 px-3 text-center font-black text-emerald-700 bg-emerald-50/30">${r[4]} kg</td>
+                    <td class="py-2 px-3 font-mono text-xs">${formatDateTimeBold(r[5])}</td>
+                    <td class="py-2 px-3 text-center"><button onclick="editSDEntryRow(${r.rowIndex}, ${sdEntryCount})" class="text-slate-400 hover:text-blue-500 p-1.5"><i class="fa-solid fa-pen"></i></button><button onclick="deleteSDBackendRecord('delete_sd_entry', ${r.rowIndex})" class="text-slate-400 hover:text-red-500 p-1.5"><i class="fa-solid fa-trash"></i></button></td>
+                </tr>`;
+            });
+            updateSDGrandTotals(rows);
+        }
+
+        window.addSDEntryRow = function() {
+            const tbody = document.getElementById('sd-entry-tbody'); if (!tbody) return;
+            if (sdEntryCount === 0) tbody.innerHTML = ''; 
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            const defaultTime = now.toISOString().slice(0,16);
+
+            let prodOptions = buildSDProductOptionsHtml();
+
+            const tr = document.createElement('tr');
+            tr.className = "bg-sky-50/50 border-b border-slate-100";
+            tr.innerHTML = `
+                <td class="py-2 px-3"><input type="datetime-local" class="sd-start dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs w-36" value="${defaultTime}"></td>
+                <td class="py-2 px-3"><select class="sd-prod-select dashboard-input w-full bg-white border border-sky-300 rounded p-1.5 text-xs font-bold">${prodOptions}</select></td>
+                <td class="py-2 px-3 text-center"><input type="number" class="sd-total-input dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-24 text-center font-black text-indigo-700" readonly placeholder="Auto"></td>
+                <td class="py-2 px-3 text-center"><input type="number" class="sd-fresh-powder dashboard-input bg-white border-2 border-emerald-400 rounded p-1.5 text-xs w-24 text-center font-black text-emerald-700" placeholder="Powder kg"></td>
+                <td class="py-2 px-3"><input type="datetime-local" class="sd-stop dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs w-36"></td>
+                <td class="py-2 px-3 text-center"><button onclick="saveSDEntryRow(this.closest('tr'))" class="bg-sky-500 text-white px-3 py-1 rounded text-xs font-bold shadow-sm">Save</button></td>
+            `;
+            tbody.prepend(tr);
+            bindSDProductSelect(tr.querySelector('.sd-prod-select'));
+        };
+
+        window.saveSDEntryRow = async function(row) {
+            const prodIdx = row.querySelector('.sd-prod-select')?.value, powder = row.querySelector('.sd-fresh-powder')?.value;
+            if (!prodIdx || !powder) { showToast('error', 'Select Product and enter Fresh Powder kg.'); return; }
+            const p = sdAvailableProducts[prodIdx];
+            if (!p) { showToast('error', 'Invalid product selected.'); return; }
+            showToast('success', 'Saving to Google Sheets...');
+            const rowDate = document.getElementById('sd-from-date')?.value || getProductionDate();
+            const startVal = row.querySelector('.sd-start')?.value || '', stopVal = row.querySelector('.sd-stop')?.value || '';
+            const rowData = [rowDate, startVal, `${p.prod} (${p.batch})`, p.totalInput, powder, stopVal, currentUser?.name || 'User'];
+            try {
+                await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save_sd_entry", rowData: rowData }) });
+                showToast('success', 'Saved successfully!');
+                loadSprayDryerData();
+            } catch(e) { showToast('error', 'Network error while saving.'); }
+        };
+
+        window.editSDEntryRow = function(rowIndex, seqNum) {
+            const r = window.sdEntryRows.find(item => item.rowIndex === rowIndex), tr = document.getElementById(`entry-row-${rowIndex}`);
+            if (!r || !tr) return;
+            const fmtDt = (str) => { if(!str) return ''; try { const d = new Date(str); return isNaN(d.getTime()) ? '' : d.toISOString().slice(0,16); } catch(e){return '';} };
+            let prodOptions = buildSDProductOptionsHtml(), foundIdx = sdAvailableProducts.findIndex(p => `${p.prod} (${p.batch})` === r[2]);
+            if (foundIdx === -1 && r[2]) prodOptions = `<option value="-1" data-input="${r[3]}" selected>${r[2]}</option>` + prodOptions;
+            tr.innerHTML = `
+                <td class="py-2 px-2"><input type="datetime-local" class="entry-start-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${fmtDt(r[1])}"></td>
+                <td class="py-2 px-2"><select class="sd-prod-select dashboard-input w-full bg-white border border-sky-300 rounded p-1 text-xs font-bold">${prodOptions}</select></td>
+                <td class="py-2 px-2 text-center"><input type="number" class="sd-total-input dashboard-input bg-slate-100 border border-slate-200 rounded p-1 text-xs w-20 text-center font-black text-indigo-700" readonly value="${r[3]}"></td>
+                <td class="py-2 px-2 text-center"><input type="number" class="entry-powder-edit dashboard-input bg-white border-2 border-emerald-400 rounded p-1 text-xs w-20 text-center font-black text-emerald-700" value="${r[4]}"></td>
+                <td class="py-2 px-2"><input type="datetime-local" class="entry-stop-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${fmtDt(r[5])}"></td>
+                <td class="py-2 px-2 text-center"><button onclick="saveSDEntryEdit(${rowIndex})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold shadow-sm">Save</button></td>`;
+            const sel = tr.querySelector('.sd-prod-select'); if (foundIdx !== -1) sel.value = foundIdx;
+            bindSDProductSelect(sel);
+        };
+
+        window.saveSDEntryEdit = async function(rowIndex) {
+            const tr = document.getElementById(`entry-row-${rowIndex}`); if (!tr) return;
+            const origRow = window.sdEntryRows.find(item => item.rowIndex === rowIndex);
+            const rowDate = origRow ? origRow[0] : (document.getElementById('sd-from-date')?.value || getProductionDate()), loggedBy = origRow ? origRow[6] : (currentUser?.name || 'User');
+            const startVal = tr.querySelector('.entry-start-edit')?.value || '', stopVal = tr.querySelector('.entry-stop-edit')?.value || '', powderVal = tr.querySelector('.entry-powder-edit')?.value, prodIdx = tr.querySelector('.sd-prod-select')?.value, totalInputVal = tr.querySelector('.sd-total-input')?.value || 0;
+            if (!powderVal || !prodIdx) { showToast('error', 'Select Product and enter Fresh Powder kg.'); return; }
+            let prodName = origRow ? origRow[2] : '';
+            if (prodIdx !== "-1" && sdAvailableProducts[prodIdx]) prodName = `${sdAvailableProducts[prodIdx].prod} (${sdAvailableProducts[prodIdx].batch})`;
+            showToast('success', 'Updating Google Sheets...');
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "edit_sd_entry", rowIndex: rowIndex, rowData: [rowDate, startVal, prodName, totalInputVal, powderVal, stopVal, loggedBy] }) });
+            showToast('success', 'Updated successfully!');
+            loadSprayDryerData();
+        };
+
+        // --- WET CLEANING & BREAKDOWN TABLES ---
+        function renderSDWcTable(rows) {
+            window.sdWcRows = rows;
+            const tbody = document.getElementById('sd-wc-tbody'); if (!tbody) return;
+            tbody.innerHTML = '';
+            if (rows.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-slate-400 italic text-xs">No wet cleaning logged yet. Click "Add Wet Cleaning Row" to begin.</td></tr>'; return; }
+            rows.forEach((r) => {
+                const isRun = r[5] && r[5].includes("RUNNING");
+                const badge = isRun ? `<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-[10px] font-black animate-pulse border border-blue-300">RUNNING</span>` : `<span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-[10px] font-black border border-emerald-300">COMPLETED</span>`;
+                tbody.innerHTML += `<tr id="wc-row-${r.rowIndex}" class="hover:bg-slate-50/80 border-b border-slate-100">
+                    <td class="py-2.5 px-3 font-mono text-xs">${formatDateTimeBold(r[1])}</td>
+                    <td class="py-2.5 px-3 font-mono text-xs">${formatDateTimeBold(r[2])}</td>
+                    <td class="py-2.5 px-3 font-mono text-xs">${formatDateTimeBold(r[3])}</td>
+                    <td class="py-2.5 px-3 text-center font-black">${r[4]}</td>
+                    <td class="py-2.5 px-3 text-center">${badge}</td>
+                    <td class="py-2.5 px-3 text-center"><button onclick="editSDWcRow(${r.rowIndex})" class="text-slate-400 hover:text-blue-500 p-1.5"><i class="fa-solid fa-pen"></i></button><button onclick="deleteSDBackendRecord('delete_sd_wc', ${r.rowIndex})" class="text-slate-400 hover:text-red-500 p-1.5"><i class="fa-solid fa-trash"></i></button></td>
+                </tr>`;
+            });
+        }
+
+        window.addSDWetCleaningRow = function() {
+            const tbody = document.getElementById('sd-wc-tbody'); if (!tbody) return;
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            const defaultTime = now.toISOString().slice(0,16);
+            const tr = document.createElement('tr');
+            tr.className = "bg-blue-50/30 border-b border-slate-100";
+            tr.innerHTML = `
+                <td class="py-2 px-3"><input type="datetime-local" class="wc-feed dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs w-40" value="${defaultTime}"></td>
+                <td class="py-2 px-3"><input type="datetime-local" class="wc-start dashboard-input bg-white border-2 border-blue-400 rounded p-1.5 text-xs w-40" value="${defaultTime}"></td>
+                <td class="py-2 px-3"><input type="datetime-local" class="wc-stop dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs w-40" placeholder="Optional"></td>
+                <td class="py-2 px-3 text-center text-xs font-bold text-slate-500">Auto</td>
+                <td class="py-2 px-3 text-center"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-bold">RUNNING</span></td>
+                <td class="py-2 px-3 text-center"><button onclick="saveSDWcRow(this.closest('tr'))" class="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold">Save</button></td>
+            `;
+            tbody.prepend(tr);
+        };
+
+        window.saveSDWcRow = async function(row) {
+            const fStop = row.querySelector('.wc-feed')?.value, start = row.querySelector('.wc-start')?.value, stop = row.querySelector('.wc-stop')?.value;
+            if (!fStop || !start) { showToast('error', 'Enter Final Feed Stop and Start times.'); return; }
+            let dur = "In Progress...", stat = "WET CLEANING RUNNING";
+            if (stop) { dur = ((new Date(stop) - new Date(start))/(1000*60*60)).toFixed(2) + " hrs"; stat = "COMPLETED WET CLEANING"; }
+            showToast('success', 'Saving to Google Sheets...');
+            const rowDate = document.getElementById('sd-from-date')?.value || getProductionDate();
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save_sd_wc", rowData: [rowDate, fStop, start, stop, dur, stat] }) });
+            loadSprayDryerData();
+        };
+
+        window.editSDWcRow = function(rowIndex) {
+            const r = window.sdWcRows.find(item => item.rowIndex === rowIndex), tr = document.getElementById(`wc-row-${rowIndex}`);
+            if (!r || !tr) return;
+            const fmtDt = (str) => { if(!str) return ''; try { const d = new Date(str); return isNaN(d.getTime()) ? '' : d.toISOString().slice(0,16); } catch(e){return '';} };
+            tr.innerHTML = `
+                <td class="py-2 px-2"><input type="datetime-local" class="wc-feed-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${fmtDt(r[1])}"></td>
+                <td class="py-2 px-2"><input type="datetime-local" class="wc-start-edit dashboard-input bg-white border-2 border-blue-400 rounded p-1 text-xs w-36" value="${fmtDt(r[2])}"></td>
+                <td class="py-2 px-2"><input type="datetime-local" class="wc-stop-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${fmtDt(r[3])}"></td>
+                <td class="py-2.5 px-3 text-center font-bold text-slate-500">Auto</td>
+                <td class="py-2.5 px-3 text-center font-bold text-slate-500">Auto</td>
+                <td class="py-2 px-2 text-center"><button onclick="saveSDWcEdit(${rowIndex})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold shadow-sm">Save</button></td>`;
+        };
+
+        window.saveSDWcEdit = async function(rowIndex) {
+            const tr = document.getElementById(`wc-row-${rowIndex}`); if (!tr) return;
+            const origRow = window.sdWcRows.find(item => item.rowIndex === rowIndex);
+            const rowDate = origRow ? origRow[0] : (document.getElementById('sd-from-date')?.value || getProductionDate());
+            const fStop = tr.querySelector('.wc-feed-edit')?.value, start = tr.querySelector('.wc-start-edit')?.value, stop = tr.querySelector('.wc-stop-edit')?.value;
+            if (!fStop || !start) { showToast('error', 'Enter Final Feed Stop and Start times.'); return; }
+            let dur = "In Progress...", stat = "WET CLEANING RUNNING";
+            if (stop) { dur = ((new Date(stop) - new Date(start))/(1000*60*60)).toFixed(2) + " hrs"; stat = "COMPLETED WET CLEANING"; }
+            showToast('success', 'Updating Google Sheets...');
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "edit_sd_wc", rowIndex: rowIndex, rowData: [rowDate, fStop, start, stop, dur, stat] }) });
+            showToast('success', 'Updated successfully!');
+            loadSprayDryerData();
+        };
+
+        function renderSDBdTable(rows) {
+            window.sdBdRows = rows;
+            const tbody = document.getElementById('sd-bd-tbody'); if (!tbody) return;
+            tbody.innerHTML = '';
+            if (rows.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-slate-400 italic text-xs">No breakdowns logged for Spray Dryer.</td></tr>'; return; }
+            rows.forEach((r) => {
+                tbody.innerHTML += `<tr id="bd-row-${r.rowIndex}" class="hover:bg-slate-50/80 border-b border-slate-100">
+                    <td class="py-2.5 px-3 font-bold text-xs">${r[1]}</td>
+                    <td class="py-2.5 px-3 font-bold text-red-600 uppercase text-xs">${r[2]}</td>
+                    <td class="py-2.5 px-3 text-xs">${r[3]}</td>
+                    <td class="py-2.5 px-3 font-mono text-xs">${formatDateTimeBold(r[4])}</td>
+                    <td class="py-2.5 px-3 font-mono text-xs">${formatDateTimeBold(r[5])}</td>
+                    <td class="py-2.5 px-3 text-center font-black text-red-600 bg-red-50/50">${r[6]}</td>
+                    <td class="py-2.5 px-3 text-center"><button onclick="editSDBdRow(${r.rowIndex})" class="text-slate-400 hover:text-blue-500 p-1.5"><i class="fa-solid fa-pen"></i></button><button onclick="deleteSDBackendRecord('delete_sd_bd', ${r.rowIndex})" class="text-slate-400 hover:text-red-500 p-1.5"><i class="fa-solid fa-trash"></i></button></td>
+                </tr>`;
+            });
+        }
+
+        window.addSDBreakdownRow = function() {
+            const tbody = document.getElementById('sd-bd-tbody'); if (!tbody) return;
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            const defaultTime = now.toISOString().slice(0,16);
+            const tr = document.createElement('tr');
+            tr.className = "bg-red-50/20 border-b border-slate-100";
+            tr.innerHTML = `
+                <td class="py-2 px-3 text-xs font-bold">${currentUser?.name || 'Operator'}</td>
+                <td class="py-2 px-3"><select class="bd-type dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs font-bold"><option value="Mechanical">Mechanical</option><option value="Electrical">Electrical</option><option value="Process">Process</option><option value="Utility">Utility</option><option value="Other">Other</option></select></td>
+                <td class="py-2 px-3"><input type="text" class="bd-details dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs" placeholder="Issue..."></td>
+                <td class="py-2 px-3"><input type="datetime-local" class="bd-from dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${defaultTime}"></td>
+                <td class="py-2 px-3"><input type="datetime-local" class="bd-to dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36"></td>
+                <td class="py-2 px-3 text-center text-xs font-bold text-red-600">Auto</td>
+                <td class="py-2 px-3 text-center"><button onclick="saveSDBdRow(this.closest('tr'))" class="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold">Save</button></td>
+            `;
+            tbody.prepend(tr);
+        };
+
+        window.saveSDBdRow = async function(row) {
+            const type = row.querySelector('.bd-type')?.value, from = row.querySelector('.bd-from')?.value, to = row.querySelector('.bd-to')?.value;
+            if (!type || !from || !to) { showToast('error', 'Fill Type, From, and To times.'); return; }
+            const hrs = ((new Date(to) - new Date(from))/(1000*60*60)).toFixed(2) + " h";
+            showToast('success', 'Saving to Google Sheets...');
+            const rowDate = document.getElementById('sd-from-date')?.value || getProductionDate();
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save_sd_bd", rowData: [rowDate, currentUser?.name || 'Operator', type, row.querySelector('.bd-details').value, from, to, hrs] }) });
+            loadSprayDryerData();
+        };
+
+        window.editSDBdRow = function(rowIndex) {
+            const r = window.sdBdRows.find(item => item.rowIndex === rowIndex), tr = document.getElementById(`bd-row-${rowIndex}`);
+            if (!r || !tr) return;
+            const fmtDt = (str) => { if(!str) return ''; try { const d = new Date(str); return isNaN(d.getTime()) ? '' : d.toISOString().slice(0,16); } catch(e){return '';} };
+            tr.innerHTML = `
+                <td class="py-2 px-2 text-xs font-bold text-slate-700">${r[1]}</td>
+                <td class="py-2 px-2"><select class="bd-type-edit dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs font-bold"><option value="Mechanical">Mechanical</option><option value="Electrical">Electrical</option><option value="Process">Process</option><option value="Utility">Utility</option><option value="Other">Other</option></select></td>
+                <td class="py-2 px-2"><input type="text" class="bd-details-edit dashboard-input w-full bg-white border border-slate-300 rounded p-1 text-xs" value="${r[3] || ''}"></td>
+                <td class="py-2 px-2"><input type="datetime-local" class="bd-from-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${fmtDt(r[4])}"></td>
+                <td class="py-2 px-2"><input type="datetime-local" class="bd-to-edit dashboard-input bg-white border border-slate-300 rounded p-1 text-xs w-36" value="${fmtDt(r[5])}"></td>
+                <td class="py-2.5 px-3 text-center font-bold text-red-600">Auto</td>
+                <td class="py-2 px-2 text-center"><button onclick="saveSDBdEdit(${rowIndex})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold shadow-sm">Save</button></td>`;
+            const sel = tr.querySelector('.bd-type-edit'); if (sel && r[2]) sel.value = r[2];
+        };
+
+        window.saveSDBdEdit = async function(rowIndex) {
+            const tr = document.getElementById(`bd-row-${rowIndex}`); if (!tr) return;
+            const origRow = window.sdBdRows.find(item => item.rowIndex === rowIndex);
+            const rowDate = origRow ? origRow[0] : (document.getElementById('sd-from-date')?.value || getProductionDate()), loggedBy = origRow ? origRow[1] : (currentUser?.name || 'Operator');
+            const typeVal = tr.querySelector('.bd-type-edit')?.value, detailsVal = tr.querySelector('.bd-details-edit')?.value || '', fromVal = tr.querySelector('.bd-from-edit')?.value, toVal = tr.querySelector('.bd-to-edit')?.value;
+            if (!typeVal || !fromVal || !toVal) { showToast('error', 'Fill Type, From, and To times.'); return; }
+            const diffHrs = ((new Date(toVal) - new Date(fromVal)) / (1000 * 60 * 60)).toFixed(2);
+            if (diffHrs <= 0) { showToast('error', 'To Datetime must be later than From Datetime.'); return; }
+            const hrsVal = diffHrs + " h";
+            showToast('success', 'Updating Google Sheets...');
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "edit_sd_bd", rowIndex: rowIndex, rowData: [rowDate, loggedBy, typeVal, detailsVal, fromVal, toVal, hrsVal] }) });
+            showToast('success', 'Updated successfully!');
+            loadSprayDryerData();
+        };
+
+        window.deleteSDBackendRecord = async function(action, rowIndex) {
+            if (!confirm("Delete this record permanently from Google Sheets?")) return;
+            showToast('success', 'Deleting from database...');
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: action, rowIndex: rowIndex }) });
+            loadSprayDryerData();
+        };
+
+        function updateSDGrandTotals(rows) {
+            let totalInput = 0, totalPowder = 0;
+            rows.forEach(r => { totalInput += parseFloat(r[3]) || 0; totalPowder += parseFloat(r[4]) || 0; });
+            if (document.getElementById('sd-gt-input')) document.getElementById('sd-gt-input').textContent = `${totalInput.toLocaleString()} kg`;
+            if (document.getElementById('sd-gt-powder')) document.getElementById('sd-gt-powder').textContent = `${totalPowder.toLocaleString()} kg`;
+        }
         window.editEntry = function(date, name, inTime) {
             const row = currentHistoryData.find(r => r[0] == date && r[2] == name && r[5] == inTime);
             if(!row) return;
@@ -4335,6 +5029,22 @@ function getInTimeBadgeStyle(t) {
 
         document.getElementById('disp-filter-from')?.addEventListener('change', filterAndRenderDispensing);
         document.getElementById('disp-filter-to')?.addEventListener('change', filterAndRenderDispensing);
+        document.getElementById('btn-disp-prev-date')?.addEventListener('click', () => {
+            const fd = document.getElementById('disp-filter-from'); const td = document.getElementById('disp-filter-to');
+            if(fd && fd.value) {
+                let d = new Date(fd.value); d.setDate(d.getDate() - 1);
+                fd.value = d.toLocaleDateString('en-CA'); td.value = d.toLocaleDateString('en-CA');
+                filterAndRenderDispensing();
+            }
+        });
+        document.getElementById('btn-disp-next-date')?.addEventListener('click', () => {
+            const fd = document.getElementById('disp-filter-from'); const td = document.getElementById('disp-filter-to');
+            if(fd && fd.value) {
+                let d = new Date(fd.value); d.setDate(d.getDate() + 1);
+                fd.value = d.toLocaleDateString('en-CA'); td.value = d.toLocaleDateString('en-CA');
+                filterAndRenderDispensing();
+            }
+        });
 
         function renderDispensingSequence() {
             const tbody = document.getElementById('disp-plan-sequence-tbody');
@@ -4471,11 +5181,26 @@ function getInTimeBadgeStyle(t) {
                 const delBtn = tr.querySelector('.btn-del-log');
                 const editBtn = tr.querySelector('.btn-edit-log');
 
+                // Live typing validation for Completed Qty
+                const compInput = tr.querySelector('.disp-comp-update');
+                if (compInput) {
+                    compInput.addEventListener('input', (e) => {
+                        if (parseFloat(e.target.value) > parseFloat(log[4])) {
+                            showToast('error', `Completed Qty cannot exceed Current Qty (${log[4]} kg)`);
+                            e.target.value = log[4];
+                        }
+                    });
+                }
+
                 if (saveBtn) {
                     saveBtn.addEventListener('click', async () => {
                         const compQ = tr.querySelector('.disp-comp-update').value;
                         const stop = tr.querySelector('.disp-stop-update').value;
                         if(!compQ || !stop) { showToast('error', 'Enter Completed Qty and Stop Time'); return; }
+                        if(parseFloat(compQ) > parseFloat(log[4])) {
+                            showToast('error', `Completed Qty cannot exceed Current Qty (${log[4]} kg)`);
+                            return;
+                        }
                         saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; saveBtn.disabled = true;
                         try {
                             const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow", body: JSON.stringify({ action: 'edit_dispensing_log', rowIndex: dbIndex, cQty: log[4], compQty: compQ, start: log[7], stop: stop }) });
@@ -4566,7 +5291,12 @@ function getInTimeBadgeStyle(t) {
             });
 
             cQtyEl.addEventListener('input', () => {
-                const current = parseFloat(cQtyEl.value) || 0;
+                let current = parseFloat(cQtyEl.value) || 0;
+                if (current > baseRemaining) {
+                    showToast('error', `Current Qty cannot exceed Remaining Qty (${baseRemaining} kg)`);
+                    cQtyEl.value = baseRemaining;
+                    current = baseRemaining;
+                }
                 remEl.value = (baseRemaining > 0 && cQtyEl.value !== '') ? (baseRemaining - current) : baseRemaining;
             });
 
@@ -4733,7 +5463,43 @@ saveBtn.addEventListener('click', async () => {
 
        document.getElementById('btn-close-dispensing')?.addEventListener('click', () => history.back());
         document.getElementById('dispensing-modal-bg')?.addEventListener('click', () => history.back());
+// ================= SPRAY DRY NAVIGATION LOGIC =================
+        
+        // 1. Production Hub -> Spray Dry Hub
+        document.getElementById('btn-prod-spray')?.addEventListener('click', () => {
+            history.pushState({ view: 'spray-dry-hub' }, '', '#spray-dry-hub');
+            switchMainView('spray-dry-hub-view');
+        });
 
+        // 2. Spray Dry Hub -> Back to Production Hub
+        document.getElementById('btn-back-production-from-sd-hub')?.addEventListener('click', () => {
+            history.pushState({ view: 'production' }, '', '#production');
+            switchToProductionView();
+        });
+
+        // 3. Spray Dry Hub -> Data Entry Page
+        document.getElementById('btn-sd-hub-entry')?.addEventListener('click', () => {
+            history.pushState({ view: 'spray-dry-entry' }, '', '#spray-dry-entry');
+            switchMainView('spray-dry-view');
+        });
+
+        // 4. Spray Dry Hub -> Dashboard Page
+        document.getElementById('btn-sd-hub-dash')?.addEventListener('click', () => {
+            history.pushState({ view: 'spray-dry-dash' }, '', '#spray-dry-dash');
+            switchMainView('spray-dry-dashboard-view');
+        });
+
+        // 5. Data Entry Page -> Back to Spray Dry Hub
+        document.getElementById('btn-back-sd-hub-from-entry')?.addEventListener('click', () => {
+            history.pushState({ view: 'spray-dry-hub' }, '', '#spray-dry-hub');
+            switchMainView('spray-dry-hub-view');
+        });
+
+        // 6. Dashboard Page -> Back to Spray Dry Hub
+        document.getElementById('btn-back-sd-hub-from-dash')?.addEventListener('click', () => {
+            history.pushState({ view: 'spray-dry-hub' }, '', '#spray-dry-hub');
+            switchMainView('spray-dry-hub-view');
+        });
         // Navigating to Dispensing
         document.getElementById('btn-prod-dispensing')?.addEventListener('click', () => {
             history.pushState({ view: 'dispensing-hub' }, '', '#dispensing-hub');
@@ -5021,7 +5787,9 @@ async function initWetProcessTab() {
                     globalWPProductOptions = '<option value="" disabled selected>Select Product...</option>';
                     let hasActive = false;
 
-                    pData.forEach((p, index) => {
+                    let activeSeq = 0;
+
+                    pData.forEach((p) => {
                         const batch = p[3]; const prod = p[2];
                         const batchLogs = lData.filter(l => l[3] == batch && l[2] == prod);
                         let totalCompleted = 0; batchLogs.forEach(l => { totalCompleted += parseFloat(l[6]) || 0; });
@@ -5038,13 +5806,40 @@ async function initWetProcessTab() {
                         let remaining = totalCompleted - totalDumped;
                         if (remaining < 0) remaining = 0;
 
-                        if (totalCompleted > 0) {
+                        // STRICT FILTER: Only render products where Remaining Qty > 0
+                        if (totalCompleted > 0 && remaining > 0) {
                             hasActive = true;
-                            globalWPProductOptions += `<option data-ready-qty="${totalCompleted}" value="${prod} | ${batch}">${prod} (${batch}) - Ready: ${totalCompleted}kg</option>`;
-                            tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="py-2 px-4 font-bold">${index + 1}</td><td class="py-2 px-4">${prod}</td><td class="py-2 px-4 text-xs">${batch}</td><td class="py-2 px-4">${p[4]} kg</td><td class="py-2 px-4 text-emerald-600 font-bold">${totalCompleted} kg</td><td class="py-2 px-4 text-blue-600 font-bold">${totalDumped} kg</td><td class="py-2 px-4 text-orange-600 font-bold">${remaining} kg</td></tr>`;
+                            activeSeq++;
+                            
+                            globalWPProductOptions += `<option data-rem-qty="${remaining}" data-ready-qty="${totalCompleted}" value="${prod} | ${batch}">${prod} (${batch}) - Rem: ${remaining} kg</option>`;
+                            
+                            // Determine Status & Row Coloring Theme
+                            let rowBg, statusBadge, dumpedColor;
+                            if (totalDumped === 0) {
+                                // PENDING PRODUCT (Amber/Yellow Theme)
+                                rowBg = "bg-amber-50/80 hover:bg-amber-100/80 border-l-4 border-amber-400";
+                                statusBadge = `<span class="ml-2 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 shadow-2xs">PENDING</span>`;
+                                dumpedColor = "text-slate-500 font-semibold";
+                            } else {
+                                // RUNNING PRODUCT (Blue/Indigo Theme with Pulse)
+                                rowBg = "bg-blue-50/80 hover:bg-blue-100/80 border-l-4 border-blue-500";
+                                statusBadge = `<span class="ml-2 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-blue-100 text-blue-800 border border-blue-300 animate-pulse ring-1 ring-blue-300/50 shadow-2xs">RUNNING</span>`;
+                                dumpedColor = "text-blue-600 font-black";
+                            }
+
+                            tbody.innerHTML += `
+                                <tr class="${rowBg} transition-all">
+                                    <td class="py-2.5 px-4 font-bold text-slate-700">${activeSeq}</td>
+                                    <td class="py-2.5 px-4 font-bold text-slate-800 flex items-center">${prod} ${statusBadge}</td>
+                                    <td class="py-2.5 px-4 font-mono text-xs text-slate-600 font-semibold">${batch}</td>
+                                    <td class="py-2.5 px-4 text-slate-700 font-medium">${p[4]} kg</td>
+                                    <td class="py-2.5 px-4 text-emerald-600 font-extrabold">${totalCompleted} kg</td>
+                                    <td class="py-2.5 px-4 ${dumpedColor}">${totalDumped} kg</td>
+                                    <td class="py-2.5 px-4 text-orange-600 font-black text-base">${remaining} kg</td>
+                                </tr>`;
                         }
                     });
-                    if (!hasActive) tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-slate-400">No Ready batches found.</td></tr>';
+                    if (!hasActive) tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-slate-400 italic font-medium">No active dumping plans with remaining quantity found.</td></tr>';
                 }
             } catch (e) { console.log(e); } 
             finally { if(btn) { btn.innerHTML = 'Load Data'; btn.disabled = false; } }
@@ -5070,10 +5865,14 @@ async function initWetProcessTab() {
                 const data = await res.json();
                 
                 if (data.status === "success") {
-                    if (data.mainData && data.mainData.length > 0) data.mainData.forEach(hist => addWPEntryRow(hist));
+                    if (data.mainData && data.mainData.length > 0) {
+                        data.mainData.forEach(hist => addWPEntryRow(hist));
+                    }
                     if (data.cipData && data.cipData.length > 0) data.cipData.forEach(hist => addWPCIPRow(hist));
                     if (data.bdData && data.bdData.length > 0) data.bdData.forEach(hist => addWPBreakdownRow(hist));
                 }
+                // Force grand total update even when table is empty (resets to 0 kg)
+                if (typeof updateWPGrandTotal === 'function') updateWPGrandTotal();
             } catch (e) { console.error("History Failed:", e); }
         };
         // Arrows logic
@@ -5121,14 +5920,19 @@ async function initWetProcessTab() {
         window.deleteWPLog = async function(btn, rowId, sheetName) {
             const row = document.getElementById(rowId);
             const rIndex = row.dataset.rowIndex;
-            if(!rIndex) { row.remove(); return; } // Not saved yet
+            if(!rIndex) { row.remove(); updateWPGrandTotal(); return; } // Not saved yet
             if(!confirm("Are you sure you want to delete this saved entry?")) return;
             
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             try {
                 const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: 'delete_wp_log', sheetName: sheetName, rowIndex: rIndex }) });
                 const data = await res.json();
-                if(data.status === 'success') { row.remove(); showToast('success', 'Deleted'); } 
+                if(data.status === 'success') { 
+                    row.remove(); 
+                    updateWPGrandTotal(); 
+                    if (typeof loadWetProcessData === 'function') loadWetProcessData(); // Immediately refresh Active Plan!
+                    showToast('success', 'Deleted & Plan Updated!'); 
+                } 
                 else { showToast('error', data.message); btn.innerHTML = '<i class="fa-solid fa-trash"></i>'; }
             } catch(e) { showToast('error', 'Network error'); btn.innerHTML = '<i class="fa-solid fa-trash"></i>'; }
         };
@@ -5189,6 +5993,30 @@ let cipMasterData = [];
             } catch(e) {} finally { btn.innerHTML = 'Add to Database'; btn.disabled = false; }
         });
         // --- CALC HELPERS ---
+       window.updateWPGrandTotal = function() {
+            const tfoot = document.getElementById('wp-entry-log-tfoot');
+            if (!tfoot) return;
+            let totalDumped = 0;
+            let totalInputSum = 0;
+            
+            document.querySelectorAll('#wp-entry-log-table tr').forEach(row => {
+                const dumpEl = row.querySelector('input[id^="wp-dump-"]');
+                const totalEl = row.querySelector('input[id^="wp-total-hidden-"]');
+                if (dumpEl) totalDumped += parseFloat(dumpEl.value) || 0;
+                if (totalEl) totalInputSum += parseFloat(totalEl.value) || 0;
+            });
+            
+            tfoot.innerHTML = `
+                <tr>
+                    <td colspan="5" class="py-2.5 px-3 text-right uppercase tracking-wider text-slate-600">Grand Totals for the Day:</td>
+                    <td class="py-2.5 px-2 text-blue-700 font-black text-center text-sm bg-blue-50/50 border-x border-slate-200">${totalDumped.toLocaleString()} kg</td>
+                    <td colspan="2"></td>
+                    <td class="py-2.5 px-2 text-indigo-700 font-black text-center text-sm bg-indigo-50/50 border-x border-slate-200">${totalInputSum.toLocaleString()} kg</td>
+                    <td colspan="2"></td>
+                </tr>
+            `;
+        };
+
        window.calculateWPTotalInput = function(rowId) {
             let dumpedQty = parseFloat(document.getElementById(`wp-dump-${rowId}`).value) || 0;
             let oldRw = parseFloat(document.getElementById(`wp-oldrw-${rowId}`).value) || 0;
@@ -5198,6 +6026,7 @@ let cipMasterData = [];
             let total = dumpedQty + oldRw; 
             
             document.getElementById(`wp-total-${rowId}`).innerHTML = `${total} kg<input type="hidden" id="wp-total-hidden-${rowId}" value="${total}">`;
+            updateWPGrandTotal();
         };
 
    window.calcCIPHours = function(rowId) {
@@ -5275,7 +6104,8 @@ let cipMasterData = [];
                 <td class="px-2 py-2"><select id="wp-prod-${rowId}" class="dashboard-input bg-white border border-teal-300 rounded p-1.5 text-xs text-slate-800 font-bold w-full min-w-[250px] whitespace-normal text-wrap">${prodOptions}</select></td>
                 <td class="px-2 py-2"><select id="wp-maker-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs">${makerOptions}</select></td>
                 <td class="px-2 py-2"><select id="wp-scada-${rowId}" class="dashboard-input bg-white border border-slate-300 rounded p-1.5 text-xs">${scadaOptions}</select></td>
-                <td class="px-2 py-2 border-l border-slate-200"><input type="number" id="wp-dump-${rowId}" oninput="calculateWPTotalInput('${rowId}')" placeholder="Dump" class="dashboard-input bg-white border-2 border-blue-400 rounded p-1.5 text-xs w-16 text-center font-bold text-blue-700 shadow-inner" value="${hist ? hist[6] : ''}"></td>
+                <td class="px-2 py-2 border-l border-slate-200"><input type="text" id="wp-rem-${rowId}" class="dashboard-input bg-slate-100 border border-slate-200 rounded p-1.5 text-xs w-16 text-center font-bold text-orange-600 font-mono" readonly placeholder="Auto"></td>
+                <td class="px-2 py-2"><input type="number" id="wp-dump-${rowId}" oninput="calculateWPTotalInput('${rowId}')" placeholder="Dump" class="dashboard-input bg-white border-2 border-blue-400 rounded p-1.5 text-xs w-16 text-center font-bold text-blue-700 shadow-inner" value="${hist ? hist[6] : ''}"></td>
                 
                 <td class="px-2 py-2"><input type="number" id="wp-oldrw-${rowId}" oninput="calculateWPTotalInput('${rowId}')" placeholder="Old RW" class="dashboard-input bg-amber-50 border border-amber-200 rounded p-1.5 text-xs w-16 text-center" value="${hist ? hist[7] : ''}"></td>
                 <td class="px-2 py-2"><input type="number" id="wp-sdrw-${rowId}" oninput="calculateWPTotalInput('${rowId}')" placeholder="SD RW" class="dashboard-input bg-rose-50 border border-rose-200 rounded p-1.5 text-xs w-16 text-center" value="${hist ? hist[8] : ''}"></td>
@@ -5289,7 +6119,60 @@ let cipMasterData = [];
                 </td>
             `;
             
-            tbody.prepend(tr); // prepend puts the newest row at the top!
+            const prodSelectEl = tr.querySelector(`#wp-prod-${rowId}`);
+            const remEl = tr.querySelector(`#wp-rem-${rowId}`);
+            const dumpEl = tr.querySelector(`#wp-dump-${rowId}`);
+            let baseWPRemaining = 0;
+
+            const updateWPRemaining = () => {
+                if (!prodSelectEl || !remEl) return;
+                const selOption = prodSelectEl.options[prodSelectEl.selectedIndex];
+                if (selOption && selOption.dataset.remQty !== undefined) {
+                    baseWPRemaining = parseFloat(selOption.dataset.remQty) || 0;
+                } else if (selOption && selOption.textContent.includes('Ready:')) {
+                    const match = selOption.textContent.match(/Ready:\s*([\d.]+)/);
+                    baseWPRemaining = match ? parseFloat(match[1]) : 0;
+                }
+                const currDump = parseFloat(dumpEl.value) || 0;
+                remEl.value = (baseWPRemaining > 0 && dumpEl.value !== '') ? Math.max(0, baseWPRemaining - currDump) : baseWPRemaining;
+            };
+
+            prodSelectEl?.addEventListener('change', updateWPRemaining);
+            
+            if (dumpEl && remEl) {
+                dumpEl.addEventListener('input', () => {
+                    let dumped = parseFloat(dumpEl.value) || 0;
+                    if (dumped > baseWPRemaining && !hist) {
+                        showToast('error', `Dumped Qty cannot exceed Remaining Qty (${baseWPRemaining} kg)`);
+                        dumpEl.value = baseWPRemaining;
+                        dumped = baseWPRemaining;
+                        calculateWPTotalInput(rowId);
+                    }
+                    remEl.value = (baseWPRemaining > 0 && dumpEl.value !== '') ? Math.max(0, baseWPRemaining - dumped) : baseWPRemaining;
+                });
+            }
+
+            setTimeout(updateWPRemaining, 50);
+
+            // Smart Sorting: Running batches at the very top, completed batches below them (newest first)
+            const stopVal = hist ? (hist[11] ? String(hist[11]).trim() : '') : '';
+            const isRunning = stopVal === '' || stopVal === '-';
+
+            if (isRunning) {
+                tr.classList.add('running-batch');
+                tbody.prepend(tr); // Keeps running/active batches locked at the very top!
+            } else {
+                tr.classList.remove('running-batch');
+                // Find the first completed batch in the table to insert ABOVE it
+                const firstCompleted = Array.from(tbody.children).find(r => !r.classList.contains('running-batch'));
+                if (firstCompleted) {
+                    tbody.insertBefore(tr, firstCompleted); // Places newest completed entry above older completed entries!
+                } else {
+                    tbody.appendChild(tr);
+                }
+            }
+
+            if(typeof updateWPGrandTotal === 'function') updateWPGrandTotal();
 
             if (hist && hist[12] === 'Completed') {
                 toggleRowEdit(rowId, true);
@@ -5317,7 +6200,8 @@ let cipMasterData = [];
                 if (data.status === "success") { 
                     document.getElementById(rowId).dataset.rowIndex = data.rowIndex;
                     showToast('success', 'Saved!'); toggleRowEdit(rowId, true);
-                    loadWetProcessData(); // NEW: Active Plan को तुरंत अपडेट करने के लिए
+                    loadWetProcessData(); // Update Active Plan immediately
+                    loadWPTodayLogs(); // Re-sort and refresh live log table
                 } else throw new Error(data.message);
             } catch(e) { showToast('error', e.message); } 
             finally { btn.innerHTML = 'Save'; btn.disabled = false; }
@@ -5442,162 +6326,177 @@ let cipMasterData = [];
         };
 
         // ============================================================     
-        window.loadWPDashboard = async function() {
+async function loadWPDashboard() {
             const spinner = document.getElementById('wp-dash-spinner');
-            if(spinner) { spinner.classList.add('fa-spin'); spinner.classList.remove('hidden'); }
-            
-            const dashDate = document.getElementById('wp-dash-date').value || getWPProductionDate();
+            if (spinner) spinner.classList.remove('hidden');
+
+            const dateVal = document.getElementById('wp-dash-date')?.value || getWPProductionDate();
+            if (document.getElementById('wp-dash-date') && !document.getElementById('wp-dash-date').value) {
+                document.getElementById('wp-dash-date').value = dateVal;
+            }
 
             try {
-                // Fetch Dispensing Data (For Plan and Ready Qty)
-                const resDisp = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "get_dispensing_dashboard" }) });
-                const dataDisp = await resDisp.json();
-                
-                // Fetch WP Data for the selected date
-                const resWp = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "get_wp_today_data", fromDate: dashDate, toDate: dashDate }) });
-                const dataWp = await resWp.json();
+                // Fetch both dashboard data and today's logs simultaneously
+                const [dashRes, todayRes] = await Promise.all([
+                    fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "get_dispensing_dashboard" }) }),
+                    fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "get_wp_today_data", fromDate: dateVal, toDate: dateVal }) })
+                ]);
 
-                // 1. Map Dispensing Plan & Ready
-                let dispPlan = dataDisp.planData?.length > 1 ? dataDisp.planData.slice(1) : [];
-                let dispLog = dataDisp.logData?.length > 1 ? dataDisp.logData.slice(1) : [];
-                let batchMap = {}; // Key: "Product|Batch", Value: Data Obj
+                const dashData = await dashRes.json();
+                const todayData = await todayRes.json();
 
-                dispPlan.forEach(p => {
-                    const batch = p[3]; const prod = p[2]; const planQty = parseFloat(p[4]) || 0;
-                    const logs = dispLog.filter(l => l[3] == batch && l[2] == prod);
-                    let readyQty = 0; logs.forEach(l => { readyQty += parseFloat(l[6]) || 0; });
-                    batchMap[`${prod} | ${batch}`] = { prod, batch, plan: planQty, ready: readyQty, dumped: 0 };
+                // 1. Calculate Rework Metrics (Top Row)
+                let oldRwSum = 0, sdRwSum = 0;
+                const mainLogs = todayData.mainData || [];
+                mainLogs.forEach(log => {
+                    oldRwSum += parseFloat(log[7]) || 0;
+                    sdRwSum += parseFloat(log[8]) || 0;
                 });
+                
+                if (document.getElementById('dash-wp-old-rw')) document.getElementById('dash-wp-old-rw').textContent = `${oldRwSum.toLocaleString()} kg`;
+                if (document.getElementById('dash-wp-sd-rw')) document.getElementById('dash-wp-sd-rw').textContent = `${sdRwSum.toLocaleString()} kg`;
+                if (document.getElementById('dash-wp-total-rw')) document.getElementById('dash-wp-total-rw').textContent = `${(oldRwSum + sdRwSum).toLocaleString()} kg`;
 
-                // 2. Map WP Data (Dumped & Rework)
-                let wpMain = dataWp.mainData || [];
-                let totalOldRw = 0, totalSdRw = 0;
+                // Helper to format dates to YYYY-MM-DD strings for precise comparison
+                const toDateStr = (dStr) => {
+                    if (!dStr || dStr === '-') return '';
+                    try {
+                        let parts = String(dStr).split('T')[0].split(' ')[0].trim().split(/[-/]/);
+                        if (parts.length === 3) {
+                            if (parts[0].length === 4) return `${parts[0]}-${parts[1].padStart(2,'0')}-${parts[2].padStart(2,'0')}`;
+                            if (parts[2].length === 4) return `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+                        }
+                        const d = new Date(dStr);
+                        if (!isNaN(d.getTime())) return d.toISOString().split('T')[0];
+                    } catch(e) {}
+                    return String(dStr).trim();
+                };
 
-                wpMain.forEach(w => {
-                    const prodBatchKey = w[2]; // Saved as "Product | Batch"
-                    const dump = parseFloat(w[6]) || 0;
-                    totalOldRw += parseFloat(w[7]) || 0;
-                    totalSdRw += parseFloat(w[8]) || 0;
+                const selectedDateStr = toDateStr(dateVal);
 
-                    if (batchMap[prodBatchKey]) {
-                        batchMap[prodBatchKey].dumped += dump;
+                // 2. Render Active Plan Production Table (Tabular View + Date-Locking Completed Batches)
+                const tableBody = document.getElementById('wp-dash-production-table') || document.getElementById('wp-dash-production-cards');
+                if (tableBody) {
+                    tableBody.innerHTML = '';
+                    const planRows = (dashData.planData && dashData.planData.length > 1) ? dashData.planData.slice(1) : [];
+
+                    if (planRows.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="7" class="text-xs text-slate-400 italic text-center py-8">No active plans found for this shift.</td></tr>';
                     } else {
-                        // Fallback if dumped but no plan found
-                        let p = prodBatchKey.split('|')[0]?.trim() || "Unknown";
-                        let b = prodBatchKey.split('|')[1]?.trim() || "Unknown";
-                        batchMap[prodBatchKey] = { prod: p, batch: b, plan: 0, ready: 0, dumped: dump };
+                        let seq = 0;
+                        planRows.forEach(p => {
+                            const productName = p[2] || 'Unnamed Product';
+                            const batchNo = p[3] || 'No Batch';
+                            const totalQty = parseFloat(p[4]) || 0;
+
+                            // Analyze all historical dump logs for this Product + Batch
+                            let totalDumpedAllTime = 0;
+                            let dumpedQtyUpToSelectedDate = 0;
+                            let latestDumpDateStr = '';
+
+                            const allWpLogs = dashData.wpMainData || [];
+                            allWpLogs.forEach(row => {
+                                if (row[2] === productName && row[3] === batchNo) {
+                                    const dumpAmt = parseFloat(row[6]) || 0;
+                                    totalDumpedAllTime += dumpAmt;
+                                    
+                                    const logDateStr = toDateStr(row[0]);
+                                    if (logDateStr) {
+                                        if (logDateStr > latestDumpDateStr) latestDumpDateStr = logDateStr;
+                                        if (logDateStr <= selectedDateStr) {
+                                            dumpedQtyUpToSelectedDate += dumpAmt;
+                                        }
+                                    } else {
+                                        // Fallback if date parsing fails
+                                        dumpedQtyUpToSelectedDate += dumpAmt;
+                                    }
+                                }
+                            });
+
+                            // DATE-LOCK RULE: If this batch reached completion across all time (Total Dumped >= Plan),
+                            // check the exact date of its final dump. If the viewed date is AFTER completion date, skip rendering!
+                            if (totalDumpedAllTime >= totalQty && latestDumpDateStr !== '') {
+                                if (selectedDateStr > latestDumpDateStr) {
+                                    return; // Hidden! This product completed on a prior date.
+                                }
+                            }
+
+                            // Calculate status as of the selected dashboard date
+                            const displayDumped = dumpedQtyUpToSelectedDate;
+                            const remainingQty = Math.max(0, totalQty - displayDumped);
+
+                            let statusText, rowBg, badgeStyle, dumpedColor;
+                            
+                            if (displayDumped === 0) {
+                                statusText = 'PENDING';
+                                rowBg = 'hover:bg-amber-50/50 transition-colors border-l-4 border-amber-400';
+                                badgeStyle = 'bg-amber-100 text-amber-800 border border-amber-300 shadow-2xs';
+                                dumpedColor = 'text-slate-500 font-semibold';
+                            } else if (displayDumped < totalQty) {
+                                statusText = 'RUNNING';
+                                rowBg = 'bg-blue-50/30 hover:bg-blue-50/70 transition-colors border-l-4 border-blue-500';
+                                badgeStyle = 'bg-blue-100 text-blue-800 border border-blue-300 animate-pulse ring-1 ring-blue-300/50 shadow-2xs';
+                                dumpedColor = 'text-blue-600 font-black';
+                            } else {
+                                statusText = 'COMPLETED';
+                                rowBg = 'bg-emerald-50/40 hover:bg-emerald-50/80 transition-colors border-l-4 border-emerald-500 opacity-90';
+                                badgeStyle = 'bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-2xs';
+                                dumpedColor = 'text-emerald-600 font-black';
+                            }
+
+                            seq++;
+                            tableBody.innerHTML += `
+                                <tr class="${rowBg}">
+                                    <td class="py-3 px-4 font-bold text-slate-600">${seq}</td>
+                                    <td class="py-3 px-4 font-extrabold text-slate-800">${productName}</td>
+                                    <td class="py-3 px-4 font-mono text-xs text-slate-600 font-bold">${batchNo}</td>
+                                    <td class="py-3 px-4 text-center font-bold text-slate-700">${totalQty.toLocaleString()} kg</td>
+                                    <td class="py-3 px-4 text-center ${dumpedColor}">${displayDumped.toLocaleString()} kg</td>
+                                    <td class="py-3 px-4 text-center font-black text-orange-600">${remainingQty.toLocaleString()} kg</td>
+                                    <td class="py-3 px-4 text-center">
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider uppercase inline-block ${badgeStyle}">${statusText}</span>
+                                    </td>
+                                </tr>
+                            `;
+                        });
                     }
-                });
-
-                // --- UPDATE REWORK UI ---
-                document.getElementById('dash-wp-old-rw').textContent = totalOldRw + " kg";
-                document.getElementById('dash-wp-sd-rw').textContent = totalSdRw + " kg";
-                document.getElementById('dash-wp-total-rw').textContent = (totalOldRw + totalSdRw) + " kg";
-
-                // --- UPDATE PRODUCTION CARDS ---
-                const prodContainer = document.getElementById('wp-dash-production-cards');
-                prodContainer.innerHTML = '';
-                
-                const activeBatches = Object.values(batchMap).filter(b => b.plan > 0 || b.dumped > 0);
-                if (activeBatches.length === 0) {
-                    prodContainer.innerHTML = '<div class="col-span-full text-center py-8 text-slate-400 italic">No production batches found for this date.</div>';
-                } else {
-                    activeBatches.forEach(b => {
-                        let remaining = b.plan - b.dumped;
-                        if (remaining < 0) remaining = 0;
-                        
-                        let progressPct = b.plan > 0 ? Math.min(100, Math.round((b.dumped / b.plan) * 100)) : 0;
-                        let progressColor = progressPct >= 100 ? 'bg-emerald-500' : 'bg-teal-500';
-
-                        prodContainer.innerHTML += `
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col h-full">
-                                <div class="flex justify-between items-start mb-3">
-                                    <h4 class="font-bold text-slate-800 text-sm leading-tight pr-2">${b.prod}</h4>
-                                    <span class="bg-white border border-slate-200 text-slate-500 px-2 py-0.5 rounded text-[10px] font-mono font-bold shrink-0 shadow-sm">${b.batch}</span>
-                                </div>
-                                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-3">
-                                    <div class="${progressColor} h-1.5 rounded-full" style="width: ${progressPct}%"></div>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2 mt-auto">
-                                    <div class="bg-white p-2 rounded-lg border border-slate-100 flex flex-col justify-center items-center"><span class="text-[9px] text-slate-400 font-bold uppercase mb-0.5">Total Plan</span><span class="font-black text-slate-700 text-sm">${b.plan} kg</span></div>
-                                    <div class="bg-emerald-50 p-2 rounded-lg border border-emerald-100 flex flex-col justify-center items-center"><span class="text-[9px] text-emerald-600 font-bold uppercase mb-0.5">Dispensed (Ready)</span><span class="font-black text-emerald-700 text-sm">${b.ready} kg</span></div>
-                                    <div class="bg-blue-50 p-2 rounded-lg border border-blue-100 flex flex-col justify-center items-center"><span class="text-[9px] text-blue-600 font-bold uppercase mb-0.5">Dumped</span><span class="font-black text-blue-700 text-sm">${b.dumped} kg</span></div>
-                                    <div class="bg-orange-50 p-2 rounded-lg border border-orange-100 flex flex-col justify-center items-center"><span class="text-[9px] text-orange-600 font-bold uppercase mb-0.5">Remaining</span><span class="font-black text-orange-700 text-sm">${remaining} kg</span></div>
-                                </div>
-                            </div>
-                        `;
-                    });
+                    if (tableBody.innerHTML === '') {
+                        tableBody.innerHTML = '<tr><td colspan="7" class="text-xs text-slate-400 italic text-center py-8">All batches completed on prior dates. No active production for this date.</td></tr>';
+                    }
                 }
 
-                // --- UPDATE CIP CARDS ---
-                const cipContainer = document.getElementById('wp-dash-cip-list');
-                cipContainer.innerHTML = '';
-                let cipData = dataWp.cipData || [];
-                if (cipData.length === 0) {
-                    cipContainer.innerHTML = '<div class="text-center py-6 text-slate-400 italic text-sm">No CIP logs recorded today.</div>';
-                } else {
-                    cipData.forEach(c => {
-                        let isNegativeVariance = c[7] && c[7].includes('-');
-                        let varStyle = isNegativeVariance ? 'text-emerald-600 bg-emerald-50 border-emerald-200' : 'text-red-600 bg-red-50 border-red-200';
-                        
-                        let formatTime = (dtStr) => {
-                            if(!dtStr) return '-';
-                            try{ return new Date(dtStr).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); } catch(e){ return dtStr; }
-                        };
-
-                        cipContainer.innerHTML += `
-                            <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-white transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-soap"></i></div>
-                                    <div class="flex flex-col">
-                                        <span class="font-bold text-slate-700 text-sm">${c[2]}</span>
-                                        <span class="text-[10px] text-slate-500 font-mono">${formatTime(c[3])} to ${formatTime(c[4])}</span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col items-end gap-1">
-                                    <span class="text-xs font-bold text-blue-700">${c[6]} <span class="text-[9px] font-normal text-slate-400">Total</span></span>
-                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded border ${varStyle}" title="Variance">${c[7]}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
+                // 3. Render CIP & Breakdown Lists for the selected date
+                const cipList = document.getElementById('wp-dash-cip-list');
+                if (cipList) {
+                    cipList.innerHTML = '';
+                    const cipRows = todayData.cipData || [];
+                    if (cipRows.length === 0) cipList.innerHTML = '<p class="text-xs text-slate-400 italic">No CIP operations logged.</p>';
+                    else {
+                        cipRows.forEach(c => {
+                            cipList.innerHTML += `<div class="bg-blue-50/50 border border-blue-100 rounded-xl p-3 flex justify-between items-center"><div class="flex flex-col"><span class="font-bold text-blue-900 text-xs">${c[2] || 'CIP'}</span><span class="text-[10px] text-slate-500">${c[6] || ''}</span></div><span class="text-xs font-black text-blue-600 bg-white px-2 py-1 rounded-lg border border-blue-200 shadow-2xs">${c[7] || '0'} h</span></div>`;
+                        });
+                    }
                 }
 
-                // --- UPDATE BREAKDOWN CARDS ---
-                const bdContainer = document.getElementById('wp-dash-bd-list');
-                bdContainer.innerHTML = '';
-                let bdData = dataWp.bdData || [];
-                if (bdData.length === 0) {
-                    bdContainer.innerHTML = '<div class="text-center py-6 text-slate-400 italic text-sm">No Breakdowns recorded today.</div>';
-                } else {
-                    bdData.forEach(b => {
-                        let formatTime = (dtStr) => {
-                            if(!dtStr) return '-';
-                            try{ return new Date(dtStr).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); } catch(e){ return dtStr; }
-                        };
-                        bdContainer.innerHTML += `
-                            <div class="flex flex-col p-3 bg-red-50/50 border border-red-100 rounded-xl">
-                                <div class="flex justify-between items-start mb-1">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-solid fa-circle-exclamation text-red-500 text-xs"></i>
-                                        <span class="font-bold text-red-800 text-xs uppercase">${b[2]}</span>
-                                    </div>
-                                    <span class="text-[10px] font-bold bg-white text-red-600 px-1.5 py-0.5 rounded border border-red-200 shadow-sm">${b[6]} h</span>
-                                </div>
-                                <span class="text-xs text-slate-700 font-medium mb-1 line-clamp-2">${b[3]}</span>
-                                <span class="text-[10px] text-slate-500 font-mono text-right">${formatTime(b[4])} to ${formatTime(b[5])}</span>
-                            </div>
-                        `;
-                    });
+                const bdList = document.getElementById('wp-dash-bd-list');
+                if (bdList) {
+                    bdList.innerHTML = '';
+                    const bdRows = todayData.bdData || [];
+                    if (bdRows.length === 0) bdList.innerHTML = '<p class="text-xs text-slate-400 italic">No breakdowns logged.</p>';
+                    else {
+                        bdRows.forEach(b => {
+                            bdList.innerHTML += `<div class="bg-red-50/50 border border-red-100 rounded-xl p-3 flex justify-between items-center"><div class="flex flex-col"><span class="font-bold text-red-900 text-xs uppercase">${b[2] || 'Breakdown'}</span><span class="text-[10px] text-slate-500 truncate max-w-[180px]">${b[3] || ''}</span></div><span class="text-xs font-black text-red-600 bg-white px-2 py-1 rounded-lg border border-red-200 shadow-2xs">${b[6] || '0'} h</span></div>`;
+                        });
+                    }
                 }
 
-            } catch(e) {
+            } catch (e) {
                 console.error("Dashboard Load Error:", e);
-                showToast('error', 'Failed to load Dashboard data.');
+                showToast('error', 'Failed to update Wet Process Dashboard.');
             } finally {
-                if(spinner) { spinner.classList.remove('fa-spin'); spinner.classList.add('hidden'); }
+                if (spinner) spinner.classList.add('hidden');
             }
-        };
+        }
 
         // ============================================================     
         document.addEventListener('DOMContentLoaded', initApp);
